@@ -580,125 +580,13 @@
         </nav>
     </div>
 
-    <!-- About Modal -->
-    <div class="modal-overlay" id="aboutModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2 class="modal-title">About EchoLoop</h2>
-                <button class="modal-close" id="closeButton" aria-label="Close modal">×</button>
-            </div>
-            <div class="modal-content">
-                <div class="content-column">
-                    <div class="about-section">
-                        <h3 class="about-heading">🎯 The Problem</h3>
-                        <p class="about-text">
-                            Social platforms made <span class="about-highlight">$200B last year</span>.
-                            Users who created that value got <span class="about-highlight">$0</span>.
-                        </p>
-                        <p class="about-text">
-                            <span class="about-highlight">EchoLoop fixes this.</span>
-                        </p>
-                    </div>
-
-                    <div class="about-section">
-                        <h3 class="about-heading">⚡ How It Works</h3>
-                        <p class="about-text">
-                            Turn social engagement into real money:
-                        </p>
-                        <p class="about-text">
-                            • <span class="about-highlight">Like a post</span> → earn 1 point<br>
-                            • <span class="about-highlight">Share content</span> → earn 5 points<br>
-                            • <span class="about-highlight">Comment</span> → earn 3 points<br>
-                            • <span class="about-highlight">Get followers</span> → earn 2 points each
-                        </p>
-                        <p class="about-text">
-                            <span class="about-highlight">Daily rewards:</span> 100K $LOOP tokens distributed based on your points.
-                        </p>
-                    </div>
-
-                    <div class="about-section">
-                        <h3 class="about-heading">🛠️ Development Timeline</h3>
-                        <p class="about-text">
-                            <span class="about-highlight">Q1 2026:</span> Telegram/Discord bot launch<br>
-                            <span class="about-highlight">Q2 2026:</span> Web dashboard with analytics<br>
-                            <span class="about-highlight">Q3 2026:</span> Mobile app and mainstream integration
-                        </p>
-                    </div>
-                </div>
-
-                <div class="content-column">
-                    <div class="about-section">
-                        <h3 class="about-heading">🔥 Key Features</h3>
-                        <div class="about-stats">
-                            <div class="stat-item">
-                                <span class="stat-number">100K</span>
-                                <span class="stat-label">Daily $LOOP Pool</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number">50%</span>
-                                <span class="stat-label">Max Staking Boost</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number">Cross-Platform</span>
-                                <span class="stat-label">Integration</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number">Anti-Gaming</span>
-                                <span class="stat-label">AI Protection</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="about-section">
-                        <h3 class="about-heading">🚀 Want to Learn More?</h3>
-                        <p class="about-text">
-                            <span class="about-highlight">Technical details:</span> Check the full whitepaper below<br>
-                            <span class="about-highlight">Implementation:</span> Browse our documentation<br>
-                            <span class="about-highlight">Community:</span> Join our social channels for updates
-                        </p>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
 
     <script>
 
-        // Modal functionality
-        function showAbout() {
-            const modal = document.getElementById('aboutModal');
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
 
-        function closeAbout() {
-            const modal = document.getElementById('aboutModal');
-            modal.classList.remove('show');
-            document.body.style.overflow = '';
-        }
 
-        // Close modal when clicking outside
-        document.addEventListener('click', function(event) {
-            const aboutModal = document.getElementById('aboutModal');
-
-            if (event.target === aboutModal) {
-                closeAbout();
-            }
-        });
-
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                const aboutModal = document.getElementById('aboutModal');
-
-                if (aboutModal.classList.contains('show')) {
-                    closeAbout();
-                }
-            }
-        });
 
 
 
@@ -739,15 +627,12 @@
             // Ensure video plays on mobile
             ensureVideoPlayback();
 
-            // Add event listeners for About modal
+            // Add event listener for About button (redirect to new page)
             const aboutButton = document.getElementById('aboutButton');
-            const closeButton = document.getElementById('closeButton');
             if (aboutButton) {
-                aboutButton.addEventListener('click', showAbout);
-            }
-
-            if (closeButton) {
-                closeButton.addEventListener('click', closeAbout);
+                aboutButton.addEventListener('click', function() {
+                    window.location.href = '/about.html';
+                });
             }
 
             // Add event listener for Whitepaper button (redirect to new page)
