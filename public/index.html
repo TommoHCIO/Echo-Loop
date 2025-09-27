@@ -255,6 +255,197 @@
                 max-width: 240px;
             }
         }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-purple) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 85vh;
+            position: relative;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-overlay.show .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 2rem 2rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            color: var(--text-white);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: var(--accent-purple);
+        }
+
+        .modal-content {
+            padding: 2rem;
+            max-height: 60vh;
+            overflow-y: auto;
+            line-height: 1.6;
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: var(--accent-purple);
+            border-radius: 3px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: #a855f7;
+        }
+
+        .about-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .about-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .about-heading {
+            color: var(--accent-purple);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .about-text {
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+        }
+
+        .about-highlight {
+            color: var(--text-white);
+            font-weight: 500;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-item {
+            background: rgba(139, 92, 246, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .stat-number {
+            color: var(--accent-purple);
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .investment-cta {
+            background: linear-gradient(45deg, var(--accent-purple), #a855f7);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .investment-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        @media (max-width: 640px) {
+            .modal {
+                width: 95%;
+                max-height: 90vh;
+            }
+
+            .modal-header {
+                padding: 1.5rem 1.5rem 1rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+                max-height: 70vh;
+            }
+
+            .modal-title {
+                font-size: 1.5rem;
+            }
+
+            .about-stats {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -294,6 +485,121 @@
         </nav>
     </div>
 
+    <!-- About Modal -->
+    <div class="modal-overlay" id="aboutModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">About EchoLoop</h2>
+                <button class="modal-close" onclick="closeAbout()" aria-label="Close modal">×</button>
+            </div>
+            <div class="modal-content">
+                <div class="about-section">
+                    <h3 class="about-heading">🚀 The $10 Trillion Opportunity</h3>
+                    <p class="about-text">
+                        Social media platforms generate over <span class="about-highlight">$200 billion annually</span> from user-generated content and engagement.
+                        Yet the 4+ billion people creating this value receive <span class="about-highlight">absolutely nothing</span>.
+                    </p>
+                    <p class="about-text">
+                        <span class="about-highlight">EchoLoop changes everything.</span> We're the first protocol to tokenize ALL social engagement,
+                        turning your daily social media activity into <span class="about-highlight">real passive income</span>.
+                    </p>
+                </div>
+
+                <div class="about-section">
+                    <h3 class="about-heading">⚡ Revolutionary Technology</h3>
+                    <p class="about-text">
+                        Our proprietary <span class="about-highlight">Proof-of-Engagement consensus mechanism</span> is the world's first blockchain
+                        protocol designed specifically for social validation. Advanced algorithms prevent gaming while ensuring
+                        authentic engagement is rewarded instantly.
+                    </p>
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">50%</span>
+                            <span class="stat-label">Max Staking APY</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">100K</span>
+                            <span class="stat-label">Daily $LOOP Pool</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">4B+</span>
+                            <span class="stat-label">Target Users</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">Cross-Chain</span>
+                            <span class="stat-label">Architecture</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-section">
+                    <h3 class="about-heading">💰 Deflationary Economics That Drive Value</h3>
+                    <p class="about-text">
+                        <span class="about-highlight">$LOOP is built for explosive growth:</span>
+                    </p>
+                    <p class="about-text">
+                        • <span class="about-highlight">Automatic Token Burns:</span> Transaction fees permanently reduce supply<br>
+                        • <span class="about-highlight">Staking Yields:</span> Earn up to 50% APY on committed tokens<br>
+                        • <span class="about-highlight">Revenue Sharing:</span> Protocol profits distributed to holders<br>
+                        • <span class="about-highlight">Scarcity Mechanics:</span> Limited daily rewards create demand pressure
+                    </p>
+                </div>
+
+                <div class="about-section">
+                    <h3 class="about-heading">📈 SocialFi Market Explosion</h3>
+                    <p class="about-text">
+                        The SocialFi sector is projected to reach <span class="about-highlight">$50 billion by 2027</span>.
+                        With our first-mover advantage in engagement tokenization, EchoLoop is positioned to capture
+                        significant market share in this explosive growth sector.
+                    </p>
+                    <p class="about-text">
+                        <span class="about-highlight">Network effects are everything:</span> Each new user increases earning
+                        potential for all participants, creating viral adoption incentives.
+                    </p>
+                </div>
+
+                <div class="about-section">
+                    <h3 class="about-heading">🎯 Clear Path to 100x Returns</h3>
+                    <p class="about-text">
+                        <span class="about-highlight">Phase 1 (3-6 months):</span> Bot launch, early community → Target: $10M market cap<br>
+                        <span class="about-highlight">Phase 2 (6-12 months):</span> Web platform, mainstream adoption → Target: $100M market cap<br>
+                        <span class="about-highlight">Phase 3 (12-24 months):</span> Mobile app, global scale → Target: $1B+ market cap
+                    </p>
+                    <p class="about-text">
+                        Early investors in similar protocols have seen <span class="about-highlight">10-1000x returns</span>.
+                        EchoLoop's superior technology and massive addressable market position it for similar success.
+                    </p>
+                </div>
+
+                <div class="about-section">
+                    <h3 class="about-heading">🔒 Multiple Revenue Streams</h3>
+                    <p class="about-text">
+                        • <span class="about-highlight">Transaction Fees:</span> 2-6% on all platform activity<br>
+                        • <span class="about-highlight">Premium Features:</span> Subscription tiers and enhanced analytics<br>
+                        • <span class="about-highlight">Enterprise Solutions:</span> B2B social engagement tracking<br>
+                        • <span class="about-highlight">Partnership Revenue:</span> Integration fees from social platforms
+                    </p>
+                </div>
+
+                <div class="about-section">
+                    <h3 class="about-heading">🌟 Join the Revolution</h3>
+                    <p class="about-text">
+                        EchoLoop isn't just another crypto project – it's the foundation of a new economic model that
+                        <span class="about-highlight">rewards human connection and authentic engagement</span>.
+                    </p>
+                    <p class="about-text">
+                        Early investors gain access to the most promising opportunity in the emerging SocialFi sector,
+                        with the potential for life-changing returns as we transform how social value is created and distributed.
+                    </p>
+
+                    <button class="investment-cta" onclick="window.open('/whitepaper.pdf', '_blank')">
+                        📄 Download Full Whitepaper
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Generate floating particles
         function createParticles() {
@@ -313,11 +619,33 @@
             }
         }
 
-        // About modal placeholder
+        // Modal functionality
         function showAbout() {
-            // For now, just alert. Can be replaced with a modal
-            alert('EchoLoop: A SocialFi engagement economy where your daily activity = real token rewards.\n\nThe more you connect, the more you earn.');
+            const modal = document.getElementById('aboutModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
         }
+
+        function closeAbout() {
+            const modal = document.getElementById('aboutModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('aboutModal');
+            if (event.target === modal) {
+                closeAbout();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeAbout();
+            }
+        });
 
         // Initialize
         document.addEventListener('DOMContentLoaded', createParticles);
