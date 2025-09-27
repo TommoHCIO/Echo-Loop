@@ -40,20 +40,28 @@ Staking = more influence + bigger rewards.
 
 ## 🚀 Deployment
 
-This landing page is optimized for deployment on [Render.com](https://render.com):
+This fullstack application is optimized for deployment on [Render.com](https://render.com):
 
 1. Fork or clone this repository
 2. Connect to Render.com
-3. Create a new Static Site
+3. Create a new **Web Service** (NOT Static Site)
 4. Deploy automatically with the included `render.yaml` configuration
+5. Render will detect Node.js and use the configuration automatically
+
+### Deployment Configuration
+- **Environment**: Node.js
+- **Build Command**: `npm install`
+- **Start Command**: `npm start`
+- **Health Check**: `/health` endpoint
+- **Port**: 3000 (auto-configured)
 
 ## 🛠 Tech Stack
 
-- Pure HTML/CSS/JavaScript (no frameworks)
-- Ultra-minimal design (<15KB total)
-- Mobile responsive
-- Render.com CDN optimized
-- Security headers configured
+- **Backend**: Node.js + Express.js
+- **Security**: Helmet, CORS, Compression middleware
+- **Frontend**: HTML/CSS/JavaScript (served from `/public`)
+- **Deployment**: Render.com with auto-scaling
+- **Monitoring**: Health checks and performance headers
 
 ---
 
