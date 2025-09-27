@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__memory__create_entities",
+      "mcp__memory__create_relations",
+      "mcp__github__search_repositories",
+      "mcp__github__get_file_contents",
+      "WebSearch",
+      "mcp__memory__search_nodes",
+      "mcp__filesystem__list_directory",
+      "mcp__filesystem__read_text_file",
+      "mcp__context7__resolve-library-id"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
