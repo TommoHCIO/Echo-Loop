@@ -382,29 +382,54 @@
 
         .about-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.2rem;
             margin: 1.5rem 0;
         }
 
         .stat-item {
-            background: rgba(139, 92, 246, 0.1);
-            padding: 1rem;
-            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(139, 92, 246, 0.05) 100%);
+            padding: 1.5rem 1rem;
+            border-radius: 12px;
             text-align: center;
-            border: 1px solid rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            position: relative;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-purple), #a855f7);
+            opacity: 0.8;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
         }
 
         .stat-number {
             color: var(--accent-purple);
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: 1.8rem;
+            font-weight: 700;
             display: block;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
         }
 
         .stat-label {
             color: var(--text-dim);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
         }
 
         .investment-cta {
@@ -455,15 +480,19 @@
 
             .about-stats {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 0.8rem;
+                gap: 1rem;
             }
 
             .stat-item {
-                padding: 0.8rem;
+                padding: 1.2rem 0.8rem;
             }
 
             .stat-number {
-                font-size: 1.2rem;
+                font-size: 1.5rem;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -477,7 +506,7 @@
         <p class="tagline">Your voice has value. Close the loop.</p>
 
         <nav class="nav-grid">
-            <a href="/whitepaper.pdf" class="nav-button" aria-label="Download WhitePaper">
+            <a href="/EchoLoop_Whitepaper.pdf" class="nav-button" aria-label="Download WhitePaper">
                 <span>WhitePaper</span>
             </a>
 
@@ -537,7 +566,6 @@
                     </p>
                     <p class="about-text">
                         <span class="about-highlight">Daily rewards:</span> 100K $LOOP tokens distributed based on your points.
-                        <br><span class="about-highlight">Works everywhere:</span> Twitter, Discord, Telegram, web platforms.
                     </p>
                 </div>
 
@@ -654,7 +682,7 @@
 
             if (whitepaperButton) {
                 whitepaperButton.addEventListener('click', function() {
-                    window.open('/whitepaper.pdf', '_blank');
+                    window.open('/EchoLoop_Whitepaper.pdf', '_blank');
                 });
             }
         });
