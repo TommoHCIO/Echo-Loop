@@ -67,6 +67,8 @@
             height: auto;
             z-index: -2;
             object-fit: cover;
+            will-change: transform;
+            transform: translateZ(0);
         }
 
         body::before {
@@ -539,7 +541,7 @@
         loop
         playsinline
         webkit-playsinline
-        preload="metadata"
+        preload="auto"
         class="video-background"
         id="background-video"
     >
