@@ -256,6 +256,452 @@
             }
         }
 
+        /* Book Modal Styles */
+        .book-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .book-modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .book-container {
+            position: relative;
+            perspective: 2000px;
+            perspective-origin: center center;
+        }
+
+        .book-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 2100;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: var(--text-white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book-close:hover {
+            background: var(--accent-purple);
+            transform: scale(1.1);
+        }
+
+        .book-wrapper {
+            position: relative;
+            transform: rotateX(5deg) rotateY(-5deg);
+            transition: transform 0.6s ease;
+        }
+
+        .book-modal-overlay.show .book-wrapper {
+            transform: rotateX(0deg) rotateY(0deg);
+        }
+
+        .book {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+            transform-style: preserve-3d;
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.8),
+                0 0 0 1px rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .book-spine {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 20px;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                #1a0033 0%,
+                #2a0a4a 50%,
+                #1a0033 100%
+            );
+            border-right: 2px solid rgba(139, 92, 246, 0.5);
+            transform-origin: left center;
+            transform: rotateY(-90deg);
+            z-index: -1;
+        }
+
+        .book-page {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #2c3e50;
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backface-visibility: hidden;
+        }
+
+        .book-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><defs><pattern id="paper" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="0.5" fill="%23f0f0f0" opacity="0.3"/></pattern></defs><rect width="100" height="100" fill="url(%23paper)"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .book-page-left {
+            left: 0;
+            border-right: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: inset -10px 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-page-right {
+            right: 0;
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-content {
+            padding: 60px 50px 80px;
+            height: 100%;
+            overflow-y: auto;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .page-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+        }
+
+        .page-content::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.5);
+            border-radius: 3px;
+        }
+
+        .page-content h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #1a0033;
+            margin-bottom: 1rem;
+            text-align: center;
+            letter-spacing: 0.1em;
+        }
+
+        .page-content h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2a0a4a;
+            margin: 2rem 0 1rem;
+            border-bottom: 2px solid var(--accent-purple);
+            padding-bottom: 0.5rem;
+        }
+
+        .page-content h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #3a1a5a;
+            margin: 1.5rem 0 0.8rem;
+        }
+
+        .page-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+
+        .page-content ul, .page-content ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        .page-content li {
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .page-content code {
+            background: rgba(139, 92, 246, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .page-number {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .turning-page {
+            position: absolute;
+            right: 50%;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            transform-origin: right center;
+            transform-style: preserve-3d;
+            transition: transform 0.8s ease;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .turning-page.turning {
+            transform: rotateY(-180deg);
+        }
+
+        .turning-page-front,
+        .turning-page-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            backface-visibility: hidden;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .turning-page-back {
+            transform: rotateY(180deg);
+        }
+
+        .book-controls {
+            position: absolute;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+        }
+
+        .book-nav-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-white);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book-nav-btn:hover {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            transform: scale(1.1);
+        }
+
+        .book-nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .page-indicator {
+            color: var(--text-white);
+            font-size: 1rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .book-toc {
+            position: absolute;
+            left: -300px;
+            top: 0;
+            width: 280px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: left 0.4s ease;
+            overflow-y: auto;
+        }
+
+        .book-toc.show {
+            left: -320px;
+        }
+
+        .book-toc h3 {
+            color: var(--accent-purple);
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .book-toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .book-toc li {
+            margin-bottom: 0.8rem;
+        }
+
+        .book-toc a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            display: block;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+
+        .book-toc a:hover {
+            color: var(--accent-purple);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .toc-toggle {
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 0 8px 8px 0;
+            padding: 1rem 0.8rem;
+            color: var(--text-white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toc-toggle:hover {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+        }
+
+        /* Responsive Book Design */
+        @media (max-width: 1024px) {
+            .book {
+                width: 700px;
+                height: 525px;
+            }
+
+            .page-content {
+                padding: 50px 40px 70px;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .book {
+                width: 90vw;
+                height: 70vh;
+                max-width: 600px;
+                max-height: 500px;
+            }
+
+            .page-content {
+                padding: 40px 30px 60px;
+                font-size: 0.9rem;
+            }
+
+            .page-content h1 {
+                font-size: 2rem;
+            }
+
+            .page-content h2 {
+                font-size: 1.5rem;
+            }
+
+            .page-content h3 {
+                font-size: 1.3rem;
+            }
+
+            .book-controls {
+                bottom: -70px;
+                padding: 0.8rem 1.5rem;
+                gap: 1.5rem;
+            }
+
+            .book-nav-btn {
+                width: 45px;
+                height: 45px;
+            }
+
+            .book-toc {
+                width: 250px;
+                left: -270px;
+                padding: 1.5rem;
+            }
+
+            .book-toc.show {
+                left: -280px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .book {
+                width: 95vw;
+                height: 60vh;
+            }
+
+            .page-content {
+                padding: 30px 20px 50px;
+                font-size: 0.85rem;
+            }
+
+            .book-controls {
+                bottom: -60px;
+                padding: 0.6rem 1rem;
+                gap: 1rem;
+            }
+
+            .book-nav-btn {
+                width: 40px;
+                height: 40px;
+            }
+
+            .page-indicator {
+                font-size: 0.9rem;
+            }
+        }
+
         /* Modal Styles */
         .modal-overlay {
             position: fixed;
@@ -532,9 +978,9 @@
         <p class="tagline">Your voice has value. Close the loop.</p>
 
         <nav class="nav-grid">
-            <a href="/EchoLoop_Whitepaper.pdf" class="nav-button" aria-label="Download WhitePaper">
+            <button class="nav-button" id="whitepaperButton" aria-label="Open WhitePaper">
                 <span>WhitePaper</span>
-            </a>
+            </button>
 
             <button class="nav-button" id="aboutButton" aria-label="Learn About EchoLoop">
                 <span>About</span>
@@ -643,6 +1089,91 @@
         </div>
     </div>
 
+    <!-- Book Modal -->
+    <div class="book-modal-overlay" id="bookModal">
+        <div class="book-container">
+            <button class="book-close" id="bookCloseButton" aria-label="Close book">×</button>
+
+            <div class="book-wrapper">
+                <div class="book">
+                    <div class="book-spine"></div>
+
+                    <!-- Left Page -->
+                    <div class="book-page book-page-left" id="leftPage">
+                        <div class="page-content" id="leftPageContent">
+                            <!-- Content will be inserted here -->
+                        </div>
+                        <div class="page-number" id="leftPageNumber"></div>
+                    </div>
+
+                    <!-- Right Page -->
+                    <div class="book-page book-page-right" id="rightPage">
+                        <div class="page-content" id="rightPageContent">
+                            <!-- Content will be inserted here -->
+                        </div>
+                        <div class="page-number" id="rightPageNumber"></div>
+                    </div>
+
+                    <!-- Page Turning Effect -->
+                    <div class="turning-page" id="turningPage">
+                        <div class="turning-page-front">
+                            <div class="page-content" id="turningPageFrontContent"></div>
+                        </div>
+                        <div class="turning-page-back">
+                            <div class="page-content" id="turningPageBackContent"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Controls -->
+                <div class="book-controls">
+                    <button class="book-nav-btn" id="prevPageBtn" aria-label="Previous page">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15,18 9,12 15,6"></polyline>
+                        </svg>
+                    </button>
+
+                    <div class="page-indicator">
+                        <span id="currentPageIndicator">1</span> / <span id="totalPagesIndicator">30</span>
+                    </div>
+
+                    <button class="book-nav-btn" id="nextPageBtn" aria-label="Next page">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9,18 15,12 9,6"></polyline>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Table of Contents -->
+                <div class="book-toc" id="bookToc">
+                    <h3>Table of Contents</h3>
+                    <ul>
+                        <li><a href="#" data-page="1">Cover</a></li>
+                        <li><a href="#" data-page="3">Abstract</a></li>
+                        <li><a href="#" data-page="4">1. Introduction</a></li>
+                        <li><a href="#" data-page="7">2. Vision & Core Concept</a></li>
+                        <li><a href="#" data-page="10">3. Native Asset Architecture</a></li>
+                        <li><a href="#" data-page="13">4. Proof-of-Engagement Protocol</a></li>
+                        <li><a href="#" data-page="16">5. DeFi Staking Infrastructure</a></li>
+                        <li><a href="#" data-page="19">6. Treasury & Sustainability</a></li>
+                        <li><a href="#" data-page="22">7. Technical Roadmap</a></li>
+                        <li><a href="#" data-page="25">8. DAO Governance</a></li>
+                        <li><a href="#" data-page="27">9. Advanced Tokenomics</a></li>
+                        <li><a href="#" data-page="29">10. Future Vision</a></li>
+                    </ul>
+                </div>
+
+                <button class="toc-toggle" id="tocToggle" aria-label="Toggle table of contents">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Generate floating particles
         function createParticles() {
@@ -690,6 +1221,440 @@
             }
         });
 
+        // Book Modal Functionality
+        const bookPages = [
+            // Cover Page
+            {
+                content: `
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center;">
+                        <h1 style="font-size: 3rem; margin-bottom: 1rem; background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">EchoLoop Protocol</h1>
+                        <h2 style="font-size: 1.5rem; color: #666; margin-bottom: 0.5rem;">Decentralized Social Finance Infrastructure</h2>
+                        <h3 style="font-size: 1.2rem; color: #999; margin-bottom: 3rem;">Whitepaper</h3>
+                        <div style="border-top: 2px solid #8b5cf6; padding-top: 2rem; color: #666;">
+                            <p style="font-size: 1rem; margin-bottom: 0.5rem;">Version 1.0</p>
+                            <p style="font-size: 1rem;">September 2025</p>
+                        </div>
+                    </div>
+                `,
+                pageNumber: ""
+            },
+            // Blank page
+            {
+                content: "",
+                pageNumber: ""
+            },
+            // Abstract
+            {
+                content: `
+                    <h2>Abstract</h2>
+                    <p>EchoLoop Protocol introduces a novel decentralized social finance (SocialFi) infrastructure that tokenizes human engagement through programmable smart contracts and algorithmic reward distribution mechanisms.</p>
+                    <p>By implementing a Proof-of-Engagement consensus model, the protocol establishes direct value accrual pathways between social interactions and tokenized economic incentives, fundamentally restructuring the traditional Web2 social media paradigm into a permissionless, value-distributive ecosystem.</p>
+                `,
+                pageNumber: "3"
+            },
+            // Introduction
+            {
+                content: `
+                    <h2>1. Introduction: The SocialFi Paradigm Shift</h2>
+                    <h3>1.1 Decentralized Value Accrual in Web3 Social Networks</h3>
+                    <p>The contemporary social media landscape operates under a fundamentally extractive economic model where platform operators capture the entirety of value generated through user engagement, content creation, and network effects.</p>
+                    <p>EchoLoop Protocol addresses this market failure through the implementation of a decentralized social finance infrastructure that redistributes value directly to network participants via transparent, algorithmic mechanisms.</p>
+                `,
+                pageNumber: "4"
+            },
+            {
+                content: `
+                    <h3>1.2 Tokenized Social Graph Theory</h3>
+                    <p>The protocol's architecture is founded upon tokenized social graph theory, which posits that social interactions possess inherent economic value that can be quantified, tokenized, and distributed through programmable financial primitives.</p>
+                    <h3>1.3 Value Extraction vs. Value Distribution</h3>
+                    <p>Traditional Web2 platforms operate under a value extraction model characterized by centralized revenue capture and zero user compensation. EchoLoop Protocol implements a value distribution model featuring decentralized revenue sharing and direct user compensation.</p>
+                `,
+                pageNumber: "5"
+            },
+            {
+                content: `
+                    <h3>1.4 Protocol-Native Incentive Alignment</h3>
+                    <p>The protocol implements mechanism design principles to ensure optimal incentive alignment between individual rational behavior and collective network benefit. Through carefully calibrated reward structures and game-theoretic optimization, EchoLoop creates sustainable economic incentives.</p>
+                `,
+                pageNumber: "6"
+            },
+            // Vision & Core Concept
+            {
+                content: `
+                    <h2>2. Vision & Core Concept: Tokenized Engagement Infrastructure</h2>
+                    <h3>2.1 Programmable Social Primitives</h3>
+                    <p>EchoLoop Protocol establishes a comprehensive suite of programmable social primitives that enable the tokenization of fundamental social interactions. These primitives include:</p>
+                    <ul>
+                        <li>Engagement Validation Oracles</li>
+                        <li>Cross-Platform Aggregation</li>
+                        <li>Smart Contract Automation</li>
+                        <li>Cryptographic Proof Systems</li>
+                    </ul>
+                `,
+                pageNumber: "7"
+            },
+            {
+                content: `
+                    <h3>2.2 Algorithmic Reward Distribution</h3>
+                    <p>The core innovation lies in sophisticated algorithmic reward distribution mechanisms employing advanced mathematical models:</p>
+                    <p><strong>Dynamic Difficulty Adjustment (DDA):</strong> Adaptive algorithms that automatically calibrate reward rates based on network participation levels.</p>
+                    <p><strong>Quadratic Funding Mechanisms:</strong> Mathematical frameworks that amplify rewards for authentic engagement while diminishing returns for repetitive activities.</p>
+                `,
+                pageNumber: "8"
+            },
+            {
+                content: `
+                    <h3>2.3 Permissionless Value Creation</h3>
+                    <p>The protocol operates as a permissionless system where any participant can begin earning tokenized rewards immediately upon engagement, without requiring approval from centralized authorities.</p>
+                    <h3>2.4 Cross-Chain Social Liquidity</h3>
+                    <p>EchoLoop Protocol is architected for multi-blockchain compatibility, enabling the aggregation of social engagement across different blockchain ecosystems and the creation of unified liquidity pools for social capital.</p>
+                `,
+                pageNumber: "9"
+            },
+            // Native Asset Architecture
+            {
+                content: `
+                    <h2>3. Native Asset Architecture: $LOOP Token Specifications</h2>
+                    <h3>3.1 ERC-20 Compliant Utility Token</h3>
+                    <p>The $LOOP token serves as the native asset of the EchoLoop Protocol ecosystem, implemented as a fully ERC-20 compliant smart contract with extended functionality for social finance applications.</p>
+                    <p>Features include multi-signature security, upgradeable proxy patterns, gas optimization, and compliance integration.</p>
+                `,
+                pageNumber: "10"
+            },
+            {
+                content: `
+                    <h3>3.2 Multi-Utility Token Economics</h3>
+                    <p>The $LOOP token functions as a multi-utility asset serving distinct economic functions:</p>
+                    <ul>
+                        <li><strong>Medium of Exchange:</strong> Primary currency for protocol transactions</li>
+                        <li><strong>Store of Value:</strong> Deflationary mechanisms including token burns</li>
+                        <li><strong>Unit of Account:</strong> Standardized pricing mechanism</li>
+                        <li><strong>Governance Rights:</strong> Voting power for protocol decisions</li>
+                    </ul>
+                `,
+                pageNumber: "11"
+            },
+            {
+                content: `
+                    <h3>3.3 Deflationary Tokenomics Model</h3>
+                    <p>The protocol implements a sophisticated deflationary model through multiple burn mechanisms:</p>
+                    <ul>
+                        <li>Transaction Fee Burns</li>
+                        <li>Engagement Milestone Burns</li>
+                        <li>Treasury-Managed Burns</li>
+                        <li>Staking Reward Optimization</li>
+                    </ul>
+                    <h3>3.4 Governance Token Rights</h3>
+                    <p>$LOOP token holders possess comprehensive governance rights including parameter governance, treasury management, protocol upgrades, and emergency powers.</p>
+                `,
+                pageNumber: "12"
+            },
+            // Proof-of-Engagement Protocol
+            {
+                content: `
+                    <h2>4. Algorithmic Social Mining: Proof-of-Engagement Protocol</h2>
+                    <h3>4.1 Proof-of-Engagement Consensus Mechanism</h3>
+                    <p>EchoLoop Protocol introduces "Proof-of-Engagement" (PoE), which validates and rewards authentic social interactions through cryptographic verification and algorithmic scoring.</p>
+                    <p>Key components include behavioral verification algorithms, cryptographic attestation, distributed validation networks, and consensus finality mechanisms.</p>
+                `,
+                pageNumber: "13"
+            },
+            {
+                content: `
+                    <h3>4.2 Dynamic Difficulty Adjustment for Social Mining</h3>
+                    <p>The protocol implements sophisticated dynamic difficulty adjustment (DDA) algorithms that automatically calibrate the effort required to earn rewards based on network participation levels.</p>
+                    <h3>4.3 Anti-Sybil Attack Mechanisms</h3>
+                    <p>Multiple layers of Sybil attack resistance ensure integrity through identity verification protocols, stake-weighted validation, graph analysis algorithms, and machine learning detection.</p>
+                `,
+                pageNumber: "14"
+            },
+            {
+                content: `
+                    <h3>4.4 Quadratic Funding Distribution Mathematics</h3>
+                    <p>The protocol employs quadratic funding principles to optimize reward distribution fairness:</p>
+                    <code>Reward_i = (Engagement_i)^0.5 / Σ(Engagement_j)^0.5 * Total_Pool</code>
+                    <p>This mathematical approach ensures that while increased engagement generates higher rewards, the relationship follows a diminishing returns curve that prevents excessive concentration of token rewards among power users.</p>
+                `,
+                pageNumber: "15"
+            },
+            // DeFi Staking Infrastructure
+            {
+                content: `
+                    <h2>5. Yield-Generating Social Capital: DeFi Staking Infrastructure</h2>
+                    <h3>5.1 Delegated Proof-of-Stake Social Mining</h3>
+                    <p>EchoLoop Protocol implements an advanced Delegated Proof-of-Stake (DPoS) system specifically optimized for social engagement validation and reward amplification.</p>
+                    <p>Features include validator node operations, delegation mechanisms, slashing conditions, and consensus participation.</p>
+                `,
+                pageNumber: "16"
+            },
+            {
+                content: `
+                    <h3>5.2 Time-Locked Liquidity Incentives</h3>
+                    <p>The protocol offers multiple staking timeframes with corresponding reward multipliers:</p>
+                    <ul>
+                        <li><strong>Bronze Tier (30-day):</strong> 1,000 $LOOP minimum, +10% multiplier, 5% APY</li>
+                        <li><strong>Silver Tier (90-day):</strong> 10,000 $LOOP minimum, +25% multiplier, 12% APY</li>
+                        <li><strong>Gold Tier (365-day):</strong> 100,000 $LOOP minimum, +50% multiplier, 25% APY</li>
+                        <li><strong>Diamond Tier (1095-day):</strong> 1,000,000 $LOOP minimum, +100% multiplier, 50% APY</li>
+                    </ul>
+                `,
+                pageNumber: "17"
+            },
+            {
+                content: `
+                    <h3>5.3 Compound Interest Social Returns</h3>
+                    <p>The staking system incorporates automatic compound interest mechanisms that reinvest earned rewards to maximize long-term yield generation through auto-compounding protocols and yield optimization strategies.</p>
+                    <h3>5.4 Risk-Adjusted Yield Optimization</h3>
+                    <p>EchoLoop Protocol implements sophisticated risk management frameworks including diversified treasury backing, insurance pool mechanisms, and liquidation protection.</p>
+                `,
+                pageNumber: "18"
+            },
+            // Treasury & Sustainability
+            {
+                content: `
+                    <h2>6. Protocol-Owned Value Accrual: Treasury & Sustainability Model</h2>
+                    <h3>6.1 Automated Market Making (AMM) Integration</h3>
+                    <p>EchoLoop Protocol maintains deep liquidity for the $LOOP token through strategic integration with leading decentralized exchange protocols, featuring protocol-owned liquidity, dynamic liquidity management, and multi-DEX strategy.</p>
+                `,
+                pageNumber: "19"
+            },
+            {
+                content: `
+                    <h3>6.2 Treasury Diversification Strategy</h3>
+                    <p>Strategic asset allocation includes:</p>
+                    <ul>
+                        <li>40% Stablecoins for operational stability</li>
+                        <li>30% Major cryptocurrencies for capital appreciation</li>
+                        <li>20% DeFi protocol tokens for yield generation</li>
+                        <li>10% Alternative assets</li>
+                    </ul>
+                    <h3>6.3 Burn-and-Mint Equilibrium</h3>
+                    <p>Sophisticated token supply management through elastic supply mechanisms and automated burn triggers.</p>
+                `,
+                pageNumber: "20"
+            },
+            {
+                content: `
+                    <h3>6.4 Protocol Revenue Optimization</h3>
+                    <p>Multiple revenue streams include transaction fees, with distribution model:</p>
+                    <ul>
+                        <li>50% to daily reward pools</li>
+                        <li>25% to treasury reserves</li>
+                        <li>15% to development funding</li>
+                        <li>10% to token burn mechanisms</li>
+                    </ul>
+                `,
+                pageNumber: "21"
+            },
+            // Technical Roadmap
+            {
+                content: `
+                    <h2>7. Phased Protocol Evolution: Technical Milestone Framework</h2>
+                    <h3>7.1 Phase I: MVP Deployment (Q4 2025 - Q1 2026)</h3>
+                    <p>Core infrastructure deployment including smart contract infrastructure, bot integration framework, and security implementation. Success metrics include 10,000+ active community members and $1M+ TVL.</p>
+                `,
+                pageNumber: "22"
+            },
+            {
+                content: `
+                    <h3>7.2 Phase II: Horizontal and Vertical Scaling (Q2-Q3 2026)</h3>
+                    <p>Platform expansion featuring web application platform, advanced staking infrastructure, and API framework. Target: 100,000+ users and $10M+ TVL.</p>
+                    <h3>7.3 Phase III: Cross-Chain Interoperability (Q4 2026 - Q2 2027)</h3>
+                    <p>Multi-chain expansion with DeFi protocol integration and governance system evolution. Goal: $100M+ TVL across all chains.</p>
+                `,
+                pageNumber: "23"
+            },
+            {
+                content: `
+                    <h3>7.4 Phase IV: Ecosystem Partnership Framework (Q3-Q4 2027)</h3>
+                    <p>Strategic alliances and market expansion through enterprise integration solutions, strategic partnership infrastructure, and advanced analytics. Target: 50+ enterprise partnerships and $1B+ TVL.</p>
+                `,
+                pageNumber: "24"
+            },
+            // DAO Governance
+            {
+                content: `
+                    <h2>8. Decentralized Autonomous Organization (DAO): Governance Infrastructure</h2>
+                    <h3>8.1 On-Chain Governance Mechanisms</h3>
+                    <p>Sophisticated on-chain governance system enabling decentralized decision-making with governance token mechanics, proposal framework, implementation timelock, and governance categories with varying approval thresholds.</p>
+                `,
+                pageNumber: "25"
+            },
+            {
+                content: `
+                    <h3>8.2 Proposal Submission and Voting Rights</h3>
+                    <p>Advanced mechanisms including weighted voting system, quadratic voting implementation, delegation mechanisms, and vote privacy options.</p>
+                    <h3>8.3 Execution Mechanisms</h3>
+                    <p>Automated execution through smart contracts with multi-signature safeguards, gradual implementation, and complete audit trails.</p>
+                `,
+                pageNumber: "26"
+            },
+            // Advanced Tokenomics
+            {
+                content: `
+                    <h2>9. Economic Security and Value Distribution: Advanced Tokenomics</h2>
+                    <h3>9.1 Fair Launch Distribution Model</h3>
+                    <p>Fair launch mechanism with no pre-mine policy, community mining, progressive distribution curve, and anti-dump mechanisms.</p>
+                    <h3>9.2 Liquidity Bootstrapping Program</h3>
+                    <p>Sophisticated bootstrapping strategy using Balancer LBP implementation with price discovery mechanics and bot protection.</p>
+                `,
+                pageNumber: "27"
+            },
+            {
+                content: `
+                    <h3>9.3 Vesting and Cliff Structures</h3>
+                    <p>Strategic vesting mechanisms including team and development vesting (4-year with 1-year cliff), advisor vesting (2-year with 6-month cliff), and community rewards vesting with tiered release schedules.</p>
+                    <h3>9.4 Fee Structure Optimization</h3>
+                    <p>Dynamic fee structures with adaptive algorithms, loyalty-based discounts, and transparent revenue sharing mechanics.</p>
+                `,
+                pageNumber: "28"
+            },
+            // Future Vision
+            {
+                content: `
+                    <h2>10. The Future of Decentralized Social Finance: Strategic Vision</h2>
+                    <h3>10.1 Network Effects and Adoption Curves</h3>
+                    <p>Designed to harness powerful network effects through Metcalfe's Law application, viral engagement mechanics, cross-platform synergies, and ecosystem integration benefits.</p>
+                    <h3>10.2 Institutional Integration Potential</h3>
+                    <p>Seamless integration capabilities for corporate social responsibility, brand engagement campaigns, educational institutions, and government/NGO applications.</p>
+                `,
+                pageNumber: "29"
+            },
+            {
+                content: `
+                    <h3>10.3 Regulatory Compliance Framework</h3>
+                    <p>Comprehensive compliance measures including securities law compliance, data protection and privacy, financial services regulation, and tax optimization and reporting.</p>
+                    <h3>10.4 Long-Term Vision</h3>
+                    <p>EchoLoop represents foundational infrastructure for transforming social interaction economics, pioneering paradigm shift from extraction to distribution, enabling global economic inclusion, and catalyzing industry-wide transformation toward user-owned networks.</p>
+                `,
+                pageNumber: "30"
+            }
+        ];
+
+        let currentPageIndex = 0;
+        let isAnimating = false;
+
+        function showBook() {
+            const modal = document.getElementById('bookModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+
+            // Initialize first pages
+            updateBookContent();
+        }
+
+        function closeBook() {
+            const modal = document.getElementById('bookModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+            currentPageIndex = 0;
+        }
+
+        function updateBookContent() {
+            const leftPageContent = document.getElementById('leftPageContent');
+            const rightPageContent = document.getElementById('rightPageContent');
+            const leftPageNumber = document.getElementById('leftPageNumber');
+            const rightPageNumber = document.getElementById('rightPageNumber');
+            const currentPageIndicator = document.getElementById('currentPageIndicator');
+            const totalPagesIndicator = document.getElementById('totalPagesIndicator');
+
+            // Update left page (even page numbers)
+            if (currentPageIndex < bookPages.length) {
+                leftPageContent.innerHTML = bookPages[currentPageIndex].content;
+                leftPageNumber.textContent = bookPages[currentPageIndex].pageNumber;
+            } else {
+                leftPageContent.innerHTML = '';
+                leftPageNumber.textContent = '';
+            }
+
+            // Update right page (odd page numbers)
+            if (currentPageIndex + 1 < bookPages.length) {
+                rightPageContent.innerHTML = bookPages[currentPageIndex + 1].content;
+                rightPageNumber.textContent = bookPages[currentPageIndex + 1].pageNumber;
+            } else {
+                rightPageContent.innerHTML = '';
+                rightPageNumber.textContent = '';
+            }
+
+            // Update page indicator
+            currentPageIndicator.textContent = Math.floor(currentPageIndex / 2) + 1;
+            totalPagesIndicator.textContent = Math.ceil(bookPages.length / 2);
+
+            // Update navigation buttons
+            const prevBtn = document.getElementById('prevPageBtn');
+            const nextBtn = document.getElementById('nextPageBtn');
+
+            prevBtn.disabled = currentPageIndex <= 0;
+            nextBtn.disabled = currentPageIndex >= bookPages.length - 2;
+        }
+
+        function turnPage(direction) {
+            if (isAnimating) return;
+
+            const turningPage = document.getElementById('turningPage');
+            const turningPageFrontContent = document.getElementById('turningPageFrontContent');
+            const turningPageBackContent = document.getElementById('turningPageBackContent');
+
+            if (direction === 'next' && currentPageIndex < bookPages.length - 2) {
+                isAnimating = true;
+
+                // Set up turning page content
+                turningPageFrontContent.innerHTML = bookPages[currentPageIndex + 1].content;
+                turningPageBackContent.innerHTML = bookPages[currentPageIndex + 2] ? bookPages[currentPageIndex + 2].content : '';
+
+                // Show turning page and start animation
+                turningPage.style.display = 'block';
+                turningPage.classList.add('turning');
+
+                setTimeout(() => {
+                    currentPageIndex += 2;
+                    updateBookContent();
+                    turningPage.classList.remove('turning');
+                    setTimeout(() => {
+                        turningPage.style.display = 'none';
+                        isAnimating = false;
+                    }, 100);
+                }, 800);
+
+            } else if (direction === 'prev' && currentPageIndex > 0) {
+                isAnimating = true;
+
+                // Set up turning page content for reverse
+                turningPageFrontContent.innerHTML = bookPages[currentPageIndex - 1].content;
+                turningPageBackContent.innerHTML = bookPages[currentPageIndex].content;
+
+                currentPageIndex -= 2;
+                updateBookContent();
+
+                // Show turning page in turned state, then animate back
+                turningPage.style.display = 'block';
+                turningPage.classList.add('turning');
+
+                setTimeout(() => {
+                    turningPage.classList.remove('turning');
+                    setTimeout(() => {
+                        turningPage.style.display = 'none';
+                        isAnimating = false;
+                    }, 800);
+                }, 50);
+            }
+        }
+
+        function goToPage(pageNumber) {
+            if (isAnimating) return;
+
+            const targetIndex = (pageNumber - 1) * 2;
+            if (targetIndex >= 0 && targetIndex < bookPages.length) {
+                currentPageIndex = targetIndex;
+                updateBookContent();
+            }
+        }
+
+        function toggleTOC() {
+            const toc = document.getElementById('bookToc');
+            toc.classList.toggle('show');
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             createParticles();
@@ -703,6 +1668,97 @@
 
             if (closeButton) {
                 closeButton.addEventListener('click', closeAbout);
+            }
+
+            // Book modal event listeners
+            const whitepaperButton = document.getElementById('whitepaperButton');
+            const bookCloseButton = document.getElementById('bookCloseButton');
+            const prevPageBtn = document.getElementById('prevPageBtn');
+            const nextPageBtn = document.getElementById('nextPageBtn');
+            const tocToggle = document.getElementById('tocToggle');
+
+            if (whitepaperButton) {
+                whitepaperButton.addEventListener('click', showBook);
+            }
+
+            if (bookCloseButton) {
+                bookCloseButton.addEventListener('click', closeBook);
+            }
+
+            if (prevPageBtn) {
+                prevPageBtn.addEventListener('click', () => turnPage('prev'));
+            }
+
+            if (nextPageBtn) {
+                nextPageBtn.addEventListener('click', () => turnPage('next'));
+            }
+
+            if (tocToggle) {
+                tocToggle.addEventListener('click', toggleTOC);
+            }
+
+            // Table of contents navigation
+            const tocLinks = document.querySelectorAll('#bookToc a');
+            tocLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageNumber = parseInt(link.getAttribute('data-page'));
+                    goToPage(pageNumber);
+                    toggleTOC(); // Close TOC after selection
+                });
+            });
+
+            // Close book modal when clicking outside
+            document.addEventListener('click', function(event) {
+                const bookModal = document.getElementById('bookModal');
+                if (event.target === bookModal) {
+                    closeBook();
+                }
+            });
+
+            // Keyboard navigation for book
+            document.addEventListener('keydown', function(event) {
+                const bookModal = document.getElementById('bookModal');
+                if (bookModal.classList.contains('show')) {
+                    if (event.key === 'Escape') {
+                        closeBook();
+                    } else if (event.key === 'ArrowLeft') {
+                        turnPage('prev');
+                    } else if (event.key === 'ArrowRight') {
+                        turnPage('next');
+                    }
+                }
+            });
+
+            // Touch gesture support for mobile
+            let touchStartX = 0;
+            let touchEndX = 0;
+            const minSwipeDistance = 50;
+
+            const book = document.querySelector('.book');
+            if (book) {
+                book.addEventListener('touchstart', function(event) {
+                    touchStartX = event.changedTouches[0].screenX;
+                }, { passive: true });
+
+                book.addEventListener('touchend', function(event) {
+                    touchEndX = event.changedTouches[0].screenX;
+                    handleSwipe();
+                }, { passive: true });
+
+                function handleSwipe() {
+                    const swipeDistance = touchEndX - touchStartX;
+
+                    if (Math.abs(swipeDistance) > minSwipeDistance) {
+                        if (swipeDistance > 0) {
+                            // Swipe right - go to previous page
+                            turnPage('prev');
+                        } else {
+                            // Swipe left - go to next page
+                            turnPage('next');
+                        }
+                    }
+                }
             }
         });
     </script>
