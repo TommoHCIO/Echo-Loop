@@ -47,7 +47,6 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-purple) 100%);
             color: var(--text-white);
             min-height: 100vh;
             display: flex;
@@ -58,6 +57,18 @@
             position: relative;
         }
 
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+            object-fit: cover;
+        }
+
         body::before {
             content: '';
             position: absolute;
@@ -65,8 +76,9 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+            background: rgba(0, 0, 0, 0.6);
             pointer-events: none;
+            z-index: -1;
         }
 
         .container {
@@ -988,6 +1000,11 @@
     </style>
 </head>
 <body>
+    <!-- Video Background -->
+    <video autoplay muted loop class="video-background">
+        <source src="background-video.mp4" type="video/mp4">
+    </video>
+
     <!-- Floating particles -->
     <div class="particles" id="particles"></div>
 
