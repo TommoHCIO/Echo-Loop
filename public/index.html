@@ -283,9 +283,9 @@
             background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-purple) 100%);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            max-width: 1200px;
+            max-width: 1320px;
             width: 95%;
-            max-height: 90vh;
+            max-height: 95vh;
             position: relative;
             transform: scale(0.8);
             transition: transform 0.3s ease;
@@ -331,8 +331,8 @@
 
         .modal-content {
             padding: 2rem 4rem 4rem;
-            max-height: 70vh;
-            overflow-y: auto;
+            height: auto;
+            overflow-y: visible;
             line-height: 1.8;
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -340,23 +340,6 @@
             align-items: start;
         }
 
-        .modal-content::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .modal-content::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-        }
-
-        .modal-content::-webkit-scrollbar-thumb {
-            background: var(--accent-purple);
-            border-radius: 3px;
-        }
-
-        .modal-content::-webkit-scrollbar-thumb:hover {
-            background: #a855f7;
-        }
 
         .about-section {
             margin-bottom: 2.5rem;
@@ -475,8 +458,27 @@
             .modal-content {
                 padding: 1.5rem 2rem 3rem;
                 max-height: 75vh;
+                overflow-y: auto;
                 grid-template-columns: 1fr;
                 gap: 2rem;
+            }
+
+            .modal-content::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .modal-content::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 3px;
+            }
+
+            .modal-content::-webkit-scrollbar-thumb {
+                background: var(--accent-purple);
+                border-radius: 3px;
+            }
+
+            .modal-content::-webkit-scrollbar-thumb:hover {
+                background: #a855f7;
             }
 
             .modal-title {
