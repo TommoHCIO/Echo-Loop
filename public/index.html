@@ -637,9 +637,6 @@
                             <span class="about-highlight">Community:</span> Join our social channels for updates
                         </p>
 
-                        <button class="investment-cta" id="whitepaperButton">
-                            📄 Read Full Technical Details
-                        </button>
                     </div>
                 </div>
             </div>
@@ -700,20 +697,12 @@
             // Add event listeners for modal functionality
             const aboutButton = document.getElementById('aboutButton');
             const closeButton = document.getElementById('closeButton');
-            const whitepaperButton = document.getElementById('whitepaperButton');
-
             if (aboutButton) {
                 aboutButton.addEventListener('click', showAbout);
             }
 
             if (closeButton) {
                 closeButton.addEventListener('click', closeAbout);
-            }
-
-            if (whitepaperButton) {
-                whitepaperButton.addEventListener('click', function() {
-                    window.open('/EchoLoop_Whitepaper.pdf', '_blank');
-                });
             }
         });
     </script>
