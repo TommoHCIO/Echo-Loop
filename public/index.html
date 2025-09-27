@@ -461,7 +461,7 @@
                 <span>WhitePaper</span>
             </a>
 
-            <button class="nav-button" onclick="showAbout()" aria-label="Learn About EchoLoop">
+            <button class="nav-button" id="aboutButton" aria-label="Learn About EchoLoop">
                 <span>About</span>
             </button>
 
@@ -490,7 +490,7 @@
         <div class="modal">
             <div class="modal-header">
                 <h2 class="modal-title">About EchoLoop</h2>
-                <button class="modal-close" onclick="closeAbout()" aria-label="Close modal">×</button>
+                <button class="modal-close" id="closeButton" aria-label="Close modal">×</button>
             </div>
             <div class="modal-content">
                 <div class="about-section">
@@ -592,7 +592,7 @@
                         with the potential for life-changing returns as we transform how social value is created and distributed.
                     </p>
 
-                    <button class="investment-cta" onclick="window.open('/whitepaper.pdf', '_blank')">
+                    <button class="investment-cta" id="whitepaperButton">
                         📄 Download Full Whitepaper
                     </button>
                 </div>
@@ -648,7 +648,28 @@
         });
 
         // Initialize
-        document.addEventListener('DOMContentLoaded', createParticles);
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+
+            // Add event listeners for modal functionality
+            const aboutButton = document.getElementById('aboutButton');
+            const closeButton = document.getElementById('closeButton');
+            const whitepaperButton = document.getElementById('whitepaperButton');
+
+            if (aboutButton) {
+                aboutButton.addEventListener('click', showAbout);
+            }
+
+            if (closeButton) {
+                closeButton.addEventListener('click', closeAbout);
+            }
+
+            if (whitepaperButton) {
+                whitepaperButton.addEventListener('click', function() {
+                    window.open('/whitepaper.pdf', '_blank');
+                });
+            }
+        });
     </script>
 </body>
 </html>
