@@ -212,38 +212,6 @@
             }
         }
 
-        /* Floating particles background */
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            background: var(--accent-purple);
-            border-radius: 50%;
-            opacity: 0.1;
-            animation: float 20s infinite;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) translateX(0);
-            }
-            25% {
-                transform: translateY(-100px) translateX(50px);
-            }
-            50% {
-                transform: translateY(-50px) translateX(-30px);
-            }
-            75% {
-                transform: translateY(-80px) translateX(-50px);
-            }
-        }
 
         /* Mobile responsiveness */
         @media (max-width: 640px) {
@@ -1005,8 +973,6 @@
         <source src="background-video.mp4" type="video/mp4">
     </video>
 
-    <!-- Floating particles -->
-    <div class="particles" id="particles"></div>
 
     <div class="container">
         <img src="loop-logo.png" alt="(Loop" class="logo-image">
@@ -1210,23 +1176,6 @@
     </div>
 
     <script>
-        // Generate floating particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = window.innerWidth > 768 ? 6 : 3;
-
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.width = Math.random() * 100 + 50 + 'px';
-                particle.style.height = particle.style.width;
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 20 + 's';
-                particle.style.animationDuration = (Math.random() * 20 + 20) + 's';
-                particlesContainer.appendChild(particle);
-            }
-        }
 
         // Modal functionality
         function showAbout() {
@@ -1797,7 +1746,6 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            createParticles();
 
             // Add event listeners for modal functionality
             const aboutButton = document.getElementById('aboutButton');
