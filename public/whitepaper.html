@@ -18,15 +18,14 @@
 
     <style>
         :root {
-            --primary-bg: #ffffff;
-            --secondary-bg: #f8f9fa;
-            --text-primary: #292929;
-            --text-secondary: #757575;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.6);
             --accent-color: #d4af37;
             --accent-hover: #b8941f;
-            --border-color: #e6e6e6;
-            --shadow-light: rgba(0, 0, 0, 0.04);
-            --shadow-medium: rgba(0, 0, 0, 0.12);
+            --border-color: rgba(255, 255, 255, 0.2);
+            --overlay-bg: rgba(0, 0, 0, 0.7);
+            --toc-bg: rgba(0, 0, 0, 0.8);
         }
 
         * {
@@ -39,15 +38,41 @@
             font-family: 'Charter', Georgia, serif;
             line-height: 1.7;
             color: var(--text-primary);
-            background-color: var(--primary-bg);
             font-size: 21px;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Video Background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+            object-fit: cover;
+        }
+
+        /* Overlay for readability */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--overlay-bg);
+            z-index: -1;
         }
 
         /* Header */
         .header {
             position: sticky;
             top: 0;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(0, 0, 0, 0.9);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border-color);
             z-index: 100;
@@ -55,7 +80,7 @@
         }
 
         .header-content {
-            max-width: 680px;
+            max-width: 1200px;
             margin: 0 auto;
             display: flex;
             align-items: center;
@@ -69,6 +94,30 @@
             font-weight: 600;
             color: var(--accent-color);
             text-decoration: none;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .toc-toggle {
+            font-family: 'SF Pro Display', -apple-system, sans-serif;
+            background: none;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .toc-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
         }
 
         .back-button {
@@ -85,8 +134,84 @@
         }
 
         .back-button:hover {
-            background: var(--secondary-bg);
+            background: rgba(255, 255, 255, 0.1);
             color: var(--text-primary);
+        }
+
+        /* Table of Contents */
+        .toc-container {
+            position: fixed;
+            top: 80px;
+            left: -320px;
+            width: 300px;
+            height: calc(100vh - 80px);
+            background: var(--toc-bg);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            transition: left 0.3s ease;
+            z-index: 50;
+            overflow-y: auto;
+        }
+
+        .toc-container.active {
+            left: 0;
+        }
+
+        .toc-header {
+            padding: 24px 20px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .toc-title {
+            font-family: 'SF Pro Display', -apple-system, sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .toc-subtitle {
+            font-family: 'SF Pro Display', -apple-system, sans-serif;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .toc-list {
+            padding: 20px 0;
+        }
+
+        .toc-item {
+            display: block;
+            padding: 8px 20px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .toc-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .toc-item.active {
+            color: var(--accent-color);
+            border-left-color: var(--accent-color);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .toc-item.level-2 {
+            padding-left: 35px;
+            font-size: 13px;
+        }
+
+        .toc-item.level-3 {
+            padding-left: 50px;
+            font-size: 12px;
+            color: var(--text-muted);
         }
 
         /* Main Content */
@@ -94,6 +219,11 @@
             max-width: 680px;
             margin: 0 auto;
             padding: 48px 24px 120px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .container.toc-open {
+            margin-left: 150px;
         }
 
         /* Article Header */
@@ -106,7 +236,7 @@
         .article-meta {
             font-family: 'SF Pro Display', -apple-system, sans-serif;
             font-size: 14px;
-            color: var(--text-secondary);
+            color: var(--text-muted);
             margin-bottom: 16px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -131,7 +261,7 @@
         .article-version {
             font-family: 'SF Pro Display', -apple-system, sans-serif;
             font-size: 16px;
-            color: var(--text-secondary);
+            color: var(--text-muted);
         }
 
         /* Content Styles */
@@ -141,6 +271,7 @@
             font-weight: 700;
             margin: 48px 0 24px 0;
             color: var(--text-primary);
+            scroll-margin-top: 100px;
         }
 
         .content h2 {
@@ -149,6 +280,7 @@
             font-weight: 700;
             margin: 40px 0 20px 0;
             color: var(--text-primary);
+            scroll-margin-top: 100px;
         }
 
         .content h3 {
@@ -157,6 +289,7 @@
             font-weight: 600;
             margin: 32px 0 16px 0;
             color: var(--text-primary);
+            scroll-margin-top: 100px;
         }
 
         .content h4 {
@@ -190,7 +323,7 @@
 
         .content strong {
             font-weight: 700;
-            color: var(--text-primary);
+            color: var(--accent-color);
         }
 
         .content em {
@@ -199,7 +332,7 @@
 
         .content code {
             font-family: 'SF Mono', Consolas, monospace;
-            background: var(--secondary-bg);
+            background: rgba(255, 255, 255, 0.1);
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 18px;
@@ -238,9 +371,35 @@
         }
 
         .content th {
-            background: var(--secondary-bg);
+            background: rgba(255, 255, 255, 0.05);
             font-weight: 600;
             font-family: 'SF Pro Display', -apple-system, sans-serif;
+            color: var(--accent-color);
+        }
+
+        /* Loading state */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            color: var(--text-secondary);
+            font-family: 'SF Pro Display', -apple-system, sans-serif;
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border-color);
+            border-top: 2px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* Responsive */
@@ -251,6 +410,7 @@
 
             .container {
                 padding: 24px 20px 80px;
+                margin-left: 0 !important;
             }
 
             .header-content {
@@ -285,45 +445,63 @@
                 padding-left: 16px;
                 font-size: 20px;
             }
-        }
 
-        /* Loading state */
-        .loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 200px;
-            color: var(--text-secondary);
-            font-family: 'SF Pro Display', -apple-system, sans-serif;
-        }
+            .toc-container {
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100vh;
+            }
 
-        .spinner {
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--border-color);
-            border-top: 2px solid var(--accent-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 12px;
-        }
+            .toc-container.active {
+                left: 0;
+            }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            .toc-header {
+                padding-top: 80px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Video Background -->
+    <video
+        autoplay
+        muted
+        loop
+        playsinline
+        webkit-playsinline
+        preload="metadata"
+        class="video-background"
+        id="background-video"
+    >
+        <source src="background-video.mp4" type="video/mp4">
+    </video>
+
     <!-- Header -->
     <header class="header">
         <div class="header-content">
             <a href="/" class="logo">EchoLoop</a>
-            <a href="/" class="back-button">← Back to Home</a>
+            <div class="header-controls">
+                <button class="toc-toggle" id="tocToggle">📖 Contents</button>
+                <a href="/" class="back-button">← Back to Home</a>
+            </div>
         </div>
     </header>
 
+    <!-- Table of Contents -->
+    <nav class="toc-container" id="tocContainer">
+        <div class="toc-header">
+            <h3 class="toc-title">Table of Contents</h3>
+            <p class="toc-subtitle">Jump to section</p>
+        </div>
+        <div class="toc-list" id="tocList">
+            <!-- TOC will be generated by JavaScript -->
+        </div>
+    </nav>
+
     <!-- Main Content -->
-    <main class="container">
+    <main class="container" id="container">
         <article>
             <div class="article-header">
                 <div class="article-meta">Technical Whitepaper</div>
@@ -393,9 +571,9 @@
             html = paragraphs.join('\n');
 
             // Convert placeholders back to HTML
-            html = html.replace(/\|\|\|H1\|\|\|(.*?)\|\|\|\/H1\|\|\|/g, '<h1>$1</h1>');
-            html = html.replace(/\|\|\|H2\|\|\|(.*?)\|\|\|\/H2\|\|\|/g, '<h2>$1</h2>');
-            html = html.replace(/\|\|\|H3\|\|\|(.*?)\|\|\|\/H3\|\|\|/g, '<h3>$1</h3>');
+            html = html.replace(/\|\|\|H1\|\|\|(.*?)\|\|\|\/H1\|\|\|/g, '<h1 id="$1-heading">$1</h1>');
+            html = html.replace(/\|\|\|H2\|\|\|(.*?)\|\|\|\/H2\|\|\|/g, '<h2 id="$1-heading">$1</h2>');
+            html = html.replace(/\|\|\|H3\|\|\|(.*?)\|\|\|\/H3\|\|\|/g, '<h3 id="$1-heading">$1</h3>');
             html = html.replace(/\|\|\|HR\|\|\|/g, '<hr>');
 
             // Handle lists
@@ -408,6 +586,125 @@
             return html;
         }
 
+        // Generate table of contents
+        function generateTableOfContents() {
+            const content = document.getElementById('content');
+            const tocList = document.getElementById('tocList');
+            const headings = content.querySelectorAll('h1, h2, h3');
+
+            tocList.innerHTML = '';
+
+            headings.forEach((heading, index) => {
+                const level = parseInt(heading.tagName.charAt(1));
+                const text = heading.textContent;
+                const id = `section-${index}`;
+
+                // Add ID to heading for scrolling
+                heading.id = id;
+
+                // Create TOC item
+                const tocItem = document.createElement('a');
+                tocItem.href = `#${id}`;
+                tocItem.textContent = text;
+                tocItem.className = `toc-item level-${level}`;
+                tocItem.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    smoothScrollTo(heading);
+                    updateActiveTocItem(tocItem);
+                });
+
+                tocList.appendChild(tocItem);
+            });
+        }
+
+        // Smooth scroll to element
+        function smoothScrollTo(element) {
+            const headerHeight = document.querySelector('.header').offsetHeight;
+            const elementPosition = element.offsetTop - headerHeight - 20;
+
+            window.scrollTo({
+                top: elementPosition,
+                behavior: 'smooth'
+            });
+        }
+
+        // Update active TOC item
+        function updateActiveTocItem(activeItem) {
+            document.querySelectorAll('.toc-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            activeItem.classList.add('active');
+        }
+
+        // Highlight current section in TOC
+        function highlightCurrentSection() {
+            const headings = document.querySelectorAll('.content h1, .content h2, .content h3');
+            const tocItems = document.querySelectorAll('.toc-item');
+            const headerHeight = document.querySelector('.header').offsetHeight;
+
+            let currentHeading = null;
+
+            headings.forEach((heading, index) => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= headerHeight + 50) {
+                    currentHeading = index;
+                }
+            });
+
+            if (currentHeading !== null) {
+                tocItems.forEach(item => item.classList.remove('active'));
+                if (tocItems[currentHeading]) {
+                    tocItems[currentHeading].classList.add('active');
+                }
+            }
+        }
+
+        // Toggle TOC
+        function toggleToc() {
+            const tocContainer = document.getElementById('tocContainer');
+            const container = document.getElementById('container');
+            const isOpen = tocContainer.classList.contains('active');
+
+            if (isOpen) {
+                tocContainer.classList.remove('active');
+                container.classList.remove('toc-open');
+            } else {
+                tocContainer.classList.add('active');
+                container.classList.add('toc-open');
+            }
+        }
+
+        // Mobile video playback handler
+        function ensureVideoPlayback() {
+            const video = document.getElementById('background-video');
+            if (video) {
+                const playPromise = video.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        console.log('Video autoplay succeeded');
+                    }).catch((error) => {
+                        console.log('Video autoplay failed:', error);
+                        // Retry on user interaction
+                        document.addEventListener('touchstart', function() {
+                            video.play().catch(e => console.log('Manual play failed:', e));
+                        }, { once: true });
+
+                        document.addEventListener('click', function() {
+                            video.play().catch(e => console.log('Manual play failed:', e));
+                        }, { once: true });
+                    });
+                }
+            }
+        }
+
+        // Handle page visibility changes to restart video
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                ensureVideoPlayback();
+            }
+        });
+
         // Load and display whitepaper content
         async function loadWhitepaper() {
             const contentEl = document.getElementById('content');
@@ -419,6 +716,10 @@
                 const markdown = await response.text();
                 const html = convertMarkdownToHTML(markdown);
                 contentEl.innerHTML = html;
+
+                // Generate TOC after content is loaded
+                generateTableOfContents();
+
             } catch (error) {
                 console.error('Error loading whitepaper:', error);
                 contentEl.innerHTML = '<p>Error loading whitepaper content. Please try again later.</p>';
@@ -426,7 +727,38 @@
         }
 
         // Initialize
-        document.addEventListener('DOMContentLoaded', loadWhitepaper);
+        document.addEventListener('DOMContentLoaded', function() {
+            ensureVideoPlayback();
+            loadWhitepaper();
+
+            // TOC toggle functionality
+            document.getElementById('tocToggle').addEventListener('click', toggleToc);
+
+            // Highlight current section on scroll
+            let ticking = false;
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    requestAnimationFrame(function() {
+                        highlightCurrentSection();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            // Close TOC when clicking outside on mobile
+            document.addEventListener('click', function(e) {
+                const tocContainer = document.getElementById('tocContainer');
+                const tocToggle = document.getElementById('tocToggle');
+
+                if (window.innerWidth <= 768 &&
+                    tocContainer.classList.contains('active') &&
+                    !tocContainer.contains(e.target) &&
+                    e.target !== tocToggle) {
+                    toggleToc();
+                }
+            });
+        });
     </script>
 </body>
 </html>
