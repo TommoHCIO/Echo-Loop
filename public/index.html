@@ -1087,23 +1087,30 @@
                 }, 800);
             }
 
-            // Enhanced About button with debugging and error handling
+            // Enhanced About button with smooth animation matching social button
             const aboutButton = document.getElementById('aboutButton');
             console.log('About button found:', aboutButton ? 'Yes' : 'No');
             if (aboutButton) {
-                aboutButton.addEventListener('click', function() {
-                    console.log('About button clicked - starting navigation');
+                aboutButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('About button clicked - starting smooth transition');
                     console.log('FabricVideo available:', fabricVideo ? 'Yes' : 'No');
 
                     try {
-                        transitionToVideo(fabricVideo, () => {
+                        // Use black waves video for smoother transition (matching social button)
+                        transitionToVideo(secondaryVideo, () => {
                             console.log('About navigation callback executing');
-                            window.location.href = '/about';
+                            // Add a small delay for smoother visual transition
+                            setTimeout(() => {
+                                window.location.href = '/about';
+                            }, 200);
                         });
                     } catch (error) {
                         console.log('About button error:', error);
                         // Fallback navigation
-                        window.location.href = '/about';
+                        setTimeout(() => {
+                            window.location.href = '/about';
+                        }, 200);
                     }
                 });
                 console.log('About button event listener added');
@@ -1111,23 +1118,30 @@
                 console.log('ERROR: About button not found in DOM');
             }
 
-            // Enhanced Whitepaper button with debugging and error handling
+            // Enhanced Whitepaper button with smooth animation matching social button
             const whitepaperButton = document.getElementById('whitepaperButton');
             console.log('Whitepaper button found:', whitepaperButton ? 'Yes' : 'No');
             if (whitepaperButton) {
-                whitepaperButton.addEventListener('click', function() {
-                    console.log('Whitepaper button clicked - starting navigation');
+                whitepaperButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('Whitepaper button clicked - starting smooth transition');
                     console.log('FabricVideo available:', fabricVideo ? 'Yes' : 'No');
 
                     try {
-                        transitionToVideo(fabricVideo, () => {
+                        // Use black waves video for smoother transition (matching social button)
+                        transitionToVideo(secondaryVideo, () => {
                             console.log('Whitepaper navigation callback executing');
-                            window.location.href = '/whitepaper';
+                            // Add a small delay for smoother visual transition
+                            setTimeout(() => {
+                                window.location.href = '/whitepaper';
+                            }, 200);
                         });
                     } catch (error) {
                         console.log('Whitepaper button error:', error);
                         // Fallback navigation
-                        window.location.href = '/whitepaper';
+                        setTimeout(() => {
+                            window.location.href = '/whitepaper';
+                        }, 200);
                     }
                 });
                 console.log('Whitepaper button event listener added');
