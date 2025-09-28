@@ -86,12 +86,14 @@
         }
 
         .logo {
-            font-family: 'Aptos Light', 'Aptos', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            font-weight: 300;
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--accent-color);
+            display: inline-block;
             text-decoration: none;
+        }
+
+        .logo img {
+            height: 32px;
+            width: auto;
+            filter: brightness(0) saturate(100%) invert(74%) sepia(85%) saturate(586%) hue-rotate(355deg) brightness(108%) contrast(88%);
         }
 
         .back-button {
@@ -309,7 +311,9 @@
     <!-- Header -->
     <header class="header">
         <div class="header-content">
-            <a href="/" class="logo">EchoLoop</a>
+            <a href="/" class="logo">
+                <img src="echo-loop-logo.png" alt="EchoLoop" />
+            </a>
             <a href="/" class="back-button">← Back to Home</a>
         </div>
     </header>
