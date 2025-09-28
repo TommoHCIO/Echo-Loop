@@ -1372,28 +1372,95 @@
                 console.log('ERROR: Whitepaper button not found in DOM');
             }
 
-            // Close overlay functions
-            function closeOverlay(overlayId) {
-                document.getElementById(overlayId).style.display = 'none';
-                if (mainContent) mainContent.style.display = 'block';
-                returnToHomepage();
+            // Close overlay with smooth transition back to homepage
+            function closeOverlay(overlayId, clickEvent = null) {
+                console.log('Closing overlay with transition:', overlayId);
+
+                // Get click position for reverse circular reveal, default to center
+                const x = (clickEvent || lastClick)?.clientX ?? window.innerWidth / 2;
+                const y = (clickEvent || lastClick)?.clientY ?? window.innerHeight / 2;
+
+                // Progressive enhancement - check for View Transitions API support
+                if (!document.startViewTransition) {
+                    console.log('View Transitions API not supported, using fallback close');
+                    // Simple fallback - close overlay and return to homepage
+                    document.getElementById(overlayId).style.display = 'none';
+                    if (mainContent) mainContent.style.display = 'block';
+                    returnToHomepage();
+                    return;
+                }
+
+                // Use View Transitions API for smooth return transition
+                const transition = document.startViewTransition(() => {
+                    // Hide overlay and show main content
+                    document.getElementById(overlayId).style.display = 'none';
+                    if (mainContent) mainContent.style.display = 'block';
+                });
+
+                // Wait for pseudo-elements to be created
+                transition.ready.then(() => {
+                    // Calculate distance to furthest corner for reverse circular reveal
+                    const endRadius = Math.hypot(
+                        Math.max(x, window.innerWidth - x),
+                        Math.max(y, window.innerHeight - y)
+                    );
+
+                    // Create reverse circular reveal animation (closing from full to point)
+                    document.documentElement.animate(
+                        {
+                            clipPath: [
+                                `circle(${endRadius}px at ${x}px ${y}px)`,
+                                `circle(0 at ${x}px ${y}px)`
+                            ]
+                        },
+                        {
+                            duration: 1300,
+                            easing: 'ease-in',
+                            pseudoElement: '::view-transition-old(root)'
+                        }
+                    );
+
+                    // Return to homepage background after transition starts
+                    setTimeout(() => {
+                        returnToHomepage();
+                    }, 200);
+                }).catch((error) => {
+                    console.log('Return transition failed, falling back to direct close:', error);
+                    // Fallback if transition fails
+                    document.getElementById(overlayId).style.display = 'none';
+                    if (mainContent) mainContent.style.display = 'block';
+                    returnToHomepage();
+                });
             }
 
-            // Add close button event listeners
+            // Add close button event listeners with click position tracking
             const closeAbout = document.getElementById('closeAbout');
             const closeWhitepaper = document.getElementById('closeWhitepaper');
 
             if (closeAbout) {
-                closeAbout.addEventListener('click', function() {
-                    closeOverlay('aboutOverlay');
+                closeAbout.addEventListener('click', function(e) {
+                    closeOverlay('aboutOverlay', e);
                 });
             }
 
             if (closeWhitepaper) {
-                closeWhitepaper.addEventListener('click', function() {
-                    closeOverlay('whitepaperOverlay');
+                closeWhitepaper.addEventListener('click', function(e) {
+                    closeOverlay('whitepaperOverlay', e);
                 });
             }
+
+            // Also allow closing overlays by clicking outside content (on the dark background)
+            document.getElementById('aboutOverlay').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeOverlay('aboutOverlay', e);
+                }
+            });
+
+            document.getElementById('whitepaperOverlay').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeOverlay('whitepaperOverlay', e);
+                }
+            });
 
             if (socialButton) {
                 socialButton.addEventListener('click', function(e) {
