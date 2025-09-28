@@ -929,28 +929,13 @@
             // Initialize battery optimization
             initBatteryOptimization();
 
-            // Add event listener for About button (with wave fabric background transition)
-            const aboutButton = document.getElementById('aboutButton');
-            if (aboutButton) {
-                aboutButton.addEventListener('click', function() {
-                    transitionToVideo(fabricVideo, () => {
-                        window.location.href = '/about.html';
-                    });
-                });
-            }
-
-            // Add event listener for Whitepaper button (with wave fabric background transition)
-            const whitepaperButton = document.getElementById('whitepaperButton');
-            if (whitepaperButton) {
-                whitepaperButton.addEventListener('click', function() {
-                    transitionToVideo(fabricVideo, () => {
-                        window.location.href = '/whitepaper.html';
-                    });
-                });
-            }
-
-            // Social button functionality
+            // Variable declarations - must be first!
             const socialButton = document.querySelector('.centered-social');
+            const mainContent = document.querySelector('.container');
+            const socialPlatforms = document.getElementById('socialPlatforms');
+            const primaryVideo = document.getElementById('background-video');
+            const secondaryVideo = document.getElementById('secondary-video');
+            const fabricVideo = document.getElementById('fabric-video');
 
             // Reusable function for background video transitions
             function transitionToVideo(targetVideo, callback) {
@@ -1036,6 +1021,26 @@
                         button.classList.remove('exit');
                     });
                 }, 800);
+            }
+
+            // Add event listener for About button (with wave fabric background transition)
+            const aboutButton = document.getElementById('aboutButton');
+            if (aboutButton) {
+                aboutButton.addEventListener('click', function() {
+                    transitionToVideo(fabricVideo, () => {
+                        window.location.href = '/about.html';
+                    });
+                });
+            }
+
+            // Add event listener for Whitepaper button (with wave fabric background transition)
+            const whitepaperButton = document.getElementById('whitepaperButton');
+            if (whitepaperButton) {
+                whitepaperButton.addEventListener('click', function() {
+                    transitionToVideo(fabricVideo, () => {
+                        window.location.href = '/whitepaper.html';
+                    });
+                });
             }
 
             if (socialButton) {
