@@ -937,37 +937,101 @@
             const secondaryVideo = document.getElementById('secondary-video');
             const fabricVideo = document.getElementById('fabric-video');
 
-            // Reusable function for background video transitions
+            // Enhanced function for background video transitions with error handling
             function transitionToVideo(targetVideo, callback) {
-                // Start playing the target video
-                targetVideo.play();
+                console.log('TransitionToVideo called with:', targetVideo ? 'valid video' : 'null video');
 
-                // Fade out main content
-                mainContent.classList.add('fade-out');
+                // Ensure callback executes regardless of video success
+                let callbackExecuted = false;
 
-                // After main content starts fading, begin video transition
-                setTimeout(() => {
-                    // Cross-fade videos
-                    targetVideo.style.opacity = '1';
-                    targetVideo.style.zIndex = '-1';
-                    primaryVideo.style.opacity = '0';
-                    primaryVideo.style.zIndex = '-3';
-
-                    // Hide all other videos
-                    if (targetVideo !== secondaryVideo) {
-                        secondaryVideo.style.opacity = '0';
-                        secondaryVideo.style.zIndex = '-4';
+                // Fallback navigation - ensure callback runs within 2 seconds
+                const fallbackTimeout = setTimeout(() => {
+                    if (!callbackExecuted && callback) {
+                        console.log('Fallback navigation triggered');
+                        callbackExecuted = true;
+                        callback();
                     }
-                    if (targetVideo !== fabricVideo) {
-                        fabricVideo.style.opacity = '0';
-                        fabricVideo.style.zIndex = '-4';
+                }, 2000);
+
+                try {
+                    // Fade out main content immediately
+                    if (mainContent) {
+                        mainContent.classList.add('fade-out');
                     }
 
-                    // Execute callback after transition
-                    setTimeout(() => {
-                        if (callback) callback();
-                    }, 500);
-                }, 300);
+                    // Attempt video operations with error handling
+                    if (targetVideo && typeof targetVideo.play === 'function') {
+                        const playPromise = targetVideo.play();
+
+                        // Handle play promise if it exists
+                        if (playPromise !== undefined) {
+                            playPromise.catch(error => {
+                                console.log('Video play failed:', error);
+                                // Continue with animation even if video fails
+                            });
+                        }
+
+                        // After main content starts fading, begin video transition
+                        setTimeout(() => {
+                            try {
+                                // Cross-fade videos
+                                targetVideo.style.opacity = '1';
+                                targetVideo.style.zIndex = '-1';
+
+                                if (primaryVideo) {
+                                    primaryVideo.style.opacity = '0';
+                                    primaryVideo.style.zIndex = '-3';
+                                }
+
+                                // Hide all other videos
+                                if (targetVideo !== secondaryVideo && secondaryVideo) {
+                                    secondaryVideo.style.opacity = '0';
+                                    secondaryVideo.style.zIndex = '-4';
+                                }
+                                if (targetVideo !== fabricVideo && fabricVideo) {
+                                    fabricVideo.style.opacity = '0';
+                                    fabricVideo.style.zIndex = '-4';
+                                }
+
+                                // Execute callback after transition
+                                setTimeout(() => {
+                                    if (!callbackExecuted && callback) {
+                                        console.log('Normal navigation callback triggered');
+                                        callbackExecuted = true;
+                                        clearTimeout(fallbackTimeout);
+                                        callback();
+                                    }
+                                }, 500);
+                            } catch (error) {
+                                console.log('Video transition error:', error);
+                                // Ensure callback still executes
+                                if (!callbackExecuted && callback) {
+                                    callbackExecuted = true;
+                                    clearTimeout(fallbackTimeout);
+                                    callback();
+                                }
+                            }
+                        }, 300);
+                    } else {
+                        console.log('Invalid video element, executing callback immediately');
+                        // No valid video, execute callback immediately
+                        setTimeout(() => {
+                            if (!callbackExecuted && callback) {
+                                callbackExecuted = true;
+                                clearTimeout(fallbackTimeout);
+                                callback();
+                            }
+                        }, 800); // Short delay for fade-out effect
+                    }
+                } catch (error) {
+                    console.log('TransitionToVideo error:', error);
+                    // Ensure callback executes even on error
+                    if (!callbackExecuted && callback) {
+                        callbackExecuted = true;
+                        clearTimeout(fallbackTimeout);
+                        callback();
+                    }
+                }
             }
 
             // Function to return to homepage background
@@ -1023,24 +1087,52 @@
                 }, 800);
             }
 
-            // Add event listener for About button (with wave fabric background transition)
+            // Enhanced About button with debugging and error handling
             const aboutButton = document.getElementById('aboutButton');
+            console.log('About button found:', aboutButton ? 'Yes' : 'No');
             if (aboutButton) {
                 aboutButton.addEventListener('click', function() {
-                    transitionToVideo(fabricVideo, () => {
+                    console.log('About button clicked - starting navigation');
+                    console.log('FabricVideo available:', fabricVideo ? 'Yes' : 'No');
+
+                    try {
+                        transitionToVideo(fabricVideo, () => {
+                            console.log('About navigation callback executing');
+                            window.location.href = '/about';
+                        });
+                    } catch (error) {
+                        console.log('About button error:', error);
+                        // Fallback navigation
                         window.location.href = '/about';
-                    });
+                    }
                 });
+                console.log('About button event listener added');
+            } else {
+                console.log('ERROR: About button not found in DOM');
             }
 
-            // Add event listener for Whitepaper button (with wave fabric background transition)
+            // Enhanced Whitepaper button with debugging and error handling
             const whitepaperButton = document.getElementById('whitepaperButton');
+            console.log('Whitepaper button found:', whitepaperButton ? 'Yes' : 'No');
             if (whitepaperButton) {
                 whitepaperButton.addEventListener('click', function() {
-                    transitionToVideo(fabricVideo, () => {
+                    console.log('Whitepaper button clicked - starting navigation');
+                    console.log('FabricVideo available:', fabricVideo ? 'Yes' : 'No');
+
+                    try {
+                        transitionToVideo(fabricVideo, () => {
+                            console.log('Whitepaper navigation callback executing');
+                            window.location.href = '/whitepaper';
+                        });
+                    } catch (error) {
+                        console.log('Whitepaper button error:', error);
+                        // Fallback navigation
                         window.location.href = '/whitepaper';
-                    });
+                    }
                 });
+                console.log('Whitepaper button event listener added');
+            } else {
+                console.log('ERROR: Whitepaper button not found in DOM');
             }
 
             if (socialButton) {
