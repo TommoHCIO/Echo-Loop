@@ -912,19 +912,55 @@
             // Initialize battery optimization
             initBatteryOptimization();
 
-            // Add event listener for About button (redirect to new page)
+            // Add event listener for About button (with background transition)
             const aboutButton = document.getElementById('aboutButton');
             if (aboutButton) {
                 aboutButton.addEventListener('click', function() {
-                    window.location.href = '/about.html';
+                    // Start playing the secondary video
+                    secondaryVideo.play();
+
+                    // Fade out main content
+                    mainContent.classList.add('fade-out');
+
+                    // After main content starts fading, begin video transition
+                    setTimeout(() => {
+                        // Cross-fade videos
+                        secondaryVideo.style.opacity = '1';
+                        secondaryVideo.style.zIndex = '-1';
+                        primaryVideo.style.opacity = '0';
+                        primaryVideo.style.zIndex = '-3';
+
+                        // Navigate to about page after transition
+                        setTimeout(() => {
+                            window.location.href = '/about.html';
+                        }, 500);
+                    }, 300);
                 });
             }
 
-            // Add event listener for Whitepaper button (redirect to new page)
+            // Add event listener for Whitepaper button (with background transition)
             const whitepaperButton = document.getElementById('whitepaperButton');
             if (whitepaperButton) {
                 whitepaperButton.addEventListener('click', function() {
-                    window.location.href = '/whitepaper.html';
+                    // Start playing the secondary video
+                    secondaryVideo.play();
+
+                    // Fade out main content
+                    mainContent.classList.add('fade-out');
+
+                    // After main content starts fading, begin video transition
+                    setTimeout(() => {
+                        // Cross-fade videos
+                        secondaryVideo.style.opacity = '1';
+                        secondaryVideo.style.zIndex = '-1';
+                        primaryVideo.style.opacity = '0';
+                        primaryVideo.style.zIndex = '-3';
+
+                        // Navigate to whitepaper page after transition
+                        setTimeout(() => {
+                            window.location.href = '/whitepaper.html';
+                        }, 500);
+                    }, 300);
                 });
             }
 
