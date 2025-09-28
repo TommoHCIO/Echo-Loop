@@ -786,6 +786,136 @@
             transition: opacity 1.3s ease-out;
         }
 
+        /* Content Overlay Styles */
+        .content-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 2rem;
+            box-sizing: border-box;
+            color: var(--text-white);
+        }
+
+        .overlay-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .close-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-white);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .overlay-header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            color: var(--accent-color);
+        }
+
+        .overlay-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .overlay-content .article-meta {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .overlay-content .article-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .overlay-content .article-version {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .overlay-content h3 {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin: 2rem 0 1rem 0;
+        }
+
+        .overlay-content p {
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .timeline {
+            margin: 2rem 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .timeline-date {
+            color: var(--accent-color);
+            font-weight: 600;
+            min-width: 100px;
+        }
+
+        .timeline-description {
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .content-overlay {
+                padding: 1rem;
+            }
+
+            .overlay-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .overlay-header h1 {
+                font-size: 2rem;
+            }
+
+            .timeline-item {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -865,6 +995,68 @@
                 </span>
             </button>
         </nav>
+    </div>
+
+    <!-- About Content Overlay (initially hidden) -->
+    <div class="content-overlay" id="aboutOverlay" style="display: none;">
+        <div class="overlay-header">
+            <button class="close-button" id="closeAbout">← Back</button>
+            <h1>About EchoLoop</h1>
+        </div>
+        <div class="overlay-content">
+            <div class="article-meta">About</div>
+            <h2 class="article-subtitle">Revolutionizing social media through decentralized finance</h2>
+
+            <h3>The Problem</h3>
+            <p>Social platforms generated <strong>$200 billion</strong> in revenue last year. Users who created that value received <strong>nothing</strong>.</p>
+            <p>This fundamental misalignment has created a digital economy where platforms extract value while creators and users—the actual sources of that value—are left empty-handed. <strong>EchoLoop changes this equation entirely.</strong></p>
+
+            <h3>How It Works</h3>
+            <p>EchoLoop transforms everyday social interactions into tokenized rewards through a sophisticated point-based system:</p>
+            <p>Every social interaction becomes a micro-earning opportunity: likes (1 point), comments (3 points), shares (5 points), and new followers (2 points). This creates a direct correlation between authentic engagement and economic reward.</p>
+            <p>Every day, <strong>100,000 $LOOP tokens</strong> are distributed proportionally based on accumulated points. The more you engage authentically, the more you earn.</p>
+
+            <h3>Development Timeline</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">Q1 2026</div>
+                    <div class="timeline-description">Launch of Telegram and Discord bots for seamless integration</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Q2 2026</div>
+                    <div class="timeline-description">Web dashboard with comprehensive analytics and insights</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Q3 2026</div>
+                    <div class="timeline-description">Mobile app launch and mainstream platform integration</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Whitepaper Content Overlay (initially hidden) -->
+    <div class="content-overlay" id="whitepaperOverlay" style="display: none;">
+        <div class="overlay-header">
+            <button class="close-button" id="closeWhitepaper">← Back</button>
+            <h1>EchoLoop Protocol</h1>
+        </div>
+        <div class="overlay-content">
+            <div class="article-meta">Technical Whitepaper</div>
+            <h2 class="article-subtitle">Decentralized Social Finance Infrastructure</h2>
+            <div class="article-version">Version 1.0 | September 2025</div>
+
+            <h3>Executive Summary</h3>
+            <p>EchoLoop Protocol represents a paradigm shift in social media economics, creating the first truly decentralized social finance (SocialFi) infrastructure. By tokenizing social interactions and enabling direct value transfer between users, EchoLoop eliminates traditional platform intermediaries while rewarding authentic engagement.</p>
+
+            <h3>Protocol Architecture</h3>
+            <p>The EchoLoop Protocol operates on a multi-layered architecture designed for scalability, security, and user experience. The core system processes social interactions through smart contracts, automatically distributing rewards based on engagement metrics.</p>
+
+            <h3>Token Economics</h3>
+            <p>The $LOOP token serves as the native currency of the EchoLoop ecosystem. Daily distribution of 100,000 tokens ensures sustainable growth while maintaining token value through strategic supply management.</p>
+
+            <h3>Technical Implementation</h3>
+            <p>Built on cutting-edge blockchain technology, EchoLoop leverages layer-2 solutions for fast, cost-effective transactions while maintaining the security guarantees of the underlying blockchain infrastructure.</p>
+        </div>
     </div>
 
     <!-- Social Platform Buttons (initially hidden) -->
@@ -1017,26 +1209,52 @@
                 }
             }
 
-            // Modern page transition using View Transitions API without background video changes
-            function modernPageTransition(targetUrl, clickEvent = null) {
-                console.log('Modern page transition to:', targetUrl);
+            // Modern overlay transition with fabric background
+            function showContentOverlay(overlayId, clickEvent = null) {
+                console.log('Showing content overlay:', overlayId);
 
                 // Get click position for circular reveal, fallback to center
                 const x = (clickEvent || lastClick)?.clientX ?? window.innerWidth / 2;
                 const y = (clickEvent || lastClick)?.clientY ?? window.innerHeight / 2;
 
+                // First, switch to fabric video background
+                try {
+                    if (fabricVideo && typeof fabricVideo.play === 'function') {
+                        fabricVideo.play().catch(error => console.log('Video play failed:', error));
+
+                        // Cross-fade to fabric video
+                        fabricVideo.style.opacity = '1';
+                        fabricVideo.style.zIndex = '-1';
+
+                        if (primaryVideo) {
+                            primaryVideo.style.opacity = '0';
+                            primaryVideo.style.zIndex = '-3';
+                        }
+                        if (secondaryVideo) {
+                            secondaryVideo.style.opacity = '0';
+                            secondaryVideo.style.zIndex = '-4';
+                        }
+                    }
+                } catch (error) {
+                    console.log('Video transition error:', error);
+                }
+
                 // Progressive enhancement - check for View Transitions API support
                 if (!document.startViewTransition) {
                     console.log('View Transitions API not supported, using fallback');
-                    // Simple fallback navigation
-                    window.location.href = targetUrl;
+                    // Simple fallback - show overlay directly
+                    setTimeout(() => {
+                        if (mainContent) mainContent.style.display = 'none';
+                        document.getElementById(overlayId).style.display = 'block';
+                    }, 300);
                     return;
                 }
 
-                // Use View Transitions API for smooth modern transitions
+                // Use View Transitions API for smooth overlay transition
                 const transition = document.startViewTransition(() => {
-                    // This is where the DOM would update for SPA navigation
-                    // For page navigation, we'll trigger it after animation starts
+                    // Hide main content and show overlay
+                    if (mainContent) mainContent.style.display = 'none';
+                    document.getElementById(overlayId).style.display = 'block';
                 });
 
                 // Wait for pseudo-elements to be created
@@ -1061,24 +1279,12 @@
                             pseudoElement: '::view-transition-new(root)'
                         }
                     );
-
-                    // Navigate after animation starts
-                    setTimeout(() => {
-                        window.location.href = targetUrl;
-                    }, 150);
                 }).catch((error) => {
-                    console.log('View transition failed, falling back to direct navigation:', error);
+                    console.log('View transition failed, falling back to direct overlay:', error);
                     // Fallback if transition fails
-                    window.location.href = targetUrl;
+                    if (mainContent) mainContent.style.display = 'none';
+                    document.getElementById(overlayId).style.display = 'block';
                 });
-
-                // Timeout fallback to ensure navigation happens
-                setTimeout(() => {
-                    if (!transition.finished) {
-                        console.log('Transition timeout, forcing navigation');
-                        window.location.href = targetUrl;
-                    }
-                }, 2000);
             }
 
             // Function to return to homepage background
@@ -1134,36 +1340,59 @@
                 }, 800);
             }
 
-            // Modern About button with View Transitions API
+            // Modern About button with overlay transition
             const aboutButton = document.getElementById('aboutButton');
             console.log('About button found:', aboutButton ? 'Yes' : 'No');
             if (aboutButton) {
                 aboutButton.addEventListener('click', function(e) {
                     e.preventDefault();
-                    console.log('About button clicked - starting modern transition');
+                    console.log('About button clicked - showing about overlay');
 
-                    // Use modern page transition with click position
-                    modernPageTransition('/about', e);
+                    // Show about overlay with fabric background
+                    showContentOverlay('aboutOverlay', e);
                 });
                 console.log('About button event listener added');
             } else {
                 console.log('ERROR: About button not found in DOM');
             }
 
-            // Modern Whitepaper button with View Transitions API
+            // Modern Whitepaper button with overlay transition
             const whitepaperButton = document.getElementById('whitepaperButton');
             console.log('Whitepaper button found:', whitepaperButton ? 'Yes' : 'No');
             if (whitepaperButton) {
                 whitepaperButton.addEventListener('click', function(e) {
                     e.preventDefault();
-                    console.log('Whitepaper button clicked - starting modern transition');
+                    console.log('Whitepaper button clicked - showing whitepaper overlay');
 
-                    // Use modern page transition with click position
-                    modernPageTransition('/whitepaper', e);
+                    // Show whitepaper overlay with fabric background
+                    showContentOverlay('whitepaperOverlay', e);
                 });
                 console.log('Whitepaper button event listener added');
             } else {
                 console.log('ERROR: Whitepaper button not found in DOM');
+            }
+
+            // Close overlay functions
+            function closeOverlay(overlayId) {
+                document.getElementById(overlayId).style.display = 'none';
+                if (mainContent) mainContent.style.display = 'block';
+                returnToHomepage();
+            }
+
+            // Add close button event listeners
+            const closeAbout = document.getElementById('closeAbout');
+            const closeWhitepaper = document.getElementById('closeWhitepaper');
+
+            if (closeAbout) {
+                closeAbout.addEventListener('click', function() {
+                    closeOverlay('aboutOverlay');
+                });
+            }
+
+            if (closeWhitepaper) {
+                closeWhitepaper.addEventListener('click', function() {
+                    closeOverlay('whitepaperOverlay');
+                });
             }
 
             if (socialButton) {
