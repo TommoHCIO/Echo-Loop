@@ -67,6 +67,8 @@
             object-fit: cover;
             will-change: transform;
             transform: translateZ(0);
+            background: transparent;
+            opacity: 1;
         }
 
         body::before {
@@ -540,18 +542,18 @@
         loop
         playsinline
         webkit-playsinline
-        preload="metadata"
+        preload="auto"
         class="video-background"
         id="background-video"
     >
         <!-- WebM format (30% smaller file size) -->
-        <source src="dark-golden-waves-bg.webm?v=20250928" type="video/webm" media="(min-width: 768px)">
+        <source src="dark-golden-waves-bg.webm?v=20250929" type="video/webm" media="(min-width: 768px)">
         <!-- MP4 format (universal compatibility) -->
-        <source src="dark-golden-waves-bg.mp4?v=20250928" type="video/mp4" media="(min-width: 768px)">
+        <source src="dark-golden-waves-bg.mp4?v=20250929" type="video/mp4" media="(min-width: 768px)">
         <!-- Mobile optimized version -->
-        <source src="dark-golden-waves-bg-mobile.mp4?v=20250928" type="video/mp4" media="(max-width: 767px)">
+        <source src="dark-golden-waves-bg-mobile.mp4?v=20250929" type="video/mp4" media="(max-width: 767px)">
         <!-- Fallback for very old browsers -->
-        <source src="background-video.mp4?v=20250928" type="video/mp4">
+        <source src="background-video.mp4?v=20250929" type="video/mp4">
     </video>
 
 
