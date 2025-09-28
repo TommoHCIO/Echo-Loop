@@ -484,36 +484,47 @@
         /* Responsive */
         @media (max-width: 768px) {
             body {
-                font-size: 19px;
+                font-size: 17.1px; /* 10% smaller than 19px */
             }
 
             .container {
                 padding: 24px 20px 80px;
                 margin-left: 0 !important;
+                text-align: center; /* Center text on mobile */
             }
 
             .header-content {
                 padding: 0 20px;
             }
 
+            .logo img {
+                height: 80px; /* Smaller logo on mobile */
+            }
+
+            .toc-toggle,
+            .back-button {
+                padding: 0.8rem 1.2rem; /* Smaller buttons */
+                font-size: 0.85rem;
+            }
+
             .article-title {
-                font-size: 32px;
+                font-size: 28.8px; /* 10% smaller than 32px */
             }
 
             .article-subtitle {
-                font-size: 20px;
+                font-size: 18px; /* 10% smaller than 20px */
             }
 
             .content h1 {
-                font-size: 28px;
+                font-size: 25.2px; /* 10% smaller than 28px */
             }
 
             .content h2 {
-                font-size: 24px;
+                font-size: 21.6px; /* 10% smaller than 24px */
             }
 
             .content h3 {
-                font-size: 21px;
+                font-size: 18.9px; /* 10% smaller than 21px */
             }
 
             .content ul, .content ol {
@@ -522,7 +533,11 @@
 
             .content blockquote {
                 padding-left: 16px;
-                font-size: 20px;
+                font-size: 18px; /* 10% smaller than 20px */
+            }
+
+            .content {
+                text-align: justify; /* Keep content justified but container centered */
             }
 
             .toc-container {
@@ -554,14 +569,10 @@
         class="video-background"
         id="background-video"
     >
-        <!-- WebM format (30% smaller file size) -->
+        <!-- WebM format (30% smaller file size) for desktop -->
         <source src="dark-wave-fabric-bg.webm?v=20250929" type="video/webm" media="(min-width: 768px)">
-        <!-- MP4 format (universal compatibility) -->
-        <source src="dark-wave-fabric-bg.mp4?v=20250929" type="video/mp4" media="(min-width: 768px)">
-        <!-- Mobile optimized version -->
-        <source src="dark-wave-fabric-bg-mobile.mp4?v=20250929" type="video/mp4" media="(max-width: 767px)">
-        <!-- Fallback for very old browsers -->
-        <source src="background-video.mp4?v=20250929" type="video/mp4">
+        <!-- MP4 format (universal compatibility) for all devices -->
+        <source src="dark-wave-fabric-bg.mp4?v=20250929" type="video/mp4">
     </video>
 
     <!-- Header -->

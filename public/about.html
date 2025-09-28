@@ -280,7 +280,7 @@
         /* Responsive */
         @media (max-width: 768px) {
             body {
-                font-size: 19px;
+                font-size: 17.1px; /* 10% smaller than 19px */
             }
 
             .container {
@@ -291,24 +291,42 @@
                 padding: 0 20px;
             }
 
+            .logo img {
+                height: 80px; /* Smaller logo on mobile */
+            }
+
+            .back-button {
+                padding: 0.8rem 1.2rem; /* Smaller button */
+                font-size: 0.85rem;
+            }
+
             .article-title {
-                font-size: 32px;
+                font-size: 28.8px; /* 10% smaller than 32px */
             }
 
             .article-subtitle {
-                font-size: 20px;
+                font-size: 18px; /* 10% smaller than 20px */
             }
 
             .content h2 {
-                font-size: 24px;
+                font-size: 21.6px; /* 10% smaller than 24px */
             }
 
             .content h3 {
-                font-size: 21px;
+                font-size: 18.9px; /* 10% smaller than 21px */
             }
 
             .cta-section {
                 padding: 30px 20px;
+            }
+
+            .cta-title {
+                font-size: 25.2px; /* 10% smaller than 28px */
+            }
+
+            .cta-link {
+                padding: 0.8rem 1.2rem; /* Smaller CTA button */
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -325,14 +343,10 @@
         class="video-background"
         id="background-video"
     >
-        <!-- WebM format (30% smaller file size) -->
+        <!-- WebM format (30% smaller file size) for desktop -->
         <source src="dark-wave-fabric-bg.webm?v=20250929" type="video/webm" media="(min-width: 768px)">
-        <!-- MP4 format (universal compatibility) -->
-        <source src="dark-wave-fabric-bg.mp4?v=20250929" type="video/mp4" media="(min-width: 768px)">
-        <!-- Mobile optimized version -->
-        <source src="dark-wave-fabric-bg-mobile.mp4?v=20250929" type="video/mp4" media="(max-width: 767px)">
-        <!-- Fallback for very old browsers -->
-        <source src="background-video.mp4?v=20250929" type="video/mp4">
+        <!-- MP4 format (universal compatibility) for all devices -->
+        <source src="dark-wave-fabric-bg.mp4?v=20250929" type="video/mp4">
     </video>
 
     <!-- Header -->
