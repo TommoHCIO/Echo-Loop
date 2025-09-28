@@ -1025,7 +1025,19 @@
                 const x = (clickEvent || lastClick)?.clientX ?? window.innerWidth / 2;
                 const y = (clickEvent || lastClick)?.clientY ?? window.innerHeight / 2;
 
-                // First, trigger the video background transition (like social button)
+                // Determine correct background video based on destination
+                let targetVideo;
+                if (targetUrl === '/about' || targetUrl === '/whitepaper') {
+                    // About and WhitePaper pages use dark-wave-fabric-bg.mp4 (fabricVideo)
+                    targetVideo = fabricVideo;
+                    console.log('Using fabric video for About/WhitePaper transition');
+                } else {
+                    // Default to secondary video for other transitions
+                    targetVideo = secondaryVideo;
+                    console.log('Using secondary video for default transition');
+                }
+
+                // First, trigger the video background transition matching destination page
                 console.log('Triggering video background transition before page navigation');
 
                 try {
@@ -1034,19 +1046,24 @@
                         mainContent.classList.add('fade-out');
                     }
 
-                    // Switch to secondary video (black waves) for consistent transition
-                    if (secondaryVideo && typeof secondaryVideo.play === 'function') {
-                        secondaryVideo.play().catch(error => console.log('Video play failed:', error));
+                    // Switch to the correct destination video
+                    if (targetVideo && typeof targetVideo.play === 'function') {
+                        targetVideo.play().catch(error => console.log('Video play failed:', error));
 
-                        // Cross-fade to secondary video
-                        secondaryVideo.style.opacity = '1';
-                        secondaryVideo.style.zIndex = '-1';
+                        // Cross-fade to target video
+                        targetVideo.style.opacity = '1';
+                        targetVideo.style.zIndex = '-1';
 
+                        // Hide other videos
                         if (primaryVideo) {
                             primaryVideo.style.opacity = '0';
                             primaryVideo.style.zIndex = '-3';
                         }
-                        if (fabricVideo) {
+                        if (targetVideo !== secondaryVideo && secondaryVideo) {
+                            secondaryVideo.style.opacity = '0';
+                            secondaryVideo.style.zIndex = '-4';
+                        }
+                        if (targetVideo !== fabricVideo && fabricVideo) {
                             fabricVideo.style.opacity = '0';
                             fabricVideo.style.zIndex = '-4';
                         }
