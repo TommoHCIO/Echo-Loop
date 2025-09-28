@@ -69,3 +69,12 @@ temp/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Large video files (keep locally, not in GitHub)
+Echo Imgs/*.mov
+Echo Imgs/dark-golden-waves-background-loop-*.mov
+Echo Imgs/dark-wave-fabric-background-loop-*.mov
+
+# FFmpeg tools (temporary download)
+ffmpeg-master-latest-win64-gpl/
+ffmpeg.zip

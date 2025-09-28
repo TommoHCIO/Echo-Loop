@@ -534,18 +534,26 @@
     </style>
 </head>
 <body>
-    <!-- Video Background -->
+    <!-- Optimized Video Background - Golden Waves -->
     <video
         autoplay
         muted
         loop
         playsinline
         webkit-playsinline
-        preload="auto"
+        preload="metadata"
+        poster="dark-golden-waves-poster.jpg"
         class="video-background"
         id="background-video"
     >
-        <source src="dark-golden-waves-bg.mp4?v=20250928" type="video/mp4">
+        <!-- WebM format (30% smaller file size) -->
+        <source src="dark-golden-waves-bg.webm?v=20250928" type="video/webm" media="(min-width: 768px)">
+        <!-- MP4 format (universal compatibility) -->
+        <source src="dark-golden-waves-bg.mp4?v=20250928" type="video/mp4" media="(min-width: 768px)">
+        <!-- Mobile optimized version -->
+        <source src="dark-golden-waves-bg-mobile.mp4?v=20250928" type="video/mp4" media="(max-width: 767px)">
+        <!-- Fallback for very old browsers -->
+        <source src="background-video.mp4?v=20250928" type="video/mp4">
     </video>
 
 
@@ -592,28 +600,64 @@
 
 
 
-        // Mobile video playback handler
+        // 2025 Mobile-Optimized Video Handler
         function ensureVideoPlayback() {
             const video = document.getElementById('background-video');
-            if (video) {
-                // Force play for mobile devices
-                const playPromise = video.play();
+            if (!video) return;
 
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        console.log('Video autoplay succeeded');
-                    }).catch((error) => {
-                        console.log('Video autoplay failed:', error);
-                        // Retry on user interaction
-                        document.addEventListener('touchstart', function() {
-                            video.play().catch(e => console.log('Manual play failed:', e));
-                        }, { once: true });
+            // Detect mobile devices
+            const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
-                        document.addEventListener('click', function() {
-                            video.play().catch(e => console.log('Manual play failed:', e));
-                        }, { once: true });
-                    });
+            // Mobile optimization: Show poster image only for slow connections
+            if (isMobile && 'connection' in navigator) {
+                const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+                if (connection && (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g')) {
+                    video.style.display = 'none';
+                    document.body.style.backgroundImage = `url(${video.poster})`;
+                    document.body.style.backgroundSize = 'cover';
+                    document.body.style.backgroundPosition = 'center';
+                    return;
                 }
+            }
+
+            const playPromise = video.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log('Video autoplay succeeded');
+                }).catch((error) => {
+                    console.log('Video autoplay failed:', error);
+                    // Graceful fallback to poster image
+                    if (video.poster) {
+                        document.body.style.backgroundImage = `url(${video.poster})`;
+                        document.body.style.backgroundSize = 'cover';
+                        document.body.style.backgroundPosition = 'center';
+                    }
+
+                    // Retry on user interaction
+                    document.addEventListener('touchstart', function() {
+                        video.play().catch(e => console.log('Manual play failed:', e));
+                    }, { once: true });
+
+                    document.addEventListener('click', function() {
+                        video.play().catch(e => console.log('Manual play failed:', e));
+                    }, { once: true });
+                });
+            }
+        }
+
+        // Battery optimization for mobile
+        function initBatteryOptimization() {
+            if ('getBattery' in navigator) {
+                navigator.getBattery().then(battery => {
+                    if (battery.level < 0.2) {
+                        const video = document.getElementById('background-video');
+                        if (video) {
+                            video.pause();
+                            console.log('Video paused due to low battery');
+                        }
+                    }
+                });
             }
         }
 
@@ -628,6 +672,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Ensure video plays on mobile
             ensureVideoPlayback();
+
+            // Initialize battery optimization
+            initBatteryOptimization();
 
             // Add event listener for About button (redirect to new page)
             const aboutButton = document.getElementById('aboutButton');
