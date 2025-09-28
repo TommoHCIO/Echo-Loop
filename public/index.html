@@ -541,7 +541,6 @@
         playsinline
         webkit-playsinline
         preload="metadata"
-        poster="dark-golden-waves-poster.jpg"
         class="video-background"
         id="background-video"
     >
@@ -607,15 +606,12 @@
             // Detect mobile devices
             const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
-            // Mobile optimization: Show poster image only for slow connections
+            // Mobile optimization: reduced for better performance on slow connections
             if (isMobile && 'connection' in navigator) {
                 const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
                 if (connection && (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g')) {
-                    video.style.display = 'none';
-                    document.body.style.backgroundImage = `url(${video.poster})`;
-                    document.body.style.backgroundSize = 'cover';
-                    document.body.style.backgroundPosition = 'center';
-                    return;
+                    // Skip video optimization for very slow connections
+                    console.log('Slow connection detected, video may not load optimally');
                 }
             }
 
@@ -626,12 +622,7 @@
                     console.log('Video autoplay succeeded');
                 }).catch((error) => {
                     console.log('Video autoplay failed:', error);
-                    // Graceful fallback to poster image
-                    if (video.poster) {
-                        document.body.style.backgroundImage = `url(${video.poster})`;
-                        document.body.style.backgroundSize = 'cover';
-                        document.body.style.backgroundPosition = 'center';
-                    }
+                    // Video autoplay failed - no fallback image available
 
                     // Retry on user interaction
                     document.addEventListener('touchstart', function() {
