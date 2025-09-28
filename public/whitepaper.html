@@ -15,12 +15,18 @@
 
     <style>
         :root {
+            --primary-dark: #000000;
+            --primary-purple: #1a0033;
+            --accent-purple: #8b5cf6;
+            --text-white: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.7);
             --text-primary: #ffffff;
             --text-secondary: rgba(255, 255, 255, 0.8);
             --text-muted: rgba(255, 255, 255, 0.6);
             --accent-color: #d4af37;
             --accent-hover: #b8941f;
             --border-color: rgba(255, 255, 255, 0.2);
+            --glow-color: rgba(139, 92, 246, 0.4);
             --overlay-bg: rgba(0, 0, 0, 0.7);
             --toc-bg: rgba(0, 0, 0, 0.95);
         }
@@ -92,7 +98,7 @@
         }
 
         .logo img {
-            height: 32px;
+            height: 128px;
             width: auto;
             filter: brightness(0) saturate(100%) invert(74%) sepia(85%) saturate(586%) hue-rotate(355deg) brightness(108%) contrast(88%);
         }
@@ -104,42 +110,104 @@
         }
 
         .toc-toggle {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-white);
+            padding: 1.2rem 2rem;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
             font-family: 'Aptos Light', 'Aptos', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             font-weight: 300;
-            background: none;
-            border: 1px solid var(--border-color);
-            padding: 6px 14px;
-            border-radius: 20px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 400;
-            transition: all 0.2s ease;
-            letter-spacing: 0.3px;
+        }
+
+        .toc-toggle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--glow-color);
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
         }
 
         .toc-toggle:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
+            border-color: var(--accent-purple);
+            color: var(--text-white);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px var(--glow-color);
+        }
+
+        .toc-toggle:hover::before {
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+        }
+
+        .toc-toggle span {
+            position: relative;
+            z-index: 1;
         }
 
         .back-button {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-white);
+            padding: 1.2rem 2rem;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
             font-family: 'Aptos Light', 'Aptos', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             font-weight: 300;
-            background: none;
-            border: 1px solid var(--border-color);
-            padding: 8px 16px;
-            border-radius: 24px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
+        }
+
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--glow-color);
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
         }
 
         .back-button:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
+            border-color: var(--accent-purple);
+            color: var(--text-white);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px var(--glow-color);
+        }
+
+        .back-button:hover::before {
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+        }
+
+        .back-button span {
+            position: relative;
+            z-index: 1;
         }
 
         /* Table of Contents */
@@ -502,8 +570,8 @@
                 <img src="echo-loop-logo.png" alt="EchoLoop" />
             </a>
             <div class="header-controls">
-                <button class="toc-toggle" id="tocToggle">📖 Contents</button>
-                <a href="/" class="back-button">← Back to Home</a>
+                <button class="toc-toggle" id="tocToggle"><span>📖 Contents</span></button>
+                <a href="/" class="back-button"><span>← Back to Home</span></a>
             </div>
         </div>
     </header>

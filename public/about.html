@@ -15,12 +15,18 @@
 
     <style>
         :root {
+            --primary-dark: #000000;
+            --primary-purple: #1a0033;
+            --accent-purple: #8b5cf6;
+            --text-white: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.7);
             --text-primary: #ffffff;
             --text-secondary: rgba(255, 255, 255, 0.8);
             --text-muted: rgba(255, 255, 255, 0.6);
             --accent-color: #d4af37;
             --accent-hover: #b8941f;
             --border-color: rgba(255, 255, 255, 0.2);
+            --glow-color: rgba(139, 92, 246, 0.4);
             --overlay-bg: rgba(0, 0, 0, 0.6);
         }
 
@@ -91,28 +97,65 @@
         }
 
         .logo img {
-            height: 32px;
+            height: 128px;
             width: auto;
             filter: brightness(0) saturate(100%) invert(74%) sepia(85%) saturate(586%) hue-rotate(355deg) brightness(108%) contrast(88%);
         }
 
-        .back-button {
+        .back-button,
+        .cta-link {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-white);
+            padding: 1.2rem 2rem;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
             font-family: 'Aptos Light', 'Aptos', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             font-weight: 300;
-            background: none;
-            border: 1px solid var(--border-color);
-            padding: 8px 16px;
-            border-radius: 24px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
         }
 
-        .back-button:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
+        .back-button::before,
+        .cta-link::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--glow-color);
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+
+        .back-button:hover,
+        .cta-link:hover {
+            border-color: var(--accent-purple);
+            color: var(--text-white);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px var(--glow-color);
+        }
+
+        .back-button:hover::before,
+        .cta-link:hover::before {
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+        }
+
+        .back-button span,
+        .cta-link span {
+            position: relative;
+            z-index: 1;
         }
 
         /* Main Content */
@@ -231,23 +274,6 @@
             color: var(--text-secondary);
         }
 
-        .cta-link {
-            display: inline-block;
-            padding: 12px 24px;
-            background: var(--accent-color);
-            color: #000;
-            text-decoration: none;
-            border-radius: 24px;
-            font-weight: 600;
-            font-family: 'Aptos Light', 'Aptos', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            font-weight: 300;
-            transition: all 0.2s ease;
-        }
-
-        .cta-link:hover {
-            background: var(--accent-hover);
-            transform: translateY(-1px);
-        }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -314,7 +340,7 @@
             <a href="/" class="logo">
                 <img src="echo-loop-logo.png" alt="EchoLoop" />
             </a>
-            <a href="/" class="back-button">← Back to Home</a>
+            <a href="/" class="back-button"><span>← Back to Home</span></a>
         </div>
     </header>
 
@@ -363,7 +389,7 @@
                 <div class="cta-section">
                     <h3 class="cta-title">Ready to Learn More?</h3>
                     <p class="cta-description">Dive deeper into the technical architecture and tokenomics of the EchoLoop Protocol.</p>
-                    <a href="/whitepaper.html" class="cta-link">Read the Whitepaper</a>
+                    <a href="/whitepaper.html" class="cta-link"><span>Read the Whitepaper</span></a>
                 </div>
             </div>
         </article>
