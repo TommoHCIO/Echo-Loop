@@ -475,19 +475,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 3rem;
+            gap: 5rem;
             z-index: 10;
             flex-wrap: wrap;
             padding: 2rem;
         }
 
         .platform-button {
-            background: transparent;
-            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid var(--border-color);
             color: var(--text-white);
             padding: 1.5rem;
-            width: 70px;
-            height: 70px;
+            width: 80px;
+            height: 80px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
@@ -499,17 +499,19 @@
             border-radius: 50%;
             opacity: 0;
             transform: translateY(-100vh);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .platform-button svg {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             fill: currentColor;
         }
 
         /* Telegram Button */
         .telegram-btn {
-            animation: slideFromTop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            animation: slideFromLeft 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
             animation-delay: 0.3s;
         }
         .telegram-btn:hover {
@@ -522,7 +524,7 @@
 
         /* Discord Button */
         .discord-btn {
-            animation: slideFromLeft 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            animation: slideFromTop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
             animation-delay: 0.5s;
         }
         .discord-btn:hover {
@@ -547,10 +549,10 @@
 
         /* Reverse animations for exit */
         .telegram-btn.exit {
-            animation: slideToTop 0.6s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
+            animation: slideToLeft 0.6s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
         }
         .discord-btn.exit {
-            animation: slideToLeft 0.6s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
+            animation: slideToTop 0.6s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
             animation-delay: 0.1s;
         }
         .x-btn.exit {
@@ -654,18 +656,20 @@
 
         @media (max-width: 768px) {
             .social-platforms {
-                gap: 2rem;
+                gap: 3rem;
             }
 
             .platform-button {
-                width: 60px;
-                height: 60px;
+                width: 70px;
+                height: 70px;
                 padding: 1rem;
+                background: rgba(255, 255, 255, 0.1);
+                border: 2px solid var(--border-color);
             }
 
             .platform-button svg {
-                width: 24px;
-                height: 24px;
+                width: 28px;
+                height: 28px;
             }
 
             .modal {
