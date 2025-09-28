@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Enhanced Mobile Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <title>EchoLoop - Your Voice Has Value | $LOOP</title>
     <meta name="description" content="EchoLoop - A SocialFi engagement economy where your daily activity equals real token rewards. Close the loop with $LOOP.">
     <meta name="keywords" content="EchoLoop, LOOP token, SocialFi, DeFi, Web3, engagement rewards, crypto, blockchain">
@@ -19,8 +24,10 @@
     <meta property="twitter:description" content="A SocialFi engagement economy where your daily activity equals real token rewards.">
     <meta property="twitter:image" content="/og-image.png">
 
-    <!-- Performance -->
+    <!-- Performance & Mobile -->
     <meta name="theme-color" content="#1a0033">
+    <meta name="apple-mobile-web-app-title" content="EchoLoop">
+    <meta name="format-detection" content="telephone=no">
 
     <!-- Aptos Light font with fallbacks -->
 
@@ -45,11 +52,24 @@
             --text-dim: rgba(255, 255, 255, 0.7);
             --border-color: rgba(255, 255, 255, 0.2);
             --glow-color: rgba(139, 92, 246, 0.4);
+
+            /* Fluid Typography Scale */
+            --font-size-xs: clamp(0.75rem, 1.5vw, 0.875rem);
+            --font-size-sm: clamp(0.875rem, 2vw, 1rem);
+            --font-size-base: clamp(1rem, 2.5vw, 1.25rem);
+            --font-size-lg: clamp(1.125rem, 3vw, 1.5rem);
+            --font-size-xl: clamp(1.25rem, 3.5vw, 1.875rem);
+            --font-size-2xl: clamp(1.5rem, 4vw, 2.25rem);
+            --font-size-3xl: clamp(1.875rem, 5vw, 3rem);
+            --font-size-4xl: clamp(2.25rem, 6vw, 3.75rem);
+            --font-size-5xl: clamp(3rem, 8vw, 5rem);
+            --font-size-6xl: clamp(3.75rem, 10vw, 6rem);
         }
 
         body {
             font-family: 'Aptos Light', 'Aptos', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             font-weight: 300;
+            font-size: var(--font-size-base);
             color: var(--text-white);
             min-height: 100vh;
             display: flex;
@@ -138,7 +158,9 @@
             border: 1px solid var(--border-color);
             color: var(--text-white);
             padding: 1.2rem 2rem;
-            font-size: 0.95rem;
+            min-height: 44px;
+            min-width: 120px;
+            font-size: var(--font-size-sm);
             letter-spacing: 0.05em;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -148,6 +170,7 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
+            border-radius: 4px;
         }
 
         .nav-button::before {
@@ -239,7 +262,7 @@
             }
 
             .tagline {
-                font-size: 0.9rem;
+                font-size: var(--font-size-sm);
                 margin-bottom: 40px;
             }
 
@@ -252,7 +275,7 @@
 
             .nav-button {
                 padding: 1rem 1.5rem;
-                font-size: 0.9rem;
+                font-size: var(--font-size-sm);
             }
         }
 
@@ -326,7 +349,7 @@
         }
 
         .modal-title {
-            font-size: 2.8rem;
+            font-size: var(--font-size-5xl);
             font-weight: 700;
             letter-spacing: 0.05em;
             background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
@@ -339,7 +362,7 @@
             background: none;
             border: none;
             color: var(--text-dim);
-            font-size: 1.5rem;
+            font-size: var(--font-size-xl);
             cursor: pointer;
             padding: 0.5rem;
             transition: color 0.3s ease;
@@ -382,7 +405,7 @@
         .about-text {
             color: rgba(255, 255, 255, 0.88);
             margin-bottom: 1.2rem;
-            font-size: 1.1rem;
+            font-size: var(--font-size-lg);
             line-height: 1.7;
             letter-spacing: 0.01em;
         }
@@ -451,7 +474,7 @@
             padding: 1.3rem 2rem;
             border: none;
             border-radius: 15px;
-            font-size: 1.1rem;
+            font-size: var(--font-size-lg);
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -821,10 +844,15 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: var(--text-white);
             padding: 0.8rem 1.5rem;
+            min-height: 44px;
+            min-width: 44px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .close-button:hover {
@@ -853,6 +881,47 @@
         /* Ensure smooth scrolling within overlay */
         .content-overlay {
             scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+        }
+
+        /* Mobile-specific navigation improvements */
+        @media (hover: none) and (pointer: coarse) {
+            /* Touch device specific styles */
+            .platform-button:active {
+                transform: scale(0.95);
+                background: rgba(255, 255, 255, 0.15);
+            }
+
+            .nav-button:active {
+                transform: scale(0.98);
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .close-button:active {
+                transform: scale(0.95);
+                background: rgba(255, 255, 255, 0.2);
+            }
+
+            /* Increase touch targets for mobile */
+            .platform-button {
+                margin: 0.25rem;
+            }
+
+            .nav-button {
+                margin: 0.25rem 0;
+            }
+        }
+
+        /* Prevent text selection on touch devices */
+        @media (pointer: coarse) {
+            .nav-button, .platform-button, .close-button {
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                -webkit-tap-highlight-color: transparent;
+            }
         }
 
         .overlay-content .article-meta {
@@ -923,7 +992,7 @@
             }
 
             .overlay-header h1 {
-                font-size: 2rem;
+                font-size: var(--font-size-2xl);
             }
 
             .timeline-item {
