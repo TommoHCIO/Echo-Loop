@@ -45,6 +45,16 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// About page route
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'about.html'));
+});
+
+// Whitepaper page route
+app.get('/whitepaper', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'whitepaper.html'));
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({
