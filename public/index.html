@@ -749,6 +749,43 @@
             }
         }
 
+        /* View Transitions API Styles */
+        @view-transition {
+            navigation: auto;
+        }
+
+        /* Customize the default view transition */
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation-duration: 0.5s;
+            animation-timing-function: ease-out;
+        }
+
+        /* Default cross-fade transition */
+        ::view-transition-old(root) {
+            animation-name: fade-out;
+        }
+
+        ::view-transition-new(root) {
+            animation-name: fade-in;
+        }
+
+        /* Custom fade animations */
+        @keyframes fade-out {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes fade-in {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Smooth transition for fallback browsers */
+        .page-transition-fallback {
+            transition: opacity 0.3s ease-out;
+        }
+
     </style>
 </head>
 <body>
@@ -938,100 +975,146 @@
             const fabricVideo = document.getElementById('fabric-video');
 
             // Enhanced function for background video transitions with error handling
-            function transitionToVideo(targetVideo, callback) {
-                console.log('TransitionToVideo called with:', targetVideo ? 'valid video' : 'null video');
+            // Store last click position for circular reveal transitions
+            let lastClick;
+            document.addEventListener('click', (event) => {
+                lastClick = event;
+            });
 
-                // Ensure callback executes regardless of video success
-                let callbackExecuted = false;
-
-                // Fallback navigation - ensure callback runs within 2 seconds
-                const fallbackTimeout = setTimeout(() => {
-                    if (!callbackExecuted && callback) {
-                        console.log('Fallback navigation triggered');
-                        callbackExecuted = true;
-                        callback();
-                    }
-                }, 2000);
+            // Simple video transition for internal state changes (social button)
+            function simpleVideoTransition(targetVideo, callback) {
+                console.log('Simple video transition for internal state change');
 
                 try {
-                    // Fade out main content immediately
+                    // Fade out main content
                     if (mainContent) {
                         mainContent.classList.add('fade-out');
                     }
 
-                    // Attempt video operations with error handling
+                    // Quick video transition
                     if (targetVideo && typeof targetVideo.play === 'function') {
-                        const playPromise = targetVideo.play();
+                        targetVideo.play().catch(error => console.log('Video play failed:', error));
 
-                        // Handle play promise if it exists
-                        if (playPromise !== undefined) {
-                            playPromise.catch(error => {
-                                console.log('Video play failed:', error);
-                                // Continue with animation even if video fails
-                            });
+                        // Cross-fade videos
+                        targetVideo.style.opacity = '1';
+                        targetVideo.style.zIndex = '-1';
+
+                        if (primaryVideo) {
+                            primaryVideo.style.opacity = '0';
+                            primaryVideo.style.zIndex = '-3';
                         }
+                    }
 
-                        // After main content starts fading, begin video transition
-                        setTimeout(() => {
-                            try {
-                                // Cross-fade videos
-                                targetVideo.style.opacity = '1';
-                                targetVideo.style.zIndex = '-1';
+                    // Execute callback after short transition
+                    setTimeout(() => {
+                        if (callback) callback();
+                    }, 300);
 
-                                if (primaryVideo) {
-                                    primaryVideo.style.opacity = '0';
-                                    primaryVideo.style.zIndex = '-3';
-                                }
+                } catch (error) {
+                    console.log('Simple video transition error:', error);
+                    // Fallback - execute callback immediately
+                    if (callback) callback();
+                }
+            }
 
-                                // Hide all other videos
-                                if (targetVideo !== secondaryVideo && secondaryVideo) {
-                                    secondaryVideo.style.opacity = '0';
-                                    secondaryVideo.style.zIndex = '-4';
-                                }
-                                if (targetVideo !== fabricVideo && fabricVideo) {
-                                    fabricVideo.style.opacity = '0';
-                                    fabricVideo.style.zIndex = '-4';
-                                }
+            // Modern page transition using View Transitions API with video background coordination
+            function modernPageTransition(targetUrl, clickEvent = null) {
+                console.log('Modern page transition to:', targetUrl);
 
-                                // Execute callback after transition
-                                setTimeout(() => {
-                                    if (!callbackExecuted && callback) {
-                                        console.log('Normal navigation callback triggered');
-                                        callbackExecuted = true;
-                                        clearTimeout(fallbackTimeout);
-                                        callback();
-                                    }
-                                }, 500);
-                            } catch (error) {
-                                console.log('Video transition error:', error);
-                                // Ensure callback still executes
-                                if (!callbackExecuted && callback) {
-                                    callbackExecuted = true;
-                                    clearTimeout(fallbackTimeout);
-                                    callback();
-                                }
-                            }
-                        }, 300);
-                    } else {
-                        console.log('Invalid video element, executing callback immediately');
-                        // No valid video, execute callback immediately
-                        setTimeout(() => {
-                            if (!callbackExecuted && callback) {
-                                callbackExecuted = true;
-                                clearTimeout(fallbackTimeout);
-                                callback();
-                            }
-                        }, 800); // Short delay for fade-out effect
+                // Get click position for circular reveal, fallback to center
+                const x = (clickEvent || lastClick)?.clientX ?? window.innerWidth / 2;
+                const y = (clickEvent || lastClick)?.clientY ?? window.innerHeight / 2;
+
+                // First, trigger the video background transition (like social button)
+                console.log('Triggering video background transition before page navigation');
+
+                try {
+                    // Fade out main content
+                    if (mainContent) {
+                        mainContent.classList.add('fade-out');
+                    }
+
+                    // Switch to secondary video (black waves) for consistent transition
+                    if (secondaryVideo && typeof secondaryVideo.play === 'function') {
+                        secondaryVideo.play().catch(error => console.log('Video play failed:', error));
+
+                        // Cross-fade to secondary video
+                        secondaryVideo.style.opacity = '1';
+                        secondaryVideo.style.zIndex = '-1';
+
+                        if (primaryVideo) {
+                            primaryVideo.style.opacity = '0';
+                            primaryVideo.style.zIndex = '-3';
+                        }
+                        if (fabricVideo) {
+                            fabricVideo.style.opacity = '0';
+                            fabricVideo.style.zIndex = '-4';
+                        }
                     }
                 } catch (error) {
-                    console.log('TransitionToVideo error:', error);
-                    // Ensure callback executes even on error
-                    if (!callbackExecuted && callback) {
-                        callbackExecuted = true;
-                        clearTimeout(fallbackTimeout);
-                        callback();
-                    }
+                    console.log('Video transition error:', error);
                 }
+
+                // Progressive enhancement - check for View Transitions API support
+                if (!document.startViewTransition) {
+                    console.log('View Transitions API not supported, using fallback');
+                    // Fallback: navigate after video transition
+                    setTimeout(() => {
+                        window.location.href = targetUrl;
+                    }, 500);
+                    return;
+                }
+
+                // Use View Transitions API for smooth modern transitions after video change
+                setTimeout(() => {
+                    const transition = document.startViewTransition(() => {
+                        // This is where the DOM would update for SPA navigation
+                        // For page navigation, we'll trigger it after animation starts
+                    });
+
+                    // Wait for pseudo-elements to be created
+                    transition.ready.then(() => {
+                        // Calculate distance to furthest corner for circular reveal
+                        const endRadius = Math.hypot(
+                            Math.max(x, window.innerWidth - x),
+                            Math.max(y, window.innerHeight - y)
+                        );
+
+                        // Create circular reveal animation
+                        document.documentElement.animate(
+                            {
+                                clipPath: [
+                                    `circle(0 at ${x}px ${y}px)`,
+                                    `circle(${endRadius}px at ${x}px ${y}px)`
+                                ]
+                            },
+                            {
+                                duration: 400,
+                                easing: 'ease-out',
+                                pseudoElement: '::view-transition-new(root)'
+                            }
+                        );
+
+                        // Navigate after animation starts
+                        setTimeout(() => {
+                            window.location.href = targetUrl;
+                        }, 150);
+                    }).catch((error) => {
+                        console.log('View transition failed, falling back to direct navigation:', error);
+                        // Fallback if transition fails
+                        setTimeout(() => {
+                            window.location.href = targetUrl;
+                        }, 200);
+                    });
+
+                    // Timeout fallback to ensure navigation happens
+                    setTimeout(() => {
+                        if (!transition.finished) {
+                            console.log('Transition timeout, forcing navigation');
+                            window.location.href = targetUrl;
+                        }
+                    }, 2000);
+                }, 300); // Allow time for video transition to start
             }
 
             // Function to return to homepage background
@@ -1087,62 +1170,32 @@
                 }, 800);
             }
 
-            // Enhanced About button with smooth animation matching social button
+            // Modern About button with View Transitions API
             const aboutButton = document.getElementById('aboutButton');
             console.log('About button found:', aboutButton ? 'Yes' : 'No');
             if (aboutButton) {
                 aboutButton.addEventListener('click', function(e) {
                     e.preventDefault();
-                    console.log('About button clicked - starting smooth transition');
-                    console.log('FabricVideo available:', fabricVideo ? 'Yes' : 'No');
+                    console.log('About button clicked - starting modern transition');
 
-                    try {
-                        // Use black waves video for smoother transition (matching social button)
-                        transitionToVideo(secondaryVideo, () => {
-                            console.log('About navigation callback executing');
-                            // Add a small delay for smoother visual transition
-                            setTimeout(() => {
-                                window.location.href = '/about';
-                            }, 200);
-                        });
-                    } catch (error) {
-                        console.log('About button error:', error);
-                        // Fallback navigation
-                        setTimeout(() => {
-                            window.location.href = '/about';
-                        }, 200);
-                    }
+                    // Use modern page transition with click position
+                    modernPageTransition('/about', e);
                 });
                 console.log('About button event listener added');
             } else {
                 console.log('ERROR: About button not found in DOM');
             }
 
-            // Enhanced Whitepaper button with smooth animation matching social button
+            // Modern Whitepaper button with View Transitions API
             const whitepaperButton = document.getElementById('whitepaperButton');
             console.log('Whitepaper button found:', whitepaperButton ? 'Yes' : 'No');
             if (whitepaperButton) {
                 whitepaperButton.addEventListener('click', function(e) {
                     e.preventDefault();
-                    console.log('Whitepaper button clicked - starting smooth transition');
-                    console.log('FabricVideo available:', fabricVideo ? 'Yes' : 'No');
+                    console.log('Whitepaper button clicked - starting modern transition');
 
-                    try {
-                        // Use black waves video for smoother transition (matching social button)
-                        transitionToVideo(secondaryVideo, () => {
-                            console.log('Whitepaper navigation callback executing');
-                            // Add a small delay for smoother visual transition
-                            setTimeout(() => {
-                                window.location.href = '/whitepaper';
-                            }, 200);
-                        });
-                    } catch (error) {
-                        console.log('Whitepaper button error:', error);
-                        // Fallback navigation
-                        setTimeout(() => {
-                            window.location.href = '/whitepaper';
-                        }, 200);
-                    }
+                    // Use modern page transition with click position
+                    modernPageTransition('/whitepaper', e);
                 });
                 console.log('Whitepaper button event listener added');
             } else {
@@ -1153,7 +1206,7 @@
                 socialButton.addEventListener('click', function(e) {
                     e.preventDefault();
 
-                    transitionToVideo(secondaryVideo, () => {
+                    simpleVideoTransition(secondaryVideo, () => {
                         // Hide main content and show social platforms
                         mainContent.style.display = 'none';
                         socialPlatforms.style.display = 'flex';
