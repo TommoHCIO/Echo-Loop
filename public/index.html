@@ -1025,17 +1025,9 @@
                 const x = (clickEvent || lastClick)?.clientX ?? window.innerWidth / 2;
                 const y = (clickEvent || lastClick)?.clientY ?? window.innerHeight / 2;
 
-                // Determine correct background video based on destination
-                let targetVideo;
-                if (targetUrl === '/about' || targetUrl === '/whitepaper') {
-                    // About and WhitePaper pages use dark-wave-fabric-bg.mp4 (fabricVideo)
-                    targetVideo = fabricVideo;
-                    console.log('Using fabric video for About/WhitePaper transition');
-                } else {
-                    // Default to secondary video for other transitions
-                    targetVideo = secondaryVideo;
-                    console.log('Using secondary video for default transition');
-                }
+                // Use whitepaper background video (fabricVideo) for all page transitions
+                let targetVideo = fabricVideo;
+                console.log('Using fabric video (whitepaper background) for all page transitions to:', targetUrl);
 
                 // First, trigger the video background transition matching destination page
                 console.log('Triggering video background transition before page navigation');
