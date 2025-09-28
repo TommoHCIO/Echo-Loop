@@ -1017,7 +1017,7 @@
                 }
             }
 
-            // Modern page transition using View Transitions API with video background coordination
+            // Modern page transition using View Transitions API without background video changes
             function modernPageTransition(targetUrl, clickEvent = null) {
                 console.log('Modern page transition to:', targetUrl);
 
@@ -1025,105 +1025,60 @@
                 const x = (clickEvent || lastClick)?.clientX ?? window.innerWidth / 2;
                 const y = (clickEvent || lastClick)?.clientY ?? window.innerHeight / 2;
 
-                // Use whitepaper background video (fabricVideo) for all page transitions
-                let targetVideo = fabricVideo;
-                console.log('Using fabric video (whitepaper background) for all page transitions to:', targetUrl);
-
-                // First, trigger the video background transition matching destination page
-                console.log('Triggering video background transition before page navigation');
-
-                try {
-                    // Fade out main content
-                    if (mainContent) {
-                        mainContent.classList.add('fade-out');
-                    }
-
-                    // Switch to the correct destination video
-                    if (targetVideo && typeof targetVideo.play === 'function') {
-                        targetVideo.play().catch(error => console.log('Video play failed:', error));
-
-                        // Cross-fade to target video
-                        targetVideo.style.opacity = '1';
-                        targetVideo.style.zIndex = '-1';
-
-                        // Hide other videos
-                        if (primaryVideo) {
-                            primaryVideo.style.opacity = '0';
-                            primaryVideo.style.zIndex = '-3';
-                        }
-                        if (targetVideo !== secondaryVideo && secondaryVideo) {
-                            secondaryVideo.style.opacity = '0';
-                            secondaryVideo.style.zIndex = '-4';
-                        }
-                        if (targetVideo !== fabricVideo && fabricVideo) {
-                            fabricVideo.style.opacity = '0';
-                            fabricVideo.style.zIndex = '-4';
-                        }
-                    }
-                } catch (error) {
-                    console.log('Video transition error:', error);
-                }
-
                 // Progressive enhancement - check for View Transitions API support
                 if (!document.startViewTransition) {
                     console.log('View Transitions API not supported, using fallback');
-                    // Fallback: navigate after video transition
-                    setTimeout(() => {
-                        window.location.href = targetUrl;
-                    }, 500);
+                    // Simple fallback navigation
+                    window.location.href = targetUrl;
                     return;
                 }
 
-                // Use View Transitions API for smooth modern transitions after video change
-                setTimeout(() => {
-                    const transition = document.startViewTransition(() => {
-                        // This is where the DOM would update for SPA navigation
-                        // For page navigation, we'll trigger it after animation starts
-                    });
+                // Use View Transitions API for smooth modern transitions
+                const transition = document.startViewTransition(() => {
+                    // This is where the DOM would update for SPA navigation
+                    // For page navigation, we'll trigger it after animation starts
+                });
 
-                    // Wait for pseudo-elements to be created
-                    transition.ready.then(() => {
-                        // Calculate distance to furthest corner for circular reveal
-                        const endRadius = Math.hypot(
-                            Math.max(x, window.innerWidth - x),
-                            Math.max(y, window.innerHeight - y)
-                        );
+                // Wait for pseudo-elements to be created
+                transition.ready.then(() => {
+                    // Calculate distance to furthest corner for circular reveal
+                    const endRadius = Math.hypot(
+                        Math.max(x, window.innerWidth - x),
+                        Math.max(y, window.innerHeight - y)
+                    );
 
-                        // Create circular reveal animation
-                        document.documentElement.animate(
-                            {
-                                clipPath: [
-                                    `circle(0 at ${x}px ${y}px)`,
-                                    `circle(${endRadius}px at ${x}px ${y}px)`
-                                ]
-                            },
-                            {
-                                duration: 400,
-                                easing: 'ease-out',
-                                pseudoElement: '::view-transition-new(root)'
-                            }
-                        );
-
-                        // Navigate after animation starts
-                        setTimeout(() => {
-                            window.location.href = targetUrl;
-                        }, 150);
-                    }).catch((error) => {
-                        console.log('View transition failed, falling back to direct navigation:', error);
-                        // Fallback if transition fails
-                        setTimeout(() => {
-                            window.location.href = targetUrl;
-                        }, 200);
-                    });
-
-                    // Timeout fallback to ensure navigation happens
-                    setTimeout(() => {
-                        if (!transition.finished) {
-                            console.log('Transition timeout, forcing navigation');
-                            window.location.href = targetUrl;
+                    // Create circular reveal animation
+                    document.documentElement.animate(
+                        {
+                            clipPath: [
+                                `circle(0 at ${x}px ${y}px)`,
+                                `circle(${endRadius}px at ${x}px ${y}px)`
+                            ]
+                        },
+                        {
+                            duration: 400,
+                            easing: 'ease-out',
+                            pseudoElement: '::view-transition-new(root)'
                         }
-                    }, 2000);
-                }, 300); // Allow time for video transition to start
+                    );
+
+                    // Navigate after animation starts
+                    setTimeout(() => {
+                        window.location.href = targetUrl;
+                    }, 150);
+                }).catch((error) => {
+                    console.log('View transition failed, falling back to direct navigation:', error);
+                    // Fallback if transition fails
+                    window.location.href = targetUrl;
+                });
+
+                // Timeout fallback to ensure navigation happens
+                setTimeout(() => {
+                    if (!transition.finished) {
+                        console.log('Transition timeout, forcing navigation');
+                        window.location.href = targetUrl;
+                    }
+                }, 2000);
             }
 
             // Function to return to homepage background
