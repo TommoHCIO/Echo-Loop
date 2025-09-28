@@ -1304,40 +1304,93 @@
                 }, 1000);
             }
 
-            // Function to close social platforms
-            function closeSocialPlatforms() {
+            // Function to close social platforms with smooth transition
+            function closeSocialPlatforms(clickEvent = null) {
+                console.log('Closing social platforms with transition');
+
+                // Get click position for reverse circular reveal, default to center
+                const x = (clickEvent || lastClick)?.clientX ?? window.innerWidth / 2;
+                const y = (clickEvent || lastClick)?.clientY ?? window.innerHeight / 2;
+
                 const platformButtons = socialPlatforms.querySelectorAll('.platform-button');
 
-                // Add exit animations
-                platformButtons.forEach((button) => {
-                    button.classList.add('exit');
-                });
+                // Progressive enhancement - check for View Transitions API support
+                if (!document.startViewTransition) {
+                    console.log('View Transitions API not supported, using legacy social close');
+                    // Legacy animation for platforms
+                    platformButtons.forEach((button) => {
+                        button.classList.add('exit');
+                    });
 
-                // Wait for animations to complete
-                setTimeout(() => {
-                    // Hide social platforms
+                    setTimeout(() => {
+                        socialPlatforms.style.display = 'none';
+                        mainContent.style.display = 'block';
+                        mainContent.classList.remove('fade-out');
+
+                        const elements = mainContent.querySelectorAll('.logo-image, .tagline, .nav-grid');
+                        elements.forEach(el => {
+                            el.style.animation = 'none';
+                            el.offsetHeight;
+                            el.style.animation = null;
+                        });
+
+                        returnToHomepage();
+                        platformButtons.forEach((button) => {
+                            button.classList.remove('exit');
+                        });
+                    }, 800);
+                    return;
+                }
+
+                // Use View Transitions API for smooth return transition
+                const transition = document.startViewTransition(() => {
+                    // Hide social platforms and show main content
                     socialPlatforms.style.display = 'none';
-
-                    // Show main content
                     mainContent.style.display = 'block';
                     mainContent.classList.remove('fade-out');
+                });
 
-                    // Reset main content animations
-                    const elements = mainContent.querySelectorAll('.logo-image, .tagline, .nav-grid');
-                    elements.forEach(el => {
-                        el.style.animation = 'none';
-                        el.offsetHeight; // Trigger reflow
-                        el.style.animation = null;
-                    });
+                // Wait for pseudo-elements to be created
+                transition.ready.then(() => {
+                    // Calculate distance to furthest corner for reverse circular reveal
+                    const endRadius = Math.hypot(
+                        Math.max(x, window.innerWidth - x),
+                        Math.max(y, window.innerHeight - y)
+                    );
 
-                    // Return to homepage background
+                    // Create reverse circular reveal animation (closing from full to point)
+                    document.documentElement.animate(
+                        {
+                            clipPath: [
+                                `circle(${endRadius}px at ${x}px ${y}px)`,
+                                `circle(0 at ${x}px ${y}px)`
+                            ]
+                        },
+                        {
+                            duration: 1300,
+                            easing: 'ease-in',
+                            pseudoElement: '::view-transition-old(root)'
+                        }
+                    );
+
+                    // Reset animations and return to homepage background
+                    setTimeout(() => {
+                        const elements = mainContent.querySelectorAll('.logo-image, .tagline, .nav-grid');
+                        elements.forEach(el => {
+                            el.style.animation = 'none';
+                            el.offsetHeight; // Trigger reflow
+                            el.style.animation = null;
+                        });
+                        returnToHomepage();
+                    }, 200);
+                }).catch((error) => {
+                    console.log('Social return transition failed, falling back to direct close:', error);
+                    // Fallback if transition fails
+                    socialPlatforms.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    mainContent.classList.remove('fade-out');
                     returnToHomepage();
-
-                    // Remove exit classes for next time
-                    platformButtons.forEach((button) => {
-                        button.classList.remove('exit');
-                    });
-                }, 800);
+                });
             }
 
             // Modern About button with overlay transition
@@ -1487,7 +1540,7 @@
                 socialPlatforms.addEventListener('click', function(e) {
                     // Check if click is on the background (not on a button)
                     if (e.target === socialPlatforms) {
-                        closeSocialPlatforms();
+                        closeSocialPlatforms(e);
                     }
                 });
 
