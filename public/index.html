@@ -32,6 +32,11 @@
             box-sizing: border-box;
         }
 
+        /* Smooth scrolling for anchor links */
+        html {
+            scroll-behavior: smooth;
+        }
+
         :root {
             --primary-dark: #000000;
             --primary-purple: #1a0033;
@@ -839,6 +844,17 @@
             line-height: 1.8;
         }
 
+        /* Table of Contents specific styles */
+        .toc-container a:hover {
+            color: #d4af37 !important;
+            text-decoration: underline !important;
+        }
+
+        /* Ensure smooth scrolling within overlay */
+        .content-overlay {
+            scroll-behavior: smooth;
+        }
+
         .overlay-content .article-meta {
             color: var(--accent-color);
             font-size: 0.9rem;
@@ -1053,12 +1069,32 @@
 
             <hr>
 
-            <h2>Abstract</h2>
+            <!-- Table of Contents -->
+            <div class="toc-container" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; padding: 24px; margin: 24px 0;">
+                <h3 style="margin-top: 0; margin-bottom: 16px; color: #d4af37;">Table of Contents</h3>
+                <ol style="list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 8px;"><a href="#abstract" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">Abstract</a></li>
+                    <li style="margin-bottom: 8px;"><a href="#introduction" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">1. Introduction: The SocialFi Paradigm Shift</a></li>
+                    <li style="margin-bottom: 8px;"><a href="#vision" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">2. Vision & Core Concept: Tokenized Engagement Infrastructure</a></li>
+                    <li style="margin-bottom: 8px;"><a href="#token-specs" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">3. Native Asset Architecture: $LOOP Token Specifications</a></li>
+                    <li style="margin-bottom: 8px;"><a href="#social-mining" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">4. Algorithmic Social Mining: Proof-of-Engagement Protocol</a></li>
+                    <li style="margin-bottom: 8px;"><a href="#staking" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">5. Yield-Generating Social Capital: DeFi Staking Infrastructure</a></li>
+                    <li style="margin-bottom: 8px;"><a href="#treasury" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">6. Protocol-Owned Value Accrual: Treasury & Sustainability Model</a></li>
+                    <li style="margin-bottom: 8px;"><a href="#evolution" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">7. Phased Protocol Evolution: Technical Milestone Framework</a></li>
+                    <li style="margin-bottom: 8px;"><a href="#dao" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">8. Decentralized Autonomous Organization (DAO): Governance Infrastructure</a></li>
+                    <li style="margin-bottom: 8px;"><a href="#tokenomics" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">9. Economic Security and Value Distribution: Advanced Tokenomics</a></li>
+                    <li style="margin-bottom: 8px;"><a href="#future" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">10. The Future of Decentralized Social Finance: Strategic Vision</a></li>
+                    <li style="margin-bottom: 8px;"><a href="#conclusion" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">Conclusion: Closing the Loop on Social Value</a></li>
+                    <li style="margin-bottom: 8px;"><a href="#appendix" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">Appendix A: Technical Specifications</a></li>
+                </ol>
+            </div>
+
+            <h2 id="abstract">Abstract</h2>
             <p>EchoLoop Protocol introduces a novel decentralized social finance (SocialFi) infrastructure that tokenizes human engagement through programmable smart contracts and algorithmic reward distribution mechanisms. By implementing a Proof-of-Engagement consensus model, the protocol establishes direct value accrual pathways between social interactions and tokenized economic incentives, fundamentally restructuring the traditional Web2 social media paradigm into a permissionless, value-distributive ecosystem.</p>
 
             <hr>
 
-            <h2>1. Introduction: The SocialFi Paradigm Shift</h2>
+            <h2 id="introduction">1. Introduction: The SocialFi Paradigm Shift</h2>
 
             <h3>1.1 Decentralized Value Accrual in Web3 Social Networks</h3>
             <p>The contemporary social media landscape operates under a fundamentally extractive economic model where platform operators capture the entirety of value generated through user engagement, content creation, and network effects. This centralized value extraction mechanism creates an asymmetric relationship between value creators (users) and value capturers (platforms), resulting in substantial economic inefficiencies and misaligned incentive structures.</p>
@@ -1090,7 +1126,7 @@
 
             <hr>
 
-            <h2>2. Vision & Core Concept: Tokenized Engagement Infrastructure</h2>
+            <h2 id="vision">2. Vision & Core Concept: Tokenized Engagement Infrastructure</h2>
 
             <h3>2.1 Programmable Social Primitives</h3>
             <p>EchoLoop Protocol establishes a comprehensive suite of programmable social primitives that enable the tokenization of fundamental social interactions. These primitives are implemented as smart contract functions that automatically track, validate, and reward specific engagement behaviors across multiple social platforms and communication channels.</p>
@@ -1134,7 +1170,7 @@
 
             <hr>
 
-            <h2>3. Native Asset Architecture: $LOOP Token Specifications</h2>
+            <h2 id="token-specs">3. Native Asset Architecture: $LOOP Token Specifications</h2>
 
             <h3>3.1 ERC-20 Compliant Utility Token</h3>
             <p>The $LOOP token serves as the native asset of the EchoLoop Protocol ecosystem, implemented as a fully ERC-20 compliant smart contract with extended functionality for social finance applications. The token architecture incorporates advanced features including:</p>
@@ -1182,7 +1218,7 @@
 
             <hr>
 
-            <h2>4. Algorithmic Social Mining: Proof-of-Engagement Protocol</h2>
+            <h2 id="social-mining">4. Algorithmic Social Mining: Proof-of-Engagement Protocol</h2>
 
             <h3>4.1 Proof-of-Engagement Consensus Mechanism</h3>
             <p>EchoLoop Protocol introduces a novel consensus mechanism termed "Proof-of-Engagement" (PoE), which validates and rewards authentic social interactions through cryptographic verification and algorithmic scoring. This consensus model represents a fundamental innovation in blockchain technology, extending beyond traditional computational or stake-based consensus to include human social behavior as a form of valuable network contribution.</p>
@@ -1235,7 +1271,7 @@
 
             <hr>
 
-            <h2>5. Yield-Generating Social Capital: DeFi Staking Infrastructure</h2>
+            <h2 id="staking">5. Yield-Generating Social Capital: DeFi Staking Infrastructure</h2>
 
             <h3>5.1 Delegated Proof-of-Stake Social Mining</h3>
             <p>EchoLoop Protocol implements an advanced Delegated Proof-of-Stake (DPoS) system specifically optimized for social engagement validation and reward amplification. This system allows token holders to stake their $LOOP tokens to enhance their earning potential while simultaneously contributing to network security and validation processes.</p>
@@ -1307,7 +1343,7 @@
 
             <hr>
 
-            <h2>6. Protocol-Owned Value Accrual: Treasury & Sustainability Model</h2>
+            <h2 id="treasury">6. Protocol-Owned Value Accrual: Treasury & Sustainability Model</h2>
 
             <h3>6.1 Automated Market Making (AMM) Integration</h3>
             <p>EchoLoop Protocol maintains deep liquidity for the $LOOP token through strategic integration with leading decentralized exchange (DEX) protocols and automated market making systems:</p>
@@ -1379,7 +1415,7 @@
 
             <hr>
 
-            <h2>7. Phased Protocol Evolution: Technical Milestone Framework</h2>
+            <h2 id="evolution">7. Phased Protocol Evolution: Technical Milestone Framework</h2>
 
             <h3>7.1 Phase I: Minimum Viable Product (MVP) Deployment</h3>
             <p><strong>Duration</strong>: Q4 2025 - Q1 2026 (4 months)</p>
@@ -1535,7 +1571,7 @@
 
             <hr>
 
-            <h2>8. Decentralized Autonomous Organization (DAO): Governance Infrastructure</h2>
+            <h2 id="dao">8. Decentralized Autonomous Organization (DAO): Governance Infrastructure</h2>
 
             <h3>8.1 On-Chain Governance Mechanisms</h3>
             <p>EchoLoop Protocol implements a sophisticated on-chain governance system that enables decentralized decision-making across all aspects of protocol operation and development:</p>
@@ -1596,7 +1632,7 @@
 
             <hr>
 
-            <h2>9. Economic Security and Value Distribution: Advanced Tokenomics</h2>
+            <h2 id="tokenomics">9. Economic Security and Value Distribution: Advanced Tokenomics</h2>
 
             <h3>9.1 Fair Launch Distribution Model</h3>
             <p>EchoLoop Protocol implements a fair launch mechanism designed to ensure equitable token distribution and prevent early investor advantage:</p>
@@ -1677,7 +1713,7 @@
 
             <hr>
 
-            <h2>10. The Future of Decentralized Social Finance: Strategic Vision</h2>
+            <h2 id="future">10. The Future of Decentralized Social Finance: Strategic Vision</h2>
 
             <h3>10.1 Network Effects and Adoption Curves</h3>
             <p>EchoLoop Protocol is designed to harness powerful network effects that create exponential value growth as the user base expands:</p>
@@ -1727,7 +1763,7 @@
 
             <hr>
 
-            <h2>Conclusion: Closing the Loop on Social Value</h2>
+            <h2 id="conclusion">Conclusion: Closing the Loop on Social Value</h2>
             <p>EchoLoop Protocol represents a fundamental reimagining of the relationship between social engagement and economic value. By implementing sophisticated blockchain technology, game theory, and algorithmic fairness mechanisms, the protocol creates a sustainable ecosystem where authentic human interaction generates meaningful economic returns for participants rather than platform operators.</p>
 
             <p>The protocol's multi-phase development approach, beginning with accessible bot interfaces and evolving toward comprehensive cross-chain infrastructure, ensures both immediate utility and long-term scalability. Through careful attention to tokenomics, governance, and regulatory compliance, EchoLoop establishes a foundation for sustainable growth and mainstream adoption.</p>
@@ -1748,7 +1784,7 @@
 
             <hr>
 
-            <h2>Appendix A: Technical Specifications</h2>
+            <h2 id="appendix">Appendix A: Technical Specifications</h2>
 
             <h3>Smart Contract Addresses</h3>
             <p><em>To be populated upon mainnet deployment</em></p>
