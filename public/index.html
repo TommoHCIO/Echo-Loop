@@ -783,6 +783,23 @@
         <source src="black-waves-bg.mp4?v=20250929" type="video/mp4">
     </video>
 
+    <!-- Third Video Background - Wave Fabric (initially hidden) -->
+    <video
+        muted
+        loop
+        playsinline
+        webkit-playsinline
+        preload="auto"
+        class="video-background video-background-fabric"
+        id="fabric-video"
+        style="opacity: 0; z-index: -4;"
+    >
+        <!-- WebM format (30% smaller file size) -->
+        <source src="dark-wave-fabric-bg.webm?v=20250929" type="video/webm">
+        <!-- MP4 format (universal compatibility) -->
+        <source src="dark-wave-fabric-bg.mp4?v=20250929" type="video/mp4">
+    </video>
+
 
     <div class="container">
         <img src="echo-loop-logo.png" alt="EchoLoop" class="logo-image">
@@ -912,64 +929,78 @@
             // Initialize battery optimization
             initBatteryOptimization();
 
-            // Add event listener for About button (with background transition)
+            // Add event listener for About button (with wave fabric background transition)
             const aboutButton = document.getElementById('aboutButton');
             if (aboutButton) {
                 aboutButton.addEventListener('click', function() {
-                    // Start playing the secondary video
-                    secondaryVideo.play();
-
-                    // Fade out main content
-                    mainContent.classList.add('fade-out');
-
-                    // After main content starts fading, begin video transition
-                    setTimeout(() => {
-                        // Cross-fade videos
-                        secondaryVideo.style.opacity = '1';
-                        secondaryVideo.style.zIndex = '-1';
-                        primaryVideo.style.opacity = '0';
-                        primaryVideo.style.zIndex = '-3';
-
-                        // Navigate to about page after transition
-                        setTimeout(() => {
-                            window.location.href = '/about.html';
-                        }, 500);
-                    }, 300);
+                    transitionToVideo(fabricVideo, () => {
+                        window.location.href = '/about.html';
+                    });
                 });
             }
 
-            // Add event listener for Whitepaper button (with background transition)
+            // Add event listener for Whitepaper button (with wave fabric background transition)
             const whitepaperButton = document.getElementById('whitepaperButton');
             if (whitepaperButton) {
                 whitepaperButton.addEventListener('click', function() {
-                    // Start playing the secondary video
-                    secondaryVideo.play();
-
-                    // Fade out main content
-                    mainContent.classList.add('fade-out');
-
-                    // After main content starts fading, begin video transition
-                    setTimeout(() => {
-                        // Cross-fade videos
-                        secondaryVideo.style.opacity = '1';
-                        secondaryVideo.style.zIndex = '-1';
-                        primaryVideo.style.opacity = '0';
-                        primaryVideo.style.zIndex = '-3';
-
-                        // Navigate to whitepaper page after transition
-                        setTimeout(() => {
-                            window.location.href = '/whitepaper.html';
-                        }, 500);
-                    }, 300);
+                    transitionToVideo(fabricVideo, () => {
+                        window.location.href = '/whitepaper.html';
+                    });
                 });
             }
 
-            // Social Button Animation Logic
+            // Social button functionality
             const socialButton = document.querySelector('.centered-social');
-            const mainContent = document.querySelector('.container');
-            const socialPlatforms = document.getElementById('socialPlatforms');
-            const primaryVideo = document.getElementById('background-video');
-            const secondaryVideo = document.getElementById('secondary-video');
+
+            // Reusable function for background video transitions
+            function transitionToVideo(targetVideo, callback) {
+                // Start playing the target video
+                targetVideo.play();
+
+                // Fade out main content
+                mainContent.classList.add('fade-out');
+
+                // After main content starts fading, begin video transition
+                setTimeout(() => {
+                    // Cross-fade videos
+                    targetVideo.style.opacity = '1';
+                    targetVideo.style.zIndex = '-1';
+                    primaryVideo.style.opacity = '0';
+                    primaryVideo.style.zIndex = '-3';
+
+                    // Hide all other videos
+                    if (targetVideo !== secondaryVideo) {
+                        secondaryVideo.style.opacity = '0';
+                        secondaryVideo.style.zIndex = '-4';
+                    }
+                    if (targetVideo !== fabricVideo) {
+                        fabricVideo.style.opacity = '0';
+                        fabricVideo.style.zIndex = '-4';
+                    }
+
+                    // Execute callback after transition
+                    setTimeout(() => {
+                        if (callback) callback();
+                    }, 500);
+                }, 300);
+            }
+
+            // Function to return to homepage background
+            function returnToHomepage() {
+                // Cross-fade videos back to primary
+                primaryVideo.style.opacity = '1';
+                primaryVideo.style.zIndex = '-1';
+                secondaryVideo.style.opacity = '0';
+                secondaryVideo.style.zIndex = '-3';
+                fabricVideo.style.opacity = '0';
+                fabricVideo.style.zIndex = '-4';
+
+                // Pause non-primary videos when not visible
+                setTimeout(() => {
+                    secondaryVideo.pause();
+                    fabricVideo.pause();
+                }, 1000);
+            }
 
             // Function to close social platforms
             function closeSocialPlatforms() {
@@ -997,16 +1028,8 @@
                         el.style.animation = null;
                     });
 
-                    // Cross-fade videos back
-                    primaryVideo.style.opacity = '1';
-                    primaryVideo.style.zIndex = '-1';
-                    secondaryVideo.style.opacity = '0';
-                    secondaryVideo.style.zIndex = '-3';
-
-                    // Pause secondary video when not visible
-                    setTimeout(() => {
-                        secondaryVideo.pause();
-                    }, 1000);
+                    // Return to homepage background
+                    returnToHomepage();
 
                     // Remove exit classes for next time
                     platformButtons.forEach((button) => {
@@ -1019,34 +1042,19 @@
                 socialButton.addEventListener('click', function(e) {
                     e.preventDefault();
 
-                    // Start playing the secondary video
-                    secondaryVideo.play();
-
-                    // Fade out main content
-                    mainContent.classList.add('fade-out');
-
-                    // After main content starts fading, begin video transition
-                    setTimeout(() => {
-                        // Cross-fade videos
-                        secondaryVideo.style.opacity = '1';
-                        secondaryVideo.style.zIndex = '-1';
-                        primaryVideo.style.opacity = '0';
-                        primaryVideo.style.zIndex = '-3';
-
+                    transitionToVideo(secondaryVideo, () => {
                         // Hide main content and show social platforms
-                        setTimeout(() => {
-                            mainContent.style.display = 'none';
-                            socialPlatforms.style.display = 'flex';
+                        mainContent.style.display = 'none';
+                        socialPlatforms.style.display = 'flex';
 
-                            // Reset animations for platform buttons
-                            const platformButtons = socialPlatforms.querySelectorAll('.platform-button');
-                            platformButtons.forEach(button => {
-                                button.style.animation = 'none';
-                                button.offsetHeight; // Trigger reflow
-                                button.style.animation = null;
-                            });
-                        }, 500);
-                    }, 300);
+                        // Reset animations for platform buttons
+                        const platformButtons = socialPlatforms.querySelectorAll('.platform-button');
+                        platformButtons.forEach(button => {
+                            button.style.animation = 'none';
+                            button.offsetHeight; // Trigger reflow
+                            button.style.animation = null;
+                        });
+                    });
                 });
             }
 
