@@ -876,8 +876,8 @@
         .toc-sidebar {
             position: fixed;
             top: 0;
-            left: -320px;
-            width: 320px;
+            left: -480px;
+            width: 480px;
             height: 100vh;
             background: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(10px);
@@ -924,7 +924,7 @@
         }
 
         .toc-sidebar.open + .toc-toggle {
-            left: 340px;
+            left: 500px;
         }
 
         .toc-content {
@@ -962,10 +962,10 @@
             padding-left: 0.5rem;
         }
 
-        /* Adjust content when TOC is open on desktop */
+        /* Keep content centered when TOC is open on desktop */
         .content-overlay.toc-open {
-            margin-left: 320px;
-            max-width: calc(100vw - 320px);
+            margin-left: 0;
+            max-width: 100vw;
         }
 
         /* Mobile TOC Styles */
@@ -2241,13 +2241,30 @@
             function returnToHomepage() {
                 // Ensure main content is visible
                 if (mainContent) {
-                    mainContent.style.display = 'flex';
+                    mainContent.style.display = 'block';
                     mainContent.style.opacity = '1';
                 }
 
-                // Hide overlays and platforms
+                // Hide all overlays and platforms
                 if (socialPlatforms) {
                     socialPlatforms.style.display = 'none';
+                }
+
+                // Explicitly hide content overlays
+                const aboutOverlay = document.getElementById('aboutOverlay');
+                const whitepaperOverlay = document.getElementById('whitepaperOverlay');
+                if (aboutOverlay) {
+                    aboutOverlay.style.display = 'none';
+                }
+                if (whitepaperOverlay) {
+                    whitepaperOverlay.style.display = 'none';
+                    whitepaperOverlay.classList.remove('toc-open');
+                }
+
+                // Hide TOC sidebar if it's open
+                const tocSidebar = document.querySelector('.toc-sidebar');
+                if (tocSidebar) {
+                    tocSidebar.classList.remove('open');
                 }
 
                 // Reset body styles for homepage
