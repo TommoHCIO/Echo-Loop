@@ -2344,7 +2344,7 @@
 
                 // Progressive enhancement - check for View Transitions API support
                 if (!document.startViewTransition) {
-                    console.log('View Transitions API not supported, using legacy social close');
+                    console.log('View Transitions API not supported, using mobile-optimized social close');
                     // Legacy animation for platforms
                     platformButtons.forEach((button) => {
                         button.classList.add('exit');
@@ -2352,8 +2352,28 @@
 
                     setTimeout(() => {
                         socialPlatforms.style.display = 'none';
-                        mainContent.style.display = 'block';
-                        mainContent.classList.remove('fade-out');
+
+                        // Mobile-optimized content restoration
+                        if (mainContent) {
+                            mainContent.style.display = 'block';
+                            mainContent.style.visibility = 'visible';
+                            mainContent.style.opacity = '1';
+                            mainContent.style.zIndex = '1';
+                            mainContent.classList.remove('fade-out');
+
+                            // Force mobile reflow
+                            if (window.innerWidth <= 768) {
+                                mainContent.offsetHeight; // Trigger reflow
+                                setTimeout(() => {
+                                    const homeElements = mainContent.querySelectorAll('.logo-image, .tagline, .nav-grid');
+                                    homeElements.forEach(el => {
+                                        el.style.opacity = '1';
+                                        el.style.visibility = 'visible';
+                                        el.style.display = '';
+                                    });
+                                }, 50);
+                            }
+                        }
 
                         const elements = mainContent.querySelectorAll('.logo-image, .tagline, .nav-grid');
                         elements.forEach(el => {
@@ -2463,10 +2483,35 @@
 
                 // Progressive enhancement - check for View Transitions API support
                 if (!document.startViewTransition) {
-                    console.log('View Transitions API not supported, using fallback close');
-                    // Simple fallback - close overlay and return to homepage
+                    console.log('View Transitions API not supported, using mobile-optimized fallback close');
+                    // Mobile-optimized fallback - close overlay and return to homepage
                     document.getElementById(overlayId).style.display = 'none';
-                    if (mainContent) mainContent.style.display = 'block';
+
+                    // Force mobile content restoration
+                    if (mainContent) {
+                        mainContent.style.display = 'block';
+                        mainContent.style.visibility = 'visible';
+                        mainContent.style.opacity = '1';
+                        mainContent.style.zIndex = '1';
+                        mainContent.style.position = 'relative';
+                        mainContent.style.transform = 'none';
+
+                        // Force repaint on mobile
+                        if (window.innerWidth <= 768) {
+                            mainContent.offsetHeight; // Trigger reflow
+                            setTimeout(() => {
+                                mainContent.style.display = 'block';
+                                // Ensure all homepage elements are visible
+                                const homeElements = mainContent.querySelectorAll('.logo-image, .tagline, .nav-grid');
+                                homeElements.forEach(el => {
+                                    el.style.opacity = '1';
+                                    el.style.visibility = 'visible';
+                                    el.style.display = '';
+                                });
+                            }, 50);
+                        }
+                    }
+
                     returnToHomepage();
                     return;
                 }
@@ -2626,6 +2671,51 @@
                         e.stopPropagation();
                     });
                 });
+            }
+
+            // Mobile viewport and orientation change handler
+            let resizeTimeout;
+            function handleMobileViewportChange() {
+                if (window.innerWidth <= 768) {
+                    // Ensure homepage content is always visible on mobile after viewport changes
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => {
+                        const isHomepage = !document.querySelector('.content-overlay[style*="block"]') &&
+                                         !socialPlatforms.style.display.includes('flex') &&
+                                         !socialPlatforms.style.display.includes('block');
+
+                        if (isHomepage && mainContent) {
+                            // Force homepage visibility after viewport change
+                            mainContent.style.display = 'block';
+                            mainContent.style.visibility = 'visible';
+                            mainContent.style.opacity = '1';
+                            mainContent.style.zIndex = '1';
+                            mainContent.style.position = 'relative';
+                            mainContent.style.transform = 'none';
+
+                            // Ensure all homepage elements are visible
+                            const homeElements = mainContent.querySelectorAll('.logo-image, .tagline, .nav-grid');
+                            homeElements.forEach(el => {
+                                if (el.style.display === 'none') {
+                                    el.style.display = '';
+                                }
+                                el.style.opacity = '1';
+                                el.style.visibility = 'visible';
+                            });
+
+                            console.log('Mobile viewport change: Homepage content restored');
+                        }
+                    }, 300);
+                }
+            }
+
+            // Add viewport change listeners
+            window.addEventListener('resize', handleMobileViewportChange);
+            window.addEventListener('orientationchange', handleMobileViewportChange);
+
+            // Also listen for visual viewport changes (mobile browser bars)
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener('resize', handleMobileViewportChange);
             }
 
         });
