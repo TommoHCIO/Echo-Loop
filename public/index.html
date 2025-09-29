@@ -872,10 +872,135 @@
             line-height: 1.8;
         }
 
-        /* Table of Contents specific styles */
-        .toc-container a:hover {
-            color: #d4af37 !important;
-            text-decoration: underline !important;
+        /* Foldable TOC Sidebar Styles */
+        .toc-sidebar {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 320px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid var(--border-color);
+            transition: left 0.3s ease;
+            z-index: 1001;
+            overflow-y: auto;
+            padding: 2rem 0;
+        }
+
+        .toc-sidebar.open {
+            left: 0;
+        }
+
+        .toc-toggle {
+            position: fixed;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--border-color);
+            color: var(--text-white);
+            padding: 0.8rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1002;
+            width: 48px;
+            height: 48px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* Show TOC toggle only in whitepaper overlay */
+        #whitepaperOverlay .toc-toggle {
+            display: flex;
+        }
+
+        .toc-toggle:hover {
+            background: rgba(139, 92, 246, 0.8);
+            border-color: var(--accent-purple);
+        }
+
+        .toc-sidebar.open + .toc-toggle {
+            left: 340px;
+        }
+
+        .toc-content {
+            padding: 0 2rem;
+        }
+
+        .toc-title {
+            color: #d4af37;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .toc-list li {
+            margin-bottom: 0.8rem;
+        }
+
+        .toc-list a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: block;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        .toc-list a:hover {
+            color: #d4af37;
+            padding-left: 0.5rem;
+        }
+
+        /* Adjust content when TOC is open on desktop */
+        .content-overlay.toc-open {
+            margin-left: 320px;
+            max-width: calc(100vw - 320px);
+        }
+
+        /* Mobile TOC Styles */
+        @media (max-width: 768px) {
+            .toc-sidebar {
+                left: -100vw;
+                width: 100vw;
+                top: 50%;
+                height: 50vh;
+                border-radius: 20px 20px 0 0;
+                border-right: none;
+                border-top: 1px solid var(--border-color);
+            }
+
+            .toc-sidebar.open {
+                left: 0;
+            }
+
+            .toc-toggle {
+                bottom: 20px;
+                top: auto;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .toc-sidebar.open + .toc-toggle {
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: calc(50vh + 20px);
+            }
+
+            .content-overlay.toc-open {
+                margin-left: 0;
+                max-width: 100vw;
+            }
         }
 
         /* Ensure smooth scrolling within overlay */
@@ -1098,10 +1223,10 @@
 
             <p>Every social interaction becomes a micro-earning opportunity:</p>
 
-            <p>likes (1 point)<br>
-            comments (3 points)<br>
-            shares (5 points)<br>
-            and new followers (2 points)</p>
+            <p>• likes (1 point)<br>
+            • comments (3 points)<br>
+            • shares (5 points)<br>
+            • new followers (2 points)</p>
 
             <p>This creates a direct correlation between authentic engagement and economic reward.</p>
 
@@ -1110,8 +1235,20 @@
             <h3>Development Timeline</h3>
             <div class="timeline">
                 <div class="timeline-item">
-                    <div class="timeline-date">Q1 2026</div>
-                    <div class="timeline-description">Community building & $LOOP token launch on mainnet</div>
+                    <div class="timeline-date">Phase 1</div>
+                    <div class="timeline-description"><strong>Landing Page</strong><br>Sep 1 – Oct 13, 2025</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Phase 2</div>
+                    <div class="timeline-description"><strong>Socials Setup</strong><br>X: Oct 14-20, 2025<br>Discord: Oct 21-27, 2025<br>Telegram: Oct 28 - Nov 3, 2025</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Phase 3</div>
+                    <div class="timeline-description"><strong>Token Creation</strong><br>Prep: Nov 4-9, 2025<br>Creation: Nov 10-17, 2025<br>Publish proofs: Nov 18, 2025<br><em>Chain: Solana / SPL / $LOOP</em></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Phase 4</div>
+                    <div class="timeline-description"><strong>Presales</strong><br>Presale A (allowlist): Jan 15-17, 2026<br>Presale B (public): Jan 30 - Feb 1, 2026</div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-date">Q2 2026</div>
@@ -1138,25 +1275,28 @@
 
             <hr>
 
-            <!-- Table of Contents -->
-            <div class="toc-container" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; padding: 24px; margin: 24px 0;">
-                <h3 style="margin-top: 0; margin-bottom: 16px; color: #d4af37;">Table of Contents</h3>
-                <ol style="list-style-type: none; padding-left: 0;">
-                    <li style="margin-bottom: 8px;"><a href="#abstract" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">Abstract</a></li>
-                    <li style="margin-bottom: 8px;"><a href="#introduction" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">1. Introduction: The SocialFi Paradigm Shift</a></li>
-                    <li style="margin-bottom: 8px;"><a href="#vision" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">2. Vision & Core Concept: Tokenized Engagement Infrastructure</a></li>
-                    <li style="margin-bottom: 8px;"><a href="#token-specs" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">3. Native Asset Architecture: $LOOP Token Specifications</a></li>
-                    <li style="margin-bottom: 8px;"><a href="#social-mining" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">4. Algorithmic Social Mining: Proof-of-Engagement Protocol</a></li>
-                    <li style="margin-bottom: 8px;"><a href="#staking" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">5. Yield-Generating Social Capital: DeFi Staking Infrastructure</a></li>
-                    <li style="margin-bottom: 8px;"><a href="#treasury" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">6. Protocol-Owned Value Accrual: Treasury & Sustainability Model</a></li>
-                    <li style="margin-bottom: 8px;"><a href="#evolution" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">7. Phased Protocol Evolution: Technical Milestone Framework</a></li>
-                    <li style="margin-bottom: 8px;"><a href="#dao" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">8. Decentralized Autonomous Organization (DAO): Governance Infrastructure</a></li>
-                    <li style="margin-bottom: 8px;"><a href="#tokenomics" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">9. Economic Security and Value Distribution: Advanced Tokenomics</a></li>
-                    <li style="margin-bottom: 8px;"><a href="#future" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">10. The Future of Decentralized Social Finance: Strategic Vision</a></li>
-                    <li style="margin-bottom: 8px;"><a href="#conclusion" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">Conclusion: Closing the Loop on Social Value</a></li>
-                    <li style="margin-bottom: 8px;"><a href="#appendix" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">Appendix A: Technical Specifications</a></li>
-                </ol>
+            <!-- Foldable TOC Sidebar -->
+            <div class="toc-sidebar" id="tocSidebar">
+                <div class="toc-content">
+                    <h3 class="toc-title">Table of Contents</h3>
+                    <ul class="toc-list">
+                        <li><a href="#abstract">Abstract</a></li>
+                        <li><a href="#introduction">1. Introduction: The SocialFi Paradigm Shift</a></li>
+                        <li><a href="#vision">2. Vision & Core Concept: Tokenized Engagement Infrastructure</a></li>
+                        <li><a href="#token-specs">3. Native Asset Architecture: $LOOP Token Specifications</a></li>
+                        <li><a href="#social-mining">4. Algorithmic Social Mining: Proof-of-Engagement Protocol</a></li>
+                        <li><a href="#staking">5. Yield-Generating Social Capital: DeFi Staking Infrastructure</a></li>
+                        <li><a href="#treasury">6. Protocol-Owned Value Accrual: Treasury & Sustainability Model</a></li>
+                        <li><a href="#evolution">7. Phased Protocol Evolution: Technical Milestone Framework</a></li>
+                        <li><a href="#dao">8. Decentralized Autonomous Organization (DAO): Governance Infrastructure</a></li>
+                        <li><a href="#tokenomics">9. Economic Security and Value Distribution: Advanced Tokenomics</a></li>
+                        <li><a href="#future">10. The Future of Decentralized Social Finance: Strategic Vision</a></li>
+                        <li><a href="#conclusion">Conclusion: Closing the Loop on Social Value</a></li>
+                        <li><a href="#appendix">Appendix A: Technical Specifications</a></li>
+                    </ul>
+                </div>
             </div>
+            <button class="toc-toggle" id="tocToggle">📖</button>
 
             <h2 id="abstract">Abstract</h2>
             <p>EchoLoop Protocol introduces a novel decentralized social finance (SocialFi) infrastructure that tokenizes human engagement through programmable smart contracts and algorithmic reward distribution mechanisms. By implementing a Proof-of-Engagement consensus model, the protocol establishes direct value accrual pathways between social interactions and tokenized economic incentives, fundamentally restructuring the traditional Web2 social media paradigm into a permissionless, value-distributive ecosystem.</p>
@@ -2099,6 +2239,23 @@
 
             // Function to return to homepage background
             function returnToHomepage() {
+                // Ensure main content is visible
+                if (mainContent) {
+                    mainContent.style.display = 'flex';
+                    mainContent.style.opacity = '1';
+                }
+
+                // Hide overlays and platforms
+                if (socialPlatforms) {
+                    socialPlatforms.style.display = 'none';
+                }
+
+                // Reset body styles for homepage
+                document.body.style.overflow = 'hidden';
+                document.body.style.display = 'flex';
+                document.body.style.alignItems = 'flex-start';
+                document.body.style.justifyContent = 'center';
+
                 // Cross-fade videos back to primary
                 primaryVideo.style.opacity = '1';
                 primaryVideo.style.zIndex = '-1';
@@ -2106,6 +2263,11 @@
                 secondaryVideo.style.zIndex = '-3';
                 fabricVideo.style.opacity = '0';
                 fabricVideo.style.zIndex = '-4';
+
+                // Ensure primary video is playing
+                if (primaryVideo.paused) {
+                    primaryVideo.play().catch(e => console.log('Could not play primary video:', e));
+                }
 
                 // Pause non-primary videos when not visible
                 setTimeout(() => {
@@ -2342,6 +2504,52 @@
                             button.style.animation = null;
                         });
                     });
+                });
+            }
+
+            // TOC Toggle Functionality
+            const tocToggle = document.getElementById('tocToggle');
+            const tocSidebar = document.getElementById('tocSidebar');
+            const whitepaperOverlay = document.getElementById('whitepaperOverlay');
+
+            if (tocToggle && tocSidebar) {
+                tocToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    tocSidebar.classList.toggle('open');
+
+                    // Adjust content overlay on desktop
+                    if (window.innerWidth > 768) {
+                        if (tocSidebar.classList.contains('open')) {
+                            whitepaperOverlay.classList.add('toc-open');
+                        } else {
+                            whitepaperOverlay.classList.remove('toc-open');
+                        }
+                    }
+                });
+
+                // Close TOC when clicking on overlay links
+                const tocLinks = tocSidebar.querySelectorAll('.toc-list a');
+                tocLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        // On mobile, close the TOC after clicking a link
+                        if (window.innerWidth <= 768) {
+                            setTimeout(() => {
+                                tocSidebar.classList.remove('open');
+                            }, 100);
+                        }
+                    });
+                });
+
+                // Close TOC when clicking outside on mobile
+                document.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768 &&
+                        tocSidebar.classList.contains('open') &&
+                        !tocSidebar.contains(e.target) &&
+                        !tocToggle.contains(e.target)) {
+                        tocSidebar.classList.remove('open');
+                    }
                 });
             }
 
