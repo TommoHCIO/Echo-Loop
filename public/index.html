@@ -1008,6 +1008,8 @@
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
             overscroll-behavior: contain;
+            overflow-x: hidden;
+            touch-action: pan-y;
         }
 
         /* Mobile-specific navigation improvements */
@@ -1107,6 +1109,28 @@
         @media (max-width: 768px) {
             .content-overlay {
                 padding: 1rem;
+                overflow-x: hidden;
+                touch-action: pan-y;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .content-overlay > * {
+                max-width: 100%;
+                overflow-x: hidden;
+                text-align: left;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .content-overlay p,
+            .content-overlay h1,
+            .content-overlay h2,
+            .content-overlay h3,
+            .content-overlay li {
+                max-width: 100%;
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+                hyphens: auto;
             }
 
             .overlay-header {
@@ -2243,6 +2267,21 @@
                 if (mainContent) {
                     mainContent.style.display = 'block';
                     mainContent.style.opacity = '1';
+                    mainContent.style.visibility = 'visible';
+                    mainContent.style.zIndex = '1';
+
+                    // Mobile-specific fixes
+                    if (window.innerWidth <= 768) {
+                        mainContent.style.transform = 'none';
+                        mainContent.style.position = 'relative';
+                        // Ensure all child elements are visible
+                        const childElements = mainContent.querySelectorAll('*');
+                        childElements.forEach(el => {
+                            if (el.style.display === 'none' && !el.classList.contains('content-overlay')) {
+                                el.style.display = '';
+                            }
+                        });
+                    }
                 }
 
                 // Hide all overlays and platforms
