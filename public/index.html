@@ -106,6 +106,13 @@
             background: rgba(0, 0, 0, 0.6);
             pointer-events: none;
             z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* Consistent overlay after video loads */
+        body.video-loaded::before {
+            opacity: 1;
         }
 
         .container {
@@ -2087,9 +2094,12 @@
             if (playPromise !== undefined) {
                 playPromise.then(() => {
                     console.log('Video autoplay succeeded');
+                    // Add class for consistent overlay timing
+                    document.body.classList.add('video-loaded');
                 }).catch((error) => {
                     console.log('Video autoplay failed:', error);
-                    // Video autoplay failed - no fallback image available
+                    // Video autoplay failed - still add class for consistent overlay
+                    document.body.classList.add('video-loaded');
 
                     // Retry on user interaction
                     document.addEventListener('touchstart', function() {
@@ -2100,6 +2110,9 @@
                         video.play().catch(e => console.log('Manual play failed:', e));
                     }, { once: true });
                 });
+            } else {
+                // For browsers where play() doesn't return a promise
+                document.body.classList.add('video-loaded');
             }
         }
 
@@ -2312,6 +2325,9 @@
                 document.body.style.display = 'flex';
                 document.body.style.alignItems = 'flex-start';
                 document.body.style.justifyContent = 'center';
+
+                // Ensure consistent overlay on homepage return
+                document.body.classList.add('video-loaded');
 
                 // Cross-fade videos back to primary
                 primaryVideo.style.opacity = '1';
