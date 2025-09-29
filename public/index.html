@@ -84,16 +84,94 @@
             position: fixed;
             top: 0;
             left: 0;
+            /* Adaptive viewport-based scaling */
+            width: 100vw;
+            height: 100vh;
             min-width: 100%;
             min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -2;
+            /* Modern object-fit for perfect scaling */
             object-fit: cover;
+            object-position: center center;
+            /* Maintain aspect ratio */
+            aspect-ratio: 16/9;
+            z-index: -2;
             will-change: transform;
             transform: translateZ(0);
             background: transparent;
             opacity: 1;
+            /* Mobile video quality optimizations */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+
+        /* Accessibility: Respect user motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            .video-background {
+                animation: none;
+                transition: none;
+                will-change: auto;
+            }
+        }
+
+        /* Mobile-specific responsive optimizations */
+        @media (max-width: 768px) {
+            .video-background {
+                /* Adaptive mobile scaling */
+                width: 100vw;
+                height: 100vh;
+                /* Portrait orientation adaptive aspect ratio */
+                aspect-ratio: auto;
+                /* Optimal mobile object-fit */
+                object-fit: cover;
+                object-position: center center;
+                /* Force hardware acceleration */
+                transform: translate3d(0, 0, 0);
+                /* Better compression handling */
+                image-rendering: optimizeQuality;
+                /* Prevent video scaling artifacts */
+                filter: contrast(1.05) saturate(1.1);
+                /* Ensure smooth playback */
+                will-change: auto;
+            }
+        }
+
+        /* Tablet and medium screens */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .video-background {
+                /* Tablet-optimized scaling */
+                aspect-ratio: 4/3;
+                object-position: center center;
+            }
+        }
+
+        /* Large desktop screens */
+        @media (min-width: 1025px) {
+            .video-background {
+                /* Desktop widescreen optimization */
+                aspect-ratio: 16/9;
+                object-position: center center;
+            }
+        }
+
+        /* Ultra-wide screens */
+        @media (min-width: 1920px) {
+            .video-background {
+                /* Ultra-wide adaptive scaling */
+                aspect-ratio: 21/9;
+                object-fit: cover;
+                object-position: center center;
+            }
+        }
+
+        /* High-DPI mobile displays */
+        @media (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+            .video-background {
+                /* Enhanced quality for retina displays */
+                filter: contrast(1.08) saturate(1.15) brightness(1.02);
+                image-rendering: -webkit-optimize-contrast;
+            }
         }
 
         body::before {
@@ -1168,14 +1246,20 @@
         loop
         playsinline
         webkit-playsinline
-        preload="auto"
+        preload="metadata"
+        poster="echoloop-logo.png"
         class="video-background"
         id="background-video"
+        x5-video-player-type="h5"
+        x5-video-orientation="portraint"
+        x5-video-player-fullscreen="true"
     >
-        <!-- WebM format (30% smaller file size) -->
-        <source src="dark-golden-waves-bg.webm?v=20250929" type="video/webm">
-        <!-- MP4 format (universal compatibility) -->
-        <source src="dark-golden-waves-bg.mp4?v=20250929" type="video/mp4">
+        <!-- WebM format (30% smaller file size) - Desktop -->
+        <source src="dark-golden-waves-bg.webm?v=20250929" type="video/webm" media="(min-width: 769px)">
+        <!-- MP4 format (universal compatibility) - Desktop -->
+        <source src="dark-golden-waves-bg.mp4?v=20250929" type="video/mp4" media="(min-width: 769px)">
+        <!-- Mobile-optimized MP4 source -->
+        <source src="dark-golden-waves-bg.mp4?v=20250929" type="video/mp4" media="(max-width: 768px)">
     </video>
 
     <!-- Secondary Video Background - Black Waves (initially hidden) -->
@@ -2073,19 +2157,100 @@
 
 
         // 2025 Mobile-Optimized Video Handler
+        // Dynamic Responsive Video Scaling System
+        function adaptVideoToViewport() {
+            const video = document.getElementById('background-video');
+            if (!video) return;
+
+            const viewport = {
+                width: window.innerWidth,
+                height: window.innerHeight,
+                aspectRatio: window.innerWidth / window.innerHeight
+            };
+
+            // Dynamic breakpoint detection (inspired by Video.js)
+            const breakpoints = {
+                tiny: 300,
+                xsmall: 400,
+                small: 500,
+                medium: 768,
+                large: 1024,
+                xlarge: 1440,
+                huge: 1920
+            };
+
+            let currentBreakpoint = 'huge';
+            for (const [name, width] of Object.entries(breakpoints)) {
+                if (viewport.width <= width) {
+                    currentBreakpoint = name;
+                    break;
+                }
+            }
+
+            // Apply adaptive scaling based on viewport
+            video.style.width = '100vw';
+            video.style.height = '100vh';
+            video.style.objectFit = 'cover';
+            video.style.objectPosition = 'center center';
+
+            // Adaptive aspect ratio based on screen size
+            if (viewport.width <= 768) {
+                // Mobile: flexible aspect ratio
+                video.style.aspectRatio = 'auto';
+            } else if (viewport.width <= 1024) {
+                // Tablet: 4:3 aspect ratio
+                video.style.aspectRatio = '4/3';
+            } else if (viewport.width <= 1440) {
+                // Desktop: standard 16:9
+                video.style.aspectRatio = '16/9';
+            } else {
+                // Ultra-wide: 21:9 aspect ratio
+                video.style.aspectRatio = '21/9';
+            }
+
+            console.log(`Video adapted to ${currentBreakpoint} breakpoint (${viewport.width}x${viewport.height})`);
+        }
+
         function ensureVideoPlayback() {
             const video = document.getElementById('background-video');
             if (!video) return;
 
+            // Apply responsive scaling first
+            adaptVideoToViewport();
+
             // Detect mobile devices
             const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
-            // Mobile optimization: reduced for better performance on slow connections
-            if (isMobile && 'connection' in navigator) {
-                const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-                if (connection && (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g')) {
-                    // Skip video optimization for very slow connections
-                    console.log('Slow connection detected, video may not load optimally');
+            // Mobile-specific video quality optimizations
+            if (isMobile) {
+                // Set mobile-optimized video attributes
+                video.setAttribute('webkit-playsinline', 'true');
+                video.setAttribute('x5-video-player-type', 'h5');
+                video.setAttribute('x5-video-orientation', 'landscape');
+
+                // Force high-quality rendering
+                video.style.imageRendering = 'optimizeQuality';
+                video.style.transform = 'translate3d(0, 0, 0)';
+
+                // Mobile connection optimization
+                if ('connection' in navigator) {
+                    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+                    if (connection) {
+                        if (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
+                            console.log('Slow connection detected, maintaining quality with optimized loading');
+                            video.preload = 'none';
+                        } else if (connection.effectiveType === '4g') {
+                            // High-speed connection: enable full quality
+                            video.preload = 'auto';
+                            video.style.filter = 'contrast(1.08) saturate(1.15) brightness(1.02)';
+                        }
+                    }
+                }
+
+                // iOS Safari optimization
+                if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+                    video.setAttribute('muted', 'true');
+                    video.muted = true;
                 }
             }
 
@@ -2140,11 +2305,39 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Ensure video plays on mobile
+            // Ensure video plays on mobile with responsive scaling
             ensureVideoPlayback();
 
             // Initialize battery optimization
             initBatteryOptimization();
+
+            // Add responsive video scaling event listeners
+            window.addEventListener('resize', () => {
+                // Debounce resize events for performance
+                clearTimeout(window.resizeTimeout);
+                window.resizeTimeout = setTimeout(() => {
+                    adaptVideoToViewport();
+                }, 150);
+            });
+
+            // Handle orientation changes on mobile
+            window.addEventListener('orientationchange', () => {
+                setTimeout(() => {
+                    adaptVideoToViewport();
+                }, 300); // Delay to allow orientation change to complete
+            });
+
+            // Monitor viewport meta changes
+            const viewportMeta = document.querySelector('meta[name="viewport"]');
+            if (viewportMeta) {
+                const observer = new MutationObserver(() => {
+                    adaptVideoToViewport();
+                });
+                observer.observe(viewportMeta, {
+                    attributes: true,
+                    attributeFilter: ['content']
+                });
+            }
 
             // Variable declarations - must be first!
             const socialButton = document.querySelector('.centered-social');
