@@ -48,12 +48,11 @@ The protocol implements mechanism design principles to ensure optimal incentive 
 
 ### 2.1 Programmable Social Primitives
 
-EchoLoop Protocol establishes a comprehensive suite of programmable social primitives that enable the tokenization of fundamental social interactions. These primitives are implemented as smart contract functions that automatically track, validate, and reward specific engagement behaviors across multiple social platforms and communication channels.
+EchoLoop Protocol establishes a comprehensive suite of programmable social primitives that enable the tokenization of fundamental social interactions.
 
 The protocol's social primitives include:
 
 - **Engagement Validation Oracles**: Decentralized systems for verifying authentic social interactions
-- **Cross-Platform Aggregation**: Unified tracking across Discord, Telegram, Twitter, and web interfaces
 - **Smart Contract Automation**: Autonomous execution of reward distribution without intermediaries
 - **Cryptographic Proof Systems**: Zero-knowledge proofs for privacy-preserving engagement verification
 
@@ -63,18 +62,18 @@ The core innovation of EchoLoop Protocol lies in its sophisticated algorithmic r
 
 **Dynamic Difficulty Adjustment (DDA)**: Adaptive algorithms that automatically calibrate reward rates based on network participation levels, ensuring sustainable token economics across varying activity cycles.
 
-**Quadratic Funding Mechanisms**: Mathematical frameworks that amplify rewards for authentic engagement while diminishing returns for repetitive or low-value activities.
+**Quadratic Funding Mechanisms**: Mathematical frameworks that amplify rewards for authentic engagement while diminishing returns for repetitive or low-value activities. Each day the reward pool is 1% less.
 
-**Temporal Decay Functions**: Time-weighted scoring systems that prioritize recent engagement while maintaining historical contribution recognition.
+**Temporal Decay Functions**: Contributions are calculated daily. The pool resets every 24h and so do user points. Daily snapshot + leaderboard.
 
-**Anti-Sybil Resistance**: Advanced cryptographic and behavioral analysis systems designed to detect and penalize artificial or manipulative engagement patterns.
+**Anti-Sybil Resistance**: Advanced cryptographic and behavioral analysis systems designed to detect and penalize artificial or manipulative engagement patterns. Can use human verification before every interaction.
 
 ### 2.3 Permissionless Value Creation
 
 The protocol operates as a permissionless system where any participant can begin earning tokenized rewards immediately upon engagement, without requiring approval from centralized authorities or gatekeepers. This design philosophy extends to:
 
 - **Open Participation**: No barriers to entry for reward earning
-- **Decentralized Validation**: Community-driven verification of engagement authenticity
+- **Decentralized Validation**: Community-driven verification of engagement authenticity through peer attestations. Validators stake $LOOP tokens and review flagged engagement activities within a quorum/dispute window. Fraudulent attestations result in slashing (loss of staked tokens). This validation is scoped exclusively to the LOOP platform. Risks include potential validator collusion and spam attacks; mitigations include minimum stake requirements, reputation systems, and randomized validator selection.
 - **Autonomous Operations**: Smart contract execution without human intervention
 - **Transparent Algorithms**: Open-source reward calculation mechanisms
 
@@ -91,9 +90,9 @@ EchoLoop Protocol is architected for multi-blockchain compatibility, enabling th
 
 ## 3. Native Asset Architecture: $LOOP Token Specifications
 
-### 3.1 ERC-20 Compliant Utility Token
+### 3.1 SPL Token Standard (Solana)
 
-The $LOOP token serves as the native asset of the EchoLoop Protocol ecosystem, implemented as a fully ERC-20 compliant smart contract with extended functionality for social finance applications. The token architecture incorporates advanced features including:
+The $LOOP token serves as the native asset of the EchoLoop Protocol ecosystem, implemented as a standard SPL (Solana Program Library) token with NO transfer tax. All fees and taxes exist exclusively within the EchoLoop webapp and staking flows, not at the token transfer level. The token architecture incorporates advanced features including:
 
 **Multi-Signature Security**: Implementation of multi-signature wallet controls for critical protocol functions, ensuring decentralized security management and reducing single points of failure.
 
@@ -119,7 +118,7 @@ The $LOOP token functions as a multi-utility asset within the EchoLoop ecosystem
 
 The protocol implements a sophisticated deflationary model designed to create sustainable value accrual for long-term token holders through multiple burn mechanisms:
 
-**Transaction Fee Burns**: Automatic token destruction equal to a percentage of all protocol transaction fees, permanently reducing circulating supply.
+**Platform Fee Burns**: Token destruction mechanisms applied at the platform level (webapp/staking flows), not at the token transfer level. The SPL token itself has no native transfer tax; burns occur through platform fee collection.
 
 **Engagement Milestone Burns**: Triggered burns based on network activity thresholds, creating positive feedback loops between adoption and token scarcity.
 
@@ -149,11 +148,9 @@ EchoLoop Protocol introduces a novel consensus mechanism termed "Proof-of-Engage
 
 The PoE mechanism operates through several key components:
 
-**Behavioral Verification Algorithms**: Advanced machine learning models that analyze engagement patterns to distinguish between authentic human interactions and automated or manipulative behavior.
+**Behavioral Verification Algorithms**: Our platform will have these securities across scoring, anti-botting, and fraud detection to distinguish between authentic human interactions and automated or manipulative behavior.
 
-**Cryptographic Attestation**: Digital signatures and hash-based proofs that verify the authenticity and timing of social interactions without compromising user privacy.
-
-**Distributed Validation Networks**: Decentralized networks of validator nodes that cross-reference engagement data across multiple platforms and sources to ensure accuracy and prevent gaming.
+**Cryptographic Attestation**: Users connect their wallet and sign messages for authentication. Each engagement action generates timestamped hashes with nonces for verification. Users register via wallet connection, and the platform stores only cryptographic hashes and metadata (no plaintext sensitive data), ensuring privacy while maintaining verifiable proof of authentic interactions.
 
 **Consensus Finality Mechanisms**: Time-locked confirmation processes that ensure engagement rewards are distributed only after sufficient validation periods to prevent manipulation.
 
@@ -173,7 +170,7 @@ The protocol implements sophisticated dynamic difficulty adjustment (DDA) algori
 
 EchoLoop Protocol incorporates multiple layers of Sybil attack resistance to ensure the integrity of the engagement verification process:
 
-**Identity Verification Protocols**: Multi-factor authentication systems that require social media account verification, device fingerprinting, and behavioral analysis to establish unique user identities.
+**Identity Verification Protocols**: Authenticated via wallet connections and one IP per user; VPNs not allowed.
 
 **Stake-Weighted Validation**: Requirements for minimum token holdings or staking commitments to participate in high-value engagement activities, creating economic disincentives for Sybil account creation.
 
@@ -186,9 +183,13 @@ EchoLoop Protocol incorporates multiple layers of Sybil attack resistance to ens
 The protocol employs quadratic funding principles to optimize reward distribution fairness and prevent concentration of rewards among high-volume participants:
 
 **Quadratic Scaling Formula**:
-```
-Reward_i = (Engagement_i)^0.5 / Σ(Engagement_j)^0.5 * Total_Pool
-```
+
+<div style="border: 2px solid var(--accent-purple, #8b5cf6); background: rgba(139, 92, 246, 0.1); padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
+<strong>Quadratic Reward Distribution:</strong><br><br>
+<code style="font-size: 1.1em; background: rgba(0,0,0,0.3); padding: 10px 20px; border-radius: 4px; display: inline-block;">
+Reward<sub>i</sub> = (Engagement<sub>i</sub>)<sup>0.5</sup> / Σ(Engagement<sub>j</sub>)<sup>0.5</sup> × Total_Pool
+</code>
+</div>
 
 This mathematical approach ensures that while increased engagement generates higher rewards, the relationship follows a diminishing returns curve that prevents excessive concentration of token rewards among power users.
 
@@ -198,6 +199,8 @@ This mathematical approach ensures that while increased engagement generates hig
 
 **Quality vs. Quantity Optimization**: Algorithmic balancing between engagement volume and engagement quality metrics to ensure sustainable community growth.
 
+**Progressive Taxation**: Could implement progressive taxation where high earners contribute a portion back to the pool, which is then redistributed to lower-earning participants to promote ecosystem fairness.
+
 ---
 
 ## 5. Yield-Generating Social Capital: DeFi Staking Infrastructure
@@ -206,7 +209,7 @@ This mathematical approach ensures that while increased engagement generates hig
 
 EchoLoop Protocol implements an advanced Delegated Proof-of-Stake (DPoS) system specifically optimized for social engagement validation and reward amplification. This system allows token holders to stake their $LOOP tokens to enhance their earning potential while simultaneously contributing to network security and validation processes.
 
-**Validator Node Operations**: Staking participants can operate validator nodes that verify engagement authenticity across multiple social platforms, earning additional rewards for maintaining network infrastructure.
+**Validator Node Operations**: Staking participants can operate validator nodes that verify engagement authenticity on the LOOP platform only, earning additional rewards for maintaining network infrastructure.
 
 **Delegation Mechanisms**: Token holders who prefer not to operate validator nodes can delegate their staking power to trusted validators, sharing in validation rewards while maintaining liquidity options.
 
@@ -260,10 +263,6 @@ EchoLoop Protocol implements sophisticated risk management frameworks to protect
 
 **Diversified Treasury Backing**: Staking rewards are backed by diversified treasury holdings including major cryptocurrencies, stablecoins, and DeFi protocol tokens.
 
-**Insurance Pool Mechanisms**: Community-funded insurance pools that protect against smart contract risks, validator failures, and other technical risks.
-
-**Liquidation Protection**: Automated systems that prevent forced liquidations during market volatility through dynamic collateral adjustments and emergency lending facilities.
-
 **Risk Scoring Models**: Algorithmic assessment of individual staking positions that provides personalized risk/return optimization recommendations.
 
 ---
@@ -278,7 +277,7 @@ EchoLoop Protocol maintains deep liquidity for the $LOOP token through strategic
 
 **Dynamic Liquidity Management**: Algorithmic systems that automatically adjust liquidity provision based on market conditions, trading volume, and price volatility to optimize capital efficiency.
 
-**Multi-DEX Strategy**: Liquidity distribution across multiple decentralized exchanges including Uniswap V3, SushiSwap, Balancer, and Curve Finance to maximize trading accessibility and minimize slippage.
+**Multi-DEX Strategy**: Liquidity distribution across multiple Solana-based decentralized exchanges including Raydium, Orca, Jupiter, and Serum to maximize trading accessibility and minimize slippage.
 
 **Impermanent Loss Mitigation**: Advanced hedging strategies and insurance mechanisms that protect protocol-owned liquidity from impermanent loss while maintaining market making benefits.
 
@@ -298,11 +297,9 @@ The protocol treasury implements institutional-grade asset management practices 
 
 **Professional Management**: Partnership with institutional asset managers and DeFi specialists to ensure optimal treasury performance and risk-adjusted returns.
 
-### 6.3 Burn-and-Mint Equilibrium
+### 6.3 Fixed Supply Model
 
-The protocol implements sophisticated token supply management mechanisms to maintain optimal economic conditions:
-
-**Elastic Supply Mechanisms**: Smart contracts that automatically adjust token supply based on network activity, demand metrics, and economic conditions to maintain price stability.
+The protocol implements a fixed total supply of 1 billion $LOOP tokens. New tokens cannot be minted under any circumstances.
 
 **Burn Triggers**: Automated token burning events triggered by specific conditions including:
 - Transaction volume thresholds
@@ -310,19 +307,18 @@ The protocol implements sophisticated token supply management mechanisms to main
 - Governance-voted burn events
 - Market capitalization milestones
 
-**Mint Controls**: Strict limitations on new token creation with multi-signature requirements and time-delayed implementation to prevent supply inflation without community approval.
+**Supply Management**: With a fixed cap, burns permanently reduce circulating supply, creating deflationary pressure over time.
 
-**Economic Modeling**: Continuous monitoring and adjustment of burn-and-mint parameters based on real-world economic data and predictive modeling to optimize long-term token value.
+**Economic Modeling**: Continuous monitoring of burn parameters based on real-world economic data and predictive modeling to optimize long-term token value.
 
 ### 6.4 Protocol Revenue Optimization
 
 EchoLoop Protocol generates sustainable revenue through multiple streams designed to fund ongoing operations and ecosystem growth:
 
-**Transaction Fee Structure**:
-- 2% fee on all $LOOP token transfers
+**Platform Fee Structure** (fees apply on the EchoLoop platform flows, NOT on token transfers):
 - 4% fee on staking deposits and withdrawals
 - 6% fee on premium platform features
-- Variable fees on high-volume trading activities
+- Variable fees on high-volume trading activities within the platform
 
 **Revenue Distribution Model**:
 - 50% to daily reward pools for engagement incentives
@@ -330,32 +326,29 @@ EchoLoop Protocol generates sustainable revenue through multiple streams designe
 - 15% to development and operational funding
 - 10% to token burn mechanisms for deflationary pressure
 
-**Fee Optimization Algorithms**: Dynamic fee adjustment systems that automatically calibrate fee rates based on network usage, competitive analysis, and user feedback to optimize both revenue generation and user adoption.
-
 **Revenue Forecasting**: Advanced predictive models that project future revenue streams based on user growth, engagement trends, and market conditions to enable strategic planning and investment decisions.
 
 ---
 
 ## 7. Phased Protocol Evolution: Technical Milestone Framework
 
-### 7.1 Phase I: Minimum Viable Product (MVP) Deployment
+### 7.1 Phase I: Bot Integration Launch (Q1 2026)
 
-**Duration**: Q4 2025 - Q1 2026 (4 months)
-**Focus**: Core Infrastructure & Community Bootstrap
+**Focus**: Seamless Social Platform Integration
 
 **Technical Deliverables**:
 
-*Smart Contract Infrastructure*:
-- ERC-20 $LOOP token contract with advanced features
-- Multi-signature treasury management system
-- Basic staking contracts with Bronze and Silver tiers
-- Engagement tracking and reward distribution mechanisms
-
-*Bot Integration Framework*:
+*Bot Infrastructure*:
 - Telegram bot with engagement tracking capabilities
 - Discord bot with server integration features
-- Cross-platform engagement aggregation system
 - Real-time reward calculation and distribution
+- User wallet connection and authentication
+
+*Smart Contract Foundation*:
+- SPL $LOOP token deployment on Solana
+- Multi-signature treasury management system
+- Basic staking contracts with Bronze and Silver tiers
+- Engagement scoring and reward distribution mechanisms
 
 *Security Implementation*:
 - Smart contract audits by leading security firms
@@ -363,36 +356,48 @@ EchoLoop Protocol generates sustainable revenue through multiple streams designe
 - Multi-signature wallet implementation
 - Emergency pause mechanisms
 
+*Anti-Sybil Measures*:
+- IP-based user identification (one IP per user, no VPNs)
+- Wallet connection authentication
+- Human verification systems before interactions
+- Behavioral pattern analysis for bot detection
+
 **Success Metrics**:
-- 10,000+ active community members
+- 10,000+ active community members across Telegram and Discord
 - $1M+ total value locked (TVL) in staking
 - 100,000+ daily engagement interactions
 - Zero critical security incidents
 
-### 7.2 Phase II: Horizontal and Vertical Scaling
+### 7.2 Phase II: Web Dashboard with Analytics (Q2 2026)
 
-**Duration**: Q2 2026 - Q3 2026 (6 months)
-**Focus**: Platform Expansion & Feature Enhancement
+**Focus**: Comprehensive Platform Expansion
 
 **Technical Deliverables**:
 
 *Web Application Platform*:
-- Full-featured web dashboard with analytics
+- Full-featured web dashboard with real-time analytics
 - Advanced staking interface with yield optimization
-- Community leaderboards and achievement systems
+- Daily leaderboards and achievement systems (24h reset cycles)
 - Portfolio management and performance tracking tools
+- Historical engagement data and reward visualization
 
-*Advanced Staking Infrastructure*:
+*Enhanced Staking Infrastructure*:
 - Gold and Diamond tier implementation
-- Liquid staking derivatives (sLOOP tokens)
-- Yield farming pools with partner protocols
-- Automated compound interest mechanisms
+- Auto-compounding mechanisms
+- Time-locked liquidity incentives with early withdrawal penalties
+- Staking multiplier system (+10% to +100% boost)
 
-*API and Integration Framework*:
-- Public API for third-party developers
-- Social media platform integrations (Twitter, LinkedIn)
-- Mobile app beta release for iOS and Android
-- Partner protocol integrations and cross-chain compatibility
+*Solana DEX Integration*:
+- Liquidity provision to Raydium, Orca, Jupiter, and Serum
+- Protocol-owned liquidity (POL) management
+- Dynamic liquidity optimization algorithms
+- Impermanent loss mitigation strategies
+
+*Two-Phase Presale Launch*:
+- Presale #1: Early supporter allocation
+- Presale #2: Community expansion round
+- Anti-whale protection mechanisms
+- Direct reward transfers from launchpad to users
 
 **Success Metrics**:
 - 100,000+ registered platform users
@@ -400,67 +405,64 @@ EchoLoop Protocol generates sustainable revenue through multiple streams designe
 - 50+ ecosystem partners and integrations
 - 1M+ daily platform interactions
 
-### 7.3 Phase III: Cross-Chain Interoperability
+### 7.3 Phase III: Mobile App and Mainstream Integration (Q3 2026)
 
-**Duration**: Q4 2026 - Q2 2027 (9 months)
-**Focus**: Multi-Chain Expansion & DeFi Integration
+**Focus**: Mobile-First Experience & Mainstream Adoption
 
 **Technical Deliverables**:
 
-*Multi-Chain Infrastructure*:
-- Ethereum mainnet deployment and optimization
-- Polygon and Arbitrum layer-2 integrations
-- Cross-chain bridge implementation for asset transfers
-- Multi-chain staking and reward distribution
+*Mobile Application*:
+- Native iOS and Android applications
+- Push notifications for reward distributions and milestones
+- Mobile-optimized engagement tracking
+- Simplified wallet connection and onboarding
 
-*DeFi Protocol Integration*:
-- Automated market making (AMM) liquidity provision
-- Integration with major lending protocols (Aave, Compound)
-- Yield aggregation strategies across multiple chains
-- Synthetic asset creation and derivatives trading
+*Platform Expansion*:
+- Enhanced web dashboard features
+- Additional social platform integrations
+- Cross-platform unified engagement scoring
+- Improved user experience and accessibility
 
-*Governance System Evolution*:
-- Fully decentralized DAO implementation
-- On-chain voting mechanisms for all protocol decisions
+*Governance System Launch*:
+- Decentralized DAO implementation
+- On-chain voting mechanisms with quadratic voting
+- Weighted voting: Token_Holdings × (1 + Engagement_Multiplier) × Staking_Duration_Multiplier
 - Treasury management through community governance
-- Advanced proposal and execution frameworks
+- Proposal submission and execution frameworks
+
+*Advanced Security*:
+- Enhanced anti-Sybil systems with ML-based fraud detection
+- Decentralized validator network (LOOP platform only)
+- Peer attestation with slashing for fraudulent validation
+- Continuous security audits and monitoring
 
 **Success Metrics**:
-- $100M+ total value locked across all chains
-- 1M+ unique wallet addresses interacting with protocol
-- 10M+ monthly cross-chain transactions
-- Full community governance transition completion
+- $100M+ total value locked
+- 1M+ unique wallet addresses
+- 10M+ monthly platform interactions
+- Successful DAO governance transition
 
-### 7.4 Phase IV: Ecosystem Partnership Framework
+### 7.4 Future Vision: Ecosystem Maturity (Q4 2026+)
 
-**Duration**: Q3 2027 - Q4 2027 (6 months)
-**Focus**: Strategic Alliances & Market Expansion
+**Long-Term Strategic Goals**:
 
-**Technical Deliverables**:
-
-*Enterprise Integration Solutions*:
-- White-label social engagement solutions for businesses
+*Institutional Integration*:
+- White-label solutions for enterprise social engagement
 - Corporate treasury management tools
+- Compliance and reporting frameworks
 - Institutional staking and custody services
-- Compliance and reporting frameworks for enterprises
 
-*Strategic Partnership Infrastructure*:
-- Integration with major social media platforms
-- Collaboration frameworks with other SocialFi protocols
-- Cross-protocol reward sharing mechanisms
-- Unified identity and reputation systems
+*Advanced Features*:
+- AI-powered engagement optimization
+- Predictive analytics for reward forecasting
+- Personalized user experience algorithms
+- Progressive taxation system for fair reward distribution
 
-*Advanced Analytics and AI*:
-- Machine learning models for engagement optimization
-- Predictive analytics for reward distribution
-- Automated fraud detection and prevention systems
-- Personalized user experience optimization
-
-**Success Metrics**:
-- 50+ major enterprise partnerships
-- $1B+ total value locked across ecosystem
+*Mainstream Adoption*:
 - 10M+ active users across all platforms
 - Industry recognition as leading SocialFi protocol
+- Full decentralization of protocol operations
+- Sustainable long-term tokenomics achieving equilibrium
 
 ---
 
@@ -491,9 +493,13 @@ EchoLoop Protocol implements a sophisticated on-chain governance system that ena
 The governance system implements advanced mechanisms to ensure fair participation while preventing governance attacks:
 
 **Weighted Voting System**: Voting power combines token holdings with engagement history and staking duration:
-```
-Voting_Power = Token_Holdings * (1 + Engagement_Multiplier) * Staking_Duration_Multiplier
-```
+
+<div style="border: 2px solid var(--accent-purple, #8b5cf6); background: rgba(139, 92, 246, 0.1); padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
+<strong>Voting Power Formula:</strong><br><br>
+<code style="font-size: 1.1em; background: rgba(0,0,0,0.3); padding: 10px 20px; border-radius: 4px; display: inline-block;">
+Voting_Power = Token_Holdings × (1 + Engagement_Multiplier) × Staking_Duration_Multiplier
+</code>
+</div>
 
 **Quadratic Voting Implementation**: For contentious decisions, the protocol employs quadratic voting where the cost of additional votes increases quadratically, preventing whale dominance while allowing passionate minorities to have stronger voices.
 
@@ -519,61 +525,53 @@ The protocol ensures fair and decentralized governance power distribution throug
 
 **Anti-Whale Measures**: Voting power caps prevent any single entity from controlling more than 10% of total governance power, regardless of token holdings.
 
-**Earned Governance Rights**: Active community participation through engagement, proposal submission, and constructive discussion earns additional governance tokens that cannot be purchased or transferred.
-
-**Geographic Distribution Requirements**: Governance proposals that affect global users require approval from token holders across multiple geographic regions to prevent regional bias.
-
 **Time-Based Vesting**: Large token holders face extended vesting periods for governance rights, preventing immediate control acquisition through large token purchases.
 
 ---
 
 ## 9. Economic Security and Value Distribution: Advanced Tokenomics
 
-### 9.1 Fair Launch Distribution Model
+### 9.1 Two-Phase Presale Distribution Model
 
-EchoLoop Protocol implements a fair launch mechanism designed to ensure equitable token distribution and prevent early investor advantage:
+EchoLoop Protocol implements a two-phase presale mechanism (see About page for full details) designed to ensure fair token distribution and community-driven launch:
 
-**No Pre-Mine Policy**: Zero tokens are pre-mined or allocated to founders, ensuring all tokens enter circulation through fair distribution mechanisms.
+**Presale Phase 1**: Early supporter allocation round with preferential pricing and terms for committed community members.
 
-**Community Mining**: Initial token distribution occurs through engagement mining, where early community members earn tokens through verified social interactions and platform contributions.
+**Presale Phase 2**: Broader community expansion round ensuring wider distribution before public DEX/CEX listings.
 
-**Progressive Distribution Curve**: Token release follows a carefully calibrated curve that rewards early adopters while maintaining long-term sustainability:
+**Anti-Whale Protection**: Two presales prior to adding liquidity to DEX/CEX prevent concentration of holdings and provide fair entry opportunities across community segments.
 
-```
-Daily_Release = Base_Amount * (1 - e^(-time/decay_constant))
-```
+**Direct Reward Transfers**: Rewards are transferred directly from the launchpad to users, eliminating intermediary steps and ensuring transparent distribution.
 
-**Anti-Dump Mechanisms**: Early participants face graduated release schedules that prevent large-scale token dumps while rewarding consistent participation.
+### 9.2 Solana-Native Liquidity Bootstrapping
 
-### 9.2 Liquidity Bootstrapping Program (LBP)
+The protocol employs a Solana-native liquidity bootstrapping strategy to establish sustainable markets:
 
-The protocol employs a sophisticated liquidity bootstrapping strategy to establish sustainable markets:
+**Raydium AcceleRaytor Integration**: Utilization of Raydium's AcceleRaytor launchpad for fair price discovery and initial liquidity establishment on Solana.
 
-**Balancer LBP Implementation**: Utilization of Balancer's Liquidity Bootstrapping Pool mechanism to discover fair market price through algorithmic weight adjustments over 72-hour periods.
+**Price Discovery Mechanics**: Progressive pricing mechanisms through the presale phases, creating natural price discovery before public trading begins. Token pairs established with SOL and USDC for broad accessibility.
 
-**Price Discovery Mechanics**: Starting weights of 95% $LOOP / 5% ETH gradually shift to 20% $LOOP / 80% ETH, creating natural price discovery without requiring large initial capital investments.
+**MEV Protection**: Leveraging Solana's efficient transaction processing and Jito MEV protection mechanisms to prevent front-running and sandwich attacks common on other chains.
 
-**Bot Protection**: Advanced anti-MEV (Maximal Extractable Value) mechanisms including randomized batch auctions and commit-reveal schemes prevent front-running and manipulation.
-
-**Community Priority Access**: Community members with verified engagement history receive priority access to LBP participation, ensuring early supporters benefit from initial liquidity provision.
+**Community Priority Access**: Presale participants and early community members with verified engagement history receive priority access to initial liquidity provision, ensuring fair launch for early supporters.
 
 ### 9.3 Vesting and Cliff Structures for Long-Term Alignment
 
 Strategic vesting mechanisms ensure long-term commitment from all ecosystem participants:
 
-**Team and Development Vesting**:
+#### **Team and Development Vesting**
 - 4-year vesting period with 1-year cliff
 - Monthly linear release after cliff period
 - Performance milestones tied to additional vesting acceleration
 - Community governance override capability for underperformance
 
-**Advisor and Partner Vesting**:
+#### **Advisor and Partner Vesting**
 - 2-year vesting period with 6-month cliff
 - Quarterly release schedule tied to contribution metrics
 - Achievement bonuses for ecosystem growth milestones
 - Early termination clauses for non-performance
 
-**Community Rewards Vesting**:
+#### **Community Rewards Vesting**
 - Immediate 25% liquidity for small amounts (<1,000 $LOOP)
 - 6-month linear vesting for medium amounts (1,000-10,000 $LOOP)
 - 12-month linear vesting for large amounts (>10,000 $LOOP)
@@ -583,26 +581,37 @@ Strategic vesting mechanisms ensure long-term commitment from all ecosystem part
 
 The protocol implements dynamic fee structures that optimize between user experience and sustainable revenue generation:
 
-**Adaptive Fee Algorithms**: Smart contracts automatically adjust fees based on network congestion, user activity levels, and competitive landscape analysis:
+#### **Adaptive Fee Algorithms**
 
-```
-Dynamic_Fee = Base_Fee * (1 + Congestion_Multiplier) * (1 - Loyalty_Discount)
-```
+Smart contracts automatically adjust fees based on network congestion, user activity levels, and competitive landscape analysis:
 
-**Loyalty-Based Discounts**: Long-term users and high-engagement participants receive progressive fee reductions:
+<div style="border: 2px solid var(--accent-purple, #8b5cf6); background: rgba(139, 92, 246, 0.1); padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
+<strong>Dynamic Fee Formula:</strong><br><br>
+<code style="font-size: 1.1em; background: rgba(0,0,0,0.3); padding: 10px 20px; border-radius: 4px; display: inline-block;">
+Dynamic_Fee = Base_Fee × (1 + Congestion_Multiplier) × (1 - Loyalty_Discount)
+</code>
+</div>
+
+#### **Loyalty-Based Discounts**
+
+Long-term users and high-engagement participants receive progressive fee reductions:
 - Bronze Status (1+ month activity): 10% fee reduction
 - Silver Status (6+ month activity): 25% fee reduction
 - Gold Status (12+ month activity): 50% fee reduction
 - Diamond Status (24+ month activity): 75% fee reduction
 
-**Revenue Sharing Mechanics**: All protocol fees are transparently distributed according to community-governed allocation:
+#### **Revenue Sharing Mechanics**
+
+All protocol fees are transparently distributed according to community-governed allocation:
 - 40% to engagement reward pools
 - 25% to staker yield generation
 - 20% to protocol development and maintenance
 - 10% to community treasury for grants and partnerships
 - 5% to token burn mechanisms for deflationary pressure
 
-**Cross-Subsidization Strategy**: High-value users and premium features subsidize free access for new users and developing market participants, ensuring global accessibility while maintaining sustainability.
+#### **Cross-Subsidization Strategy**
+
+High-value users and premium features subsidize free access for new users and developing market participants, ensuring global accessibility while maintaining sustainability.
 
 ---
 
@@ -664,7 +673,7 @@ EchoLoop Protocol represents the foundational infrastructure for a fundamental t
 
 EchoLoop Protocol represents a fundamental reimagining of the relationship between social engagement and economic value. By implementing sophisticated blockchain technology, game theory, and algorithmic fairness mechanisms, the protocol creates a sustainable ecosystem where authentic human interaction generates meaningful economic returns for participants rather than platform operators.
 
-The protocol's multi-phase development approach, beginning with accessible bot interfaces and evolving toward comprehensive cross-chain infrastructure, ensures both immediate utility and long-term scalability. Through careful attention to tokenomics, governance, and regulatory compliance, EchoLoop establishes a foundation for sustainable growth and mainstream adoption.
+The protocol's multi-phase development approach, beginning with accessible bot interfaces (Q1 2026), expanding to web dashboards with presale launches (Q2 2026), and evolving toward mobile applications and mainstream integration (Q3 2026+), ensures both immediate utility and long-term scalability. Through careful attention to Solana-native tokenomics, community governance, and regulatory compliance, EchoLoop establishes a foundation for sustainable growth and mainstream adoption.
 
 As the SocialFi sector continues to evolve, EchoLoop Protocol positions itself at the forefront of this transformation, providing the infrastructure and incentive mechanisms necessary to create a more equitable and economically productive social internet. The protocol's success will be measured not only in token appreciation and user adoption, but in its contribution to a more fair and value-distributive digital economy.
 
@@ -685,13 +694,41 @@ The future of social media lies not in centralized extraction of user-generated 
 ## Appendix A: Technical Specifications
 
 ### Smart Contract Addresses
-*To be populated upon mainnet deployment*
+
+<div style="margin: 20px 0;">
+<a href="https://solscan.io/token/[CONTRACT_ADDRESS]" style="display: inline-block; background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 500; transition: transform 0.2s;">
+📋 View $LOOP Token Contract →
+</a>
+</div>
+
+*Smart contract addresses will be populated upon Solana mainnet deployment*
 
 ### API Documentation
-*Complete API documentation available at docs.echoloop.protocol*
+
+<div style="margin: 20px 0;">
+<a href="https://docs.echoloop.io/api" style="display: inline-block; background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 500; transition: transform 0.2s;">
+📚 Access API Documentation →
+</a>
+</div>
+
+*Complete API documentation with endpoints, authentication, and integration guides*
 
 ### Audit Reports
-*Security audit reports available upon completion*
+
+<div style="margin: 20px 0;">
+<a href="https://echoloop.io/audits" style="display: inline-block; background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 500; transition: transform 0.2s;">
+🔒 View Security Audit Reports →
+</a>
+</div>
+
+*Security audit reports from leading blockchain security firms*
 
 ### Mathematical Proofs
-*Detailed mathematical proofs for tokenomics models available in technical appendix*
+
+<div style="margin: 20px 0;">
+<a href="https://echoloop.io/technical-appendix" style="display: inline-block; background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 500; transition: transform 0.2s;">
+🧮 Read Technical Appendix →
+</a>
+</div>
+
+*Detailed mathematical proofs for tokenomics models, reward distributions, and economic simulations*
