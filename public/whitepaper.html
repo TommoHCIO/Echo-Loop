@@ -499,13 +499,15 @@
             }
 
             .logo img {
-                height: 80px; /* Smaller logo on mobile */
+                height: 80px !important; /* Fixed logo size on mobile - prevent resize on scroll */
+                min-height: 80px;
+                max-height: 80px;
             }
 
             .toc-toggle,
             .back-button {
-                padding: 0.4rem 0.6rem; /* 50% smaller buttons on mobile */
-                font-size: 0.75rem;
+                padding: 0.4rem 0.6rem !important; /* 50% smaller buttons on mobile - ensure same size */
+                font-size: 0.75rem !important;
             }
 
             .article-title {

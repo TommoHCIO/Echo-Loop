@@ -293,7 +293,9 @@
             }
 
             .logo img {
-                height: 80px; /* Smaller logo on mobile */
+                height: 80px !important; /* Fixed logo size on mobile - prevent resize on scroll */
+                min-height: 80px;
+                max-height: 80px;
             }
 
             .back-button {
