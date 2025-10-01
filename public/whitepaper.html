@@ -294,6 +294,38 @@
             color: var(--text-muted);
         }
 
+        /* Tappable TOC Handle */
+        .toc-handle {
+            position: fixed;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: 35px;
+            height: 100px;
+            background: linear-gradient(to top, #000000, #404040);
+            border: 1px solid var(--border-color);
+            border-left: none;
+            border-radius: 0 8px 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 51;
+            transition: all 0.3s ease;
+            color: var(--text-white);
+            font-size: 18px;
+        }
+
+        .toc-handle:hover {
+            background: linear-gradient(to top, #1a1a1a, #505050);
+            width: 38px;
+        }
+
+        /* When TOC is open, move handle to right edge of panel */
+        .toc-container.active ~ .toc-handle {
+            left: 569px;
+        }
+
         /* Main Content */
         .container {
             max-width: 680px;
@@ -569,6 +601,31 @@
                 font-size: 18px;
                 padding: 10px 18px;
             }
+
+            /* Mobile handle - horizontal tab at bottom */
+            .toc-handle {
+                top: auto;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 60px;
+                height: 24px;
+                border-radius: 8px 8px 0 0;
+                border-left: 1px solid var(--border-color);
+                border-bottom: none;
+                font-size: 14px;
+            }
+
+            .toc-handle:hover {
+                width: 60px;
+                height: 26px;
+            }
+
+            /* When TOC is open, move handle to top of panel */
+            .toc-container.active ~ .toc-handle {
+                bottom: 35vh;
+                left: 50%;
+            }
         }
     </style>
 </head>
@@ -625,6 +682,11 @@
             <a href="#appendix" class="toc-item level-1">Appendix A: Technical Specifications</a>
         </div>
     </nav>
+
+    <!-- Tappable handle for opening/closing TOC -->
+    <div class="toc-handle" id="tocHandle">
+        <span>≡</span>
+    </div>
 
     <!-- Main Content -->
     <main class="container" id="container">
@@ -873,6 +935,23 @@
                 e.stopPropagation();
                 toggleToc();
             }, { passive: false });
+
+            // Add click handler for tappable handle
+            const tocHandle = document.getElementById('tocHandle');
+            if (tocHandle) {
+                tocHandle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleToc();
+                });
+
+                // Touch support for mobile
+                tocHandle.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleToc();
+                }, { passive: false });
+            }
 
             // Highlight current section on scroll
             let ticking = false;
