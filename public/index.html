@@ -78,6 +78,7 @@
             padding-top: calc(40vh - 150px);
             overflow: hidden;
             position: relative;
+            background-color: #000000;
         }
 
         .video-background {
@@ -2778,10 +2779,13 @@
                         fill: 'forwards'
                     });
 
-                    // Navigate AFTER animation completes
-                    animation.onfinish = () => {
+                    // Navigate AFTER animation completes using promise
+                    animation.finished.then(() => {
                         window.location.href = '/about.html';
-                    };
+                    }).catch(() => {
+                        // Fallback if animation fails
+                        window.location.href = '/about.html';
+                    });
                 });
                 console.log('About button event listener added');
             } else {
@@ -2846,10 +2850,13 @@
                         fill: 'forwards'
                     });
 
-                    // Navigate AFTER animation completes
-                    animation.onfinish = () => {
+                    // Navigate AFTER animation completes using promise
+                    animation.finished.then(() => {
                         window.location.href = '/whitepaper.html';
-                    };
+                    }).catch(() => {
+                        // Fallback if animation fails
+                        window.location.href = '/whitepaper.html';
+                    });
                 });
                 console.log('Whitepaper button event listener added');
             } else {
