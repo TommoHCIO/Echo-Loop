@@ -129,6 +129,7 @@
             border-radius: 4px;
             font-family: 'Aptos Light', 'Aptos', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             font-weight: 300;
+            min-width: 120px;
         }
 
         .toc-toggle::before {
@@ -180,6 +181,7 @@
             border-radius: 4px;
             font-family: 'Aptos Light', 'Aptos', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             font-weight: 300;
+            min-width: 120px;
         }
 
         .back-button::before {
@@ -220,7 +222,7 @@
             left: -569px;
             width: 569px;
             height: calc(100vh - 80px);
-            background: var(--toc-bg);
+            background: linear-gradient(to top, #000000, #404040);
             backdrop-filter: blur(20px);
             border-right: 1px solid var(--border-color);
             transition: left 0.3s ease, bottom 0.3s ease;
@@ -240,7 +242,7 @@
         .toc-title {
             font-family: 'Aptos Light', 'Aptos', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             font-weight: 300;
-            font-size: 15px;
+            font-size: 18px;
             font-weight: 500;
             color: var(--text-primary);
             margin-bottom: 6px;
@@ -249,7 +251,7 @@
         .toc-subtitle {
             font-family: 'Aptos Light', 'Aptos', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             font-weight: 300;
-            font-size: 11px;
+            font-size: 13px;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.8px;
@@ -261,10 +263,10 @@
 
         .toc-item {
             display: block;
-            padding: 6px 18px;
+            padding: 8px 18px;
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 13px;
+            font-size: 16px;
             border-left: 2px solid transparent;
             transition: all 0.2s ease;
             font-weight: 400;
@@ -283,12 +285,12 @@
 
         .toc-item.level-2 {
             padding-left: 32px;
-            font-size: 12px;
+            font-size: 15px;
         }
 
         .toc-item.level-3 {
             padding-left: 46px;
-            font-size: 11px;
+            font-size: 14px;
             color: var(--text-muted);
         }
 
@@ -545,10 +547,10 @@
 
             .toc-container {
                 top: auto;
-                bottom: -25vh;
+                bottom: -35vh;
                 left: 0;
                 width: 100%;
-                height: 25vh;
+                height: 35vh;
             }
 
             .toc-container.active {
@@ -556,7 +558,16 @@
             }
 
             .toc-header {
-                padding-top: 80px;
+                padding-top: 20px;
+            }
+
+            .toc-title {
+                font-size: 20px;
+            }
+
+            .toc-item {
+                font-size: 18px;
+                padding: 10px 18px;
             }
         }
     </style>
@@ -846,8 +857,22 @@
             ensureVideoPlayback();
             loadWhitepaper();
 
-            // TOC toggle functionality
-            document.getElementById('tocToggle').addEventListener('click', toggleToc);
+            // TOC toggle functionality with better mobile support
+            const tocToggleBtn = document.getElementById('tocToggle');
+
+            // Add both click and touchstart for better mobile reliability
+            tocToggleBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleToc();
+            });
+
+            // Add touch support for mobile
+            tocToggleBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleToc();
+            }, { passive: false });
 
             // Highlight current section on scroll
             let ticking = false;
