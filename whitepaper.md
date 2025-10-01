@@ -752,16 +752,6 @@ The future of social media lies not in centralized extraction of user-generated 
 
 *Smart contract addresses will be populated upon Solana mainnet deployment*
 
-### API Documentation
-
-<div style="margin: 20px 0;">
-<a href="https://docs.echoloop.io/api" class="appendix-link">
-📚 Access API Documentation →
-</a>
-</div>
-
-*Complete API documentation with endpoints, authentication, and integration guides*
-
 ### Audit Reports
 
 <div style="margin: 20px 0;">
