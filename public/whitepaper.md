@@ -745,7 +745,7 @@ The future of social media lies not in centralized extraction of user-generated 
 ### Smart Contract Addresses
 
 <div style="margin: 20px 0;">
-<a href="https://solscan.io/token/[CONTRACT_ADDRESS]" style="display: inline-block; background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 500; transition: transform 0.2s;">
+<a href="https://solscan.io/token/[CONTRACT_ADDRESS]" class="appendix-link">
 📋 View $LOOP Token Contract →
 </a>
 </div>
@@ -755,7 +755,7 @@ The future of social media lies not in centralized extraction of user-generated 
 ### API Documentation
 
 <div style="margin: 20px 0;">
-<a href="https://docs.echoloop.io/api" style="display: inline-block; background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 500; transition: transform 0.2s;">
+<a href="https://docs.echoloop.io/api" class="appendix-link">
 📚 Access API Documentation →
 </a>
 </div>
@@ -765,7 +765,7 @@ The future of social media lies not in centralized extraction of user-generated 
 ### Audit Reports
 
 <div style="margin: 20px 0;">
-<a href="https://echoloop.io/audits" style="display: inline-block; background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 500; transition: transform 0.2s;">
+<a href="https://echoloop.io/audits" class="appendix-link">
 🔒 View Security Audit Reports →
 </a>
 </div>
@@ -775,7 +775,7 @@ The future of social media lies not in centralized extraction of user-generated 
 ### Mathematical Proofs
 
 <div style="margin: 20px 0;">
-<a href="https://echoloop.io/technical-appendix" style="display: inline-block; background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 500; transition: transform 0.2s;">
+<a href="https://echoloop.io/technical-appendix" class="appendix-link">
 🧮 Read Technical Appendix →
 </a>
 </div>
