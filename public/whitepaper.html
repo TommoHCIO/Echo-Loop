@@ -45,6 +45,7 @@
             font-size: 21px;
             min-height: 100vh;
             position: relative;
+            background-color: #000000;
         }
 
         /* Video Background */
@@ -857,6 +858,41 @@
                     toggleToc();
                 }
             });
+        });
+
+        // Prevent logo flash: hide content until video loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('background-video');
+            const header = document.querySelector('.header');
+            const main = document.querySelector('main');
+
+            // Hide content initially
+            if (header) header.style.opacity = '0';
+            if (main) main.style.opacity = '0';
+
+            // Show content when video is ready
+            video.addEventListener('canplay', function() {
+                if (header) {
+                    header.style.transition = 'opacity 0.5s';
+                    header.style.opacity = '1';
+                }
+                if (main) {
+                    main.style.transition = 'opacity 0.5s';
+                    main.style.opacity = '1';
+                }
+            });
+
+            // Fallback: show content after 1 second even if video hasn't loaded
+            setTimeout(() => {
+                if (header && header.style.opacity === '0') {
+                    header.style.transition = 'opacity 0.5s';
+                    header.style.opacity = '1';
+                }
+                if (main && main.style.opacity === '0') {
+                    main.style.transition = 'opacity 0.5s';
+                    main.style.opacity = '1';
+                }
+            }, 1000);
         });
     </script>
 </body>
