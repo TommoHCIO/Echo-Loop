@@ -894,6 +894,57 @@
                 }
             }, 1000);
         });
+
+        // Add circular reveal animation to back button
+        document.addEventListener('DOMContentLoaded', function() {
+            const backButton = document.querySelector('.back-button');
+
+            if (backButton) {
+                backButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('Back button clicked - starting transition animation');
+
+                    const x = e.clientX ?? window.innerWidth / 2;
+                    const y = e.clientY ?? window.innerHeight / 2;
+
+                    // Create fullscreen transitioning overlay
+                    const overlay = document.createElement('div');
+                    overlay.style.cssText = `
+                        position: fixed;
+                        inset: 0;
+                        background: black;
+                        z-index: 9999;
+                        clip-path: circle(0 at ${x}px ${y}px);
+                        pointer-events: none;
+                    `;
+                    document.body.appendChild(overlay);
+
+                    // Calculate end radius for circular reveal
+                    const endRadius = Math.hypot(
+                        Math.max(x, window.innerWidth - x),
+                        Math.max(y, window.innerHeight - y)
+                    );
+
+                    // Animate circular reveal with smooth easing
+                    const animation = overlay.animate([
+                        { clipPath: `circle(0 at ${x}px ${y}px)` },
+                        { clipPath: `circle(${endRadius}px at ${x}px ${y}px)` }
+                    ], {
+                        duration: 800,
+                        easing: 'cubic-bezier(0.65, 0, 0.35, 1)',
+                        fill: 'forwards'
+                    });
+
+                    // Navigate AFTER animation completes using promise
+                    animation.finished.then(() => {
+                        window.location.href = '/';
+                    }).catch(() => {
+                        // Fallback if animation fails
+                        window.location.href = '/';
+                    });
+                });
+            }
+        });
     </script>
 </body>
 </html>
