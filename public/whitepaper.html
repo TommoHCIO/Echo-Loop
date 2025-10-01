@@ -860,13 +860,13 @@
             });
         });
 
-        // Prevent logo flash: hide content until video loads
+        // Initialize all page functionality
         document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('background-video');
             const header = document.querySelector('.header');
             const main = document.querySelector('main');
 
-            // Hide content initially
+            // Prevent logo flash: hide content until video loads
             if (header) header.style.opacity = '0';
             if (main) main.style.opacity = '0';
 
@@ -893,10 +893,8 @@
                     main.style.opacity = '1';
                 }
             }, 1000);
-        });
 
-        // Add circular reveal animation to back button and logo
-        document.addEventListener('DOMContentLoaded', function() {
+            // Add circular reveal animation to back button and logo
             const backButton = document.querySelector('.back-button');
             const logoLink = document.querySelector('.logo');
 
@@ -925,12 +923,12 @@
                     Math.max(y, window.innerHeight - y)
                 );
 
-                // Animate circular reveal with smooth easing
+                // Animate circular reveal with smooth easing (200ms = 0.2s)
                 const animation = overlay.animate([
                     { clipPath: `circle(0 at ${x}px ${y}px)` },
                     { clipPath: `circle(${endRadius}px at ${x}px ${y}px)` }
                 ], {
-                    duration: 600,
+                    duration: 200,
                     easing: 'cubic-bezier(0.65, 0, 0.35, 1)',
                     fill: 'forwards'
                 });
@@ -945,10 +943,17 @@
             }
 
             if (backButton) {
+                console.log('Back button found, adding click handler');
                 backButton.addEventListener('click', handleBackNavigation);
+            } else {
+                console.log('Back button NOT found');
             }
+
             if (logoLink) {
+                console.log('Logo link found, adding click handler');
                 logoLink.addEventListener('click', handleBackNavigation);
+            } else {
+                console.log('Logo link NOT found');
             }
         });
     </script>

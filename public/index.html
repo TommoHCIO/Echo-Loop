@@ -2768,12 +2768,12 @@
                         Math.max(y, window.innerHeight - y)
                     );
 
-                    // Animate circular reveal with smooth easing
+                    // Animate circular reveal with smooth easing (200ms = 0.2s)
                     const animation = overlay.animate([
                         { clipPath: `circle(0 at ${x}px ${y}px)` },
                         { clipPath: `circle(${endRadius}px at ${x}px ${y}px)` }
                     ], {
-                        duration: 600,
+                        duration: 200,
                         easing: 'cubic-bezier(0.65, 0, 0.35, 1)',
                         fill: 'forwards'
                     });
@@ -2839,12 +2839,12 @@
                         Math.max(y, window.innerHeight - y)
                     );
 
-                    // Animate circular reveal with smooth easing
+                    // Animate circular reveal with smooth easing (200ms = 0.2s)
                     const animation = overlay.animate([
                         { clipPath: `circle(0 at ${x}px ${y}px)` },
                         { clipPath: `circle(${endRadius}px at ${x}px ${y}px)` }
                     ], {
-                        duration: 600,
+                        duration: 200,
                         easing: 'cubic-bezier(0.65, 0, 0.35, 1)',
                         fill: 'forwards'
                     });

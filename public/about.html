@@ -479,10 +479,8 @@
                     main.style.opacity = '1';
                 }
             }, 1000);
-        });
 
-        // Add circular reveal animation to back button and logo
-        document.addEventListener('DOMContentLoaded', function() {
+            // Add circular reveal animation to back button and logo
             const backButton = document.querySelector('.back-button');
             const logoLink = document.querySelector('.logo');
 
@@ -511,12 +509,12 @@
                     Math.max(y, window.innerHeight - y)
                 );
 
-                // Animate circular reveal with smooth easing
+                // Animate circular reveal with smooth easing (200ms = 0.2s)
                 const animation = overlay.animate([
                     { clipPath: `circle(0 at ${x}px ${y}px)` },
                     { clipPath: `circle(${endRadius}px at ${x}px ${y}px)` }
                 ], {
-                    duration: 600,
+                    duration: 200,
                     easing: 'cubic-bezier(0.65, 0, 0.35, 1)',
                     fill: 'forwards'
                 });
@@ -531,10 +529,17 @@
             }
 
             if (backButton) {
+                console.log('Back button found, adding click handler');
                 backButton.addEventListener('click', handleBackNavigation);
+            } else {
+                console.log('Back button NOT found');
             }
+
             if (logoLink) {
+                console.log('Logo link found, adding click handler');
                 logoLink.addEventListener('click', handleBackNavigation);
+            } else {
+                console.log('Logo link NOT found');
             }
         });
     </script>
