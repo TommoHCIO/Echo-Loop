@@ -447,6 +447,12 @@
         function ensureVideoPlayback() {
             const video = document.getElementById('background-video');
             if (video) {
+                // Explicitly set required attributes for autoplay (2025 standard)
+                video.muted = true;
+                video.setAttribute('muted', 'true');
+                video.setAttribute('playsinline', 'true');
+                video.setAttribute('autoplay', 'true');
+
                 const playPromise = video.play();
 
                 if (playPromise !== undefined) {
