@@ -2372,6 +2372,16 @@
             }
         });
 
+        // Immediate mobile video autoplay attempt
+        window.addEventListener('load', function() {
+            const video = document.getElementById('background-video');
+            if (video && /Mobi|Android/i.test(navigator.userAgent)) {
+                // Force immediate play on mobile
+                video.muted = true;
+                video.play().catch(e => console.log('Initial mobile play attempt:', e));
+            }
+        });
+
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             // Ensure video plays on mobile with responsive scaling
