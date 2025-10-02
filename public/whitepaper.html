@@ -223,8 +223,8 @@
         .toc-container {
             position: fixed;
             top: 152px;
-            left: -569px;
-            width: 569px;
+            left: -559px;
+            width: 559px;
             height: calc(100vh - 152px);
             background: linear-gradient(to top, #000000, #404040);
             backdrop-filter: blur(20px);
@@ -327,7 +327,7 @@
 
         /* When TOC is open, move handle to right edge of panel */
         .toc-container.active ~ .toc-handle {
-            left: 569px;
+            left: 559px;
         }
 
         /* Main Content */
@@ -336,7 +336,6 @@
             margin: 0 auto;
             padding: 48px 24px 120px;
             transition: margin-left 0.3s ease;
-            overflow-x: hidden; /* Keep circles within column bounds */
         }
 
 
