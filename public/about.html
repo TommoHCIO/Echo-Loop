@@ -473,6 +473,9 @@
             }
         }
 
+        // IMMEDIATE autoplay attempt (before DOMContentLoaded)
+        ensureVideoPlayback();
+
         // Handle page visibility changes to restart video
         document.addEventListener('visibilitychange', function() {
             if (!document.hidden) {
@@ -482,7 +485,7 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            ensureVideoPlayback();
+            ensureVideoPlayback(); // Retry on DOM ready
 
             // Prevent logo flash: hide content until video loads
             const video = document.getElementById('background-video');

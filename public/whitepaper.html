@@ -977,9 +977,12 @@
             }
         }
 
+        // IMMEDIATE autoplay attempt (before DOMContentLoaded)
+        ensureVideoPlayback();
+
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            ensureVideoPlayback();
+            ensureVideoPlayback(); // Retry on DOM ready
             loadWhitepaper();
 
             // TOC toggle functionality with better mobile support
