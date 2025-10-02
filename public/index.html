@@ -2372,13 +2372,50 @@
             }
         });
 
-        // Immediate mobile video autoplay attempt
+        // Aggressive mobile video autoplay strategy
+        (function() {
+            const video = document.getElementById('background-video');
+            if (video && /Mobi|Android/i.test(navigator.userAgent)) {
+                // Ensure video is fully muted for autoplay
+                video.muted = true;
+                video.setAttribute('muted', 'true');
+                video.setAttribute('playsinline', 'true');
+                video.setAttribute('autoplay', 'true');
+
+                // Try immediate play
+                const tryPlay = () => {
+                    video.play().then(() => {
+                        console.log('Mobile video autoplay successful');
+                    }).catch(e => {
+                        console.log('Mobile autoplay blocked, retrying on interaction:', e);
+                        // Retry on ANY user interaction
+                        const playOnce = () => {
+                            video.play().catch(err => console.log('Interaction play failed:', err));
+                            document.removeEventListener('touchstart', playOnce);
+                            document.removeEventListener('touchmove', playOnce);
+                            document.removeEventListener('scroll', playOnce);
+                        };
+                        document.addEventListener('touchstart', playOnce, { once: true, passive: true });
+                        document.addEventListener('touchmove', playOnce, { once: true, passive: true });
+                        document.addEventListener('scroll', playOnce, { once: true, passive: true });
+                    });
+                };
+
+                // Try immediately
+                tryPlay();
+
+                // Try again after a short delay
+                setTimeout(tryPlay, 100);
+                setTimeout(tryPlay, 500);
+            }
+        })();
+
+        // Fallback on window load
         window.addEventListener('load', function() {
             const video = document.getElementById('background-video');
             if (video && /Mobi|Android/i.test(navigator.userAgent)) {
-                // Force immediate play on mobile
                 video.muted = true;
-                video.play().catch(e => console.log('Initial mobile play attempt:', e));
+                video.play().catch(e => console.log('Load event play attempt:', e));
             }
         });
 
